@@ -1,0 +1,8 @@
+ZHM3Actor::ZHM3Actor at sub_638700
+
+Attack details:
+Mask : E8 BB DF E0 FF 83 C4 04 8B C6 5E {call sub_4466D0 to next nearest C2 04 00 (retn 4)}
+
+Possible good methods:
+
+sub_516390 - set XYZ & rotation?

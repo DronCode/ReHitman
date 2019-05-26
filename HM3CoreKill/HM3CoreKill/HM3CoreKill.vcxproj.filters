@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="x86">
+      <UniqueIdentifier>{3b43f60a-4677-4ed3-90de-5b6611177644}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sdk">
+      <UniqueIdentifier>{fe7787a7-b804-41d3-be48-199e3e976b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ck">
+      <UniqueIdentifier>{e6be9d69-5f27-43eb-8218-61be83010b88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mp">
+      <UniqueIdentifier>{0a45357b-dafc-4a61-a7ab-2eebfa7df563}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="x86\X86Arch.h">
+      <Filter>x86</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3DebugConsole.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3Function.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3Game.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3Hooks.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3Offsets.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3Player.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3Types.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\X86MemTools.h">
+      <Filter>x86</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\X86Backend.h">
+      <Filter>x86</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\X86MemAccessEngine.h">
+      <Filter>x86</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3MemoryProvider.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3ProcessCache.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="x86\X86Snippets.h">
+      <Filter>x86</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3CrashHandler.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\HM3DebugAPI.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3ScopedProtection.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3VFTableHook.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZLnkAction.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZHM3Hitman3.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZGameDataFactory.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZGameGlobals.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="mp\MP.h">
+      <Filter>mp</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZSysFile.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ck\HM3DebugConsole.cpp">
+      <Filter>ck</Filter>
+    </ClCompile>
+    <ClCompile Include="ck\HM3Game.cpp">
+      <Filter>ck</Filter>
+    </ClCompile>
+    <ClCompile Include="ck\HM3Hooks.cpp">
+      <Filter>ck</Filter>
+    </ClCompile>
+    <ClCompile Include="ck\HM3Player.cpp">
+      <Filter>ck</Filter>
+    </ClCompile>
+    <ClCompile Include="x86\X86MemTools.cpp">
+      <Filter>x86</Filter>
+    </ClCompile>
+    <ClCompile Include="x86\X86Backend.cpp">
+      <Filter>x86</Filter>
+    </ClCompile>
+    <ClCompile Include="x86\X86MemAccessEngine.cpp">
+      <Filter>x86</Filter>
+    </ClCompile>
+    <ClCompile Include="ck\HM3MemoryProvider.cpp">
+      <Filter>ck</Filter>
+    </ClCompile>
+    <ClCompile Include="DllEntry.cpp" />
+    <ClCompile Include="ck\HM3ProcessCache.cpp">
+      <Filter>ck</Filter>
+    </ClCompile>
+    <ClCompile Include="ck\HM3CrashHandler.cpp">
+      <Filter>ck</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

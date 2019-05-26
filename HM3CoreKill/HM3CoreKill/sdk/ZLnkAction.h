@@ -1,7 +1,141 @@
-#pragma once
+﻿#pragma once
 
 namespace ioi {
 namespace hm3 {
+	/***
+		ONLY FOR sub_5F4F30
+
+		USAGE #1 BY HM3LevelControlM04 (sub_6BC560)
+		.text:005F672D loc_5F672D:                             ; CODE XREF: sub_5F6720+A↑j
+		.text:005F672D                 push    10000039h
+		.text:005F6732                 mov     ecx, esi
+		.text:005F6734                 call    sub_5F4F30 <
+		.text:005F6739                 test    eax, eax
+		.text:005F673B                 jnz     short loc_5F673E
+		.text:005F673D                 int     3               ; Trap to Debugger
+
+		USAGE #2 BY HM3LevelControlM08 (sub_6C2610) 
+		.text:005F9817 loc_5F9817:                             ; CODE XREF: sub_5F97F0+19↑j
+		.text:005F9817                 push    10000042h
+		.text:005F981C                 mov     ecx, esi
+		.text:005F981E                 call    sub_5F4F30 <
+		.text:005F9823                 test    eax, eax
+		.text:005F9825                 jnz     short loc_5F9828
+		.text:005F9827                 int     3               ; Trap to Debugger
+
+		USAGE #3 BY sub_601DE0, SOURCES: sub_604D00 (ZHitman3), sub_6718A0 (ZGui)
+		.text:00601E04 loc_601E04:                             ; CODE XREF: sub_601DE0+21↑j
+		.text:00601E04                 push    10000033h
+		.text:00601E09                 mov     ecx, esi
+		.text:00601E0B                 call    sub_5F4F30 <
+		.text:00601E10                 mov     ecx, [esi+0D64h]
+		.text:00601E16                 mov     [eax+14h], ecx
+		.text:00601E19                 mov     [eax+10h], edi
+		.text:00601E1C                 mov     edx, [esi]
+		.text:00601E1E                 push    eax
+		.text:00601E1F                 mov     ecx, esi
+		.text:00601E21                 call    dword ptr [edx+37Ch]
+		.text:00601E27                 pop     edi
+		.text:00601E28                 pop     esi
+		.text:00601E29                 retn    4
+
+		USAGE #4 BY sub_601E30, SOURCE: sub_6BC560 (HM3LevelControlM04)
+		.text:00601E53                 push    0
+		.text:00601E55                 mov     ecx, esi
+		.text:00601E57                 call    sub_601320
+		.text:00601E5C                 push    10000035h
+		.text:00601E61                 mov     ecx, esi
+		.text:00601E63                 call    sub_5F4F30 <
+		.text:00601E68                 test    eax, eax
+		.text:00601E6A                 jnz     short loc_601E6D
+		.text:00601E6C                 int     3               ; Trap to Debugger
+
+		USAGE #5 BY sub_601EA0, SOURCE sub_6ABDB0 ($GLOBALSCOPE, OR GLOBAL ITEM)
+		.text:00601EF1 loc_601EF1:                             ; CODE XREF: sub_601EA0+4E↑j
+		.text:00601EF1                 push    10000036h
+		.text:00601EF6                 mov     ecx, esi
+		.text:00601EF8                 call    sub_5F4F30 <
+		.text:00601EFD                 test    eax, eax
+		.text:00601EFF                 jnz     short loc_601F02
+		.text:00601F01                 int     3               ; Trap to Debugger
+
+		USAGE #6 BY sub_5F4F30 (ZHitman3) <SOURCE>
+	***/
+	enum class ZLnkActionType
+	{
+		/// Hitman actions
+		HitmanActionChangeClothesFromBody		= 0x10000002u,
+		HitmanActionPushActor					= 0x10000003u,
+		HitmanActionThrowItem					= 0x10000004u,
+		HitmanActionPickLock					= 0x10000005u,
+		RESERVED_0								= 0x10000007u,						/// ALWAYS NULLPTR
+		RESERVED_1								= 0x1000000Cu,						/// ALWAYS NULLPTR
+		RESERVED_2								= 0x1000000Eu,						/// ALWAYS NULLPTR
+		HitmanActionDropDeadBody				= 0x10000009u,
+		HitmanActionHumanShield					= 0x1000000Au,
+		HitmanActionHideWeapon					= 0x1000000Du,
+		HitmanActionUseKeyCard					= 0x1000000Fu,
+		HitmanActionChargeHitKnife				= 0x10000010u,
+		HitmanActionChargeHitHedgeCutter		= 0x10000011u,
+		HitmanActionHumanShieldRelease			= 0x10000012u,
+		HitmanActionChargeHitPickAxe			= 0x10000015u,
+		HitmanActionChargeHitFireExtinguisher	= 0x10000016u,
+		HitmanActionChargeHitBaseballBat		= 0x10000017u,
+		HitmanActionChargeHitPitchfork			= 0x10000018u,
+		HitmanActionPackUnpackSuitcase			= 0x1000001Au,
+		HitmanActionBalconyJump					= 0x1000001Bu,
+		ZHitmanActionPlaceBomb					= 0x1000001Cu,
+		HitmanSedateCIAAgent					= 0x1000001Du,
+		HitmanPutDownSuitcase					= 0x10000022u,
+		HitmanReviveCIAAgent					= 0x10000023u,
+		HitmanActionUseSwitch					= 0x10000024u,
+		HitmanDropWeight						= 0x10000025u,
+		HitmanActionPlaceItemToPos				= 0x10000026u,
+		HitmanBreakUtilBox						= 0x10000027u,
+		HitmanActionChargeHitHammer				= 0x10000029u,
+		HitmanUnlockDoor						= 0x1000002Au,
+		HitmanActionChargeHitStungun			= 0x1000002Bu,
+		HitmanActionPourFluidOverDevice			= 0x1000002Eu,
+		HitmanActionChargeHitScrewdriver		= 0x1000002Fu,
+		HitmanActionCloseCombatStunTarget		= 0x10000030u,
+		HitmanActionCloseCombatDisarmTarget		= 0x10000031u,
+		HitmanStartStrangleInElev				= 0x10000032u,
+		HitmanActionStartDragBody				= 0x10000033u,
+		HitmanUsePhone							= 0x10000034u,
+		HitmanOpenGas							= 0x10000035u,
+		HitmanUseComputer						= 0x10000036u,
+		HitmanActionDestroyDualWeapons			= 0x10000037u,
+		HitmanPickupSuitcase					= 0x10000038u,
+		HitmanPhoning							= 0x10000039u,	/// M04 ONLY, CAN CRASH IN OTHER LEVEL
+		HitmanPickupBox							= 0x1000003Au,
+		HitmanPutDownBox						= 0x1000003Bu,
+		HitmanBoxFromElevator					= 0x1000003Cu,
+		HitmanBoxToElevator						= 0x1000003Du,
+		HitmanActionDieIngame					= 0x1000003Eu,
+		HitmanActionStealTape					= 0x1000003Fu,
+		HitmanActionChargeHitShovel				= 0x10000040u,
+		HitmanPickupBurgers						= 0x10000041u,
+		HitmanPutDownBurgers					= 0x10000042u,
+		HitmanActionKnockOnDoor					= 0x10000043u, 
+		HitmanActionPackUnpackRifle				= 0x10000044u,
+		HitmanActionChargeHitCaneSword			= 0x10000045u,
+		HitmanActionPoisonBottle				= 0x10000046u,
+		/// Other actions
+		HitmanActionPickupItem_0				= 0x3u,	//Equal code, not reversed, need to explore
+		HitmanActionPickupItem_1				= 0x4u,
+		HitmanActionPutItem_0					= 0x5u,
+		HitmanActionPutItem_1					= 0x6u,
+		ZHitmanActionGetItem_0					= 0x7u,
+		ZHitmanActionGetItem_1					= 0x8u,
+		HitmanActionDropItem_0					= 0x9u,
+		HitmanActionDropItem_1					= 0xAu,
+		HitmanActionSwapItems					= 0xBu,
+		HitmanActionReloadItem_0				= 0xCu,
+		HitmanActionReloadItem_1				= 0xDu,
+		HitmanActionChamberItem_0				= 0xEu,
+		HitmanActionChamberItem_1				= 0xFu,
+	};
+
 	/**
 	 * Linked Action - any action who reffers to player (any actions with items as example)
 	 */

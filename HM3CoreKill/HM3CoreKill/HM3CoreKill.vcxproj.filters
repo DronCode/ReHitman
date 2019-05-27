@@ -87,6 +87,9 @@
     <ClInclude Include="sdk\ZSysFile.h">
       <Filter>sdk</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\ZGUIBase.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">

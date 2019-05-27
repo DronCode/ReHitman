@@ -146,6 +146,7 @@
     <ClInclude Include="sdk\HM3DebugAPI.h" />
     <ClInclude Include="sdk\ZGameDataFactory.h" />
     <ClInclude Include="sdk\ZGameGlobals.h" />
+    <ClInclude Include="sdk\ZGUIBase.h" />
     <ClInclude Include="sdk\ZHM3Hitman3.h" />
     <ClInclude Include="sdk\ZLnkAction.h" />
     <ClInclude Include="sdk\ZSysFile.h" />

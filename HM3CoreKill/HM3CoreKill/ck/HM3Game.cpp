@@ -34,7 +34,7 @@ int __stdcall OnParameterRequestFilterCallback(char* key)
 
 static const DWORD backJump = HM3Offsets::HM3ZIniParserOnGetValue + 5;
 static DWORD g_ignoredParameterValue;
-static const char* GMS_VAL = "M13/M13_main.gms\0";
+static const char* GMS_VAL = "M04/M04_main.gms\0";
 
 void __declspec(naked) ZHM3_GetIniParameter_Trampoline()
 {
@@ -147,29 +147,26 @@ void HM3Game::OnKeyRelease(uint32_t keyCode)
 	}
 	if (keyCode == VK_F6)
 	{
-		std::uintptr_t lvlController = GetCurrentLevelController();
-		if (!lvlController)
+		/***
+			REVERSAL CONCEPT ONLY!!!
+		***/
+		struct ZHM3GameData
 		{
-			HM3_DEBUG("HM3Game::OnKeyRelease| No active level!\n");
-			return;
-		}
+			char pad_0x0000[0xA1C];
+			std::uintptr_t m_AVZHM3MenuElements;
+		};
 
-		std::uintptr_t pGameData = reinterpret_cast<std::uintptr_t>(*(void**)ioi::hm3::GameData);
-		std::uintptr_t pEtc      = reinterpret_cast<std::uintptr_t>(*((void**)(pGameData + 0xA58)));
+		ZHM3GameData* pGameData = (ZHM3GameData*)GetGameDataInstancePtr();
+		std::uintptr_t pHM3Elements = pGameData->m_AVZHM3MenuElements;
 
 		HM3_DEBUG(
-			"Trace: "
-			"\n\tpGameData : 0x%.8X"
-			"\n\tpEtc      : 0x%.8X\n", 
-			pGameData, 
-			pEtc);
-
-		//std::uintptr_t v4 = (*((std::uintptr_t(__thiscall*)(std::uintptr_t))0x006AFED0))(pEtc);
-
-		//std::uintptr_t res0 = (*(std::uintptr_t(__thiscall*)(std::uintptr_t, int, std::uintptr_t, int))0x006CEEF0)(v4, 1, 1, 0);
-		//std::uintptr_t res1 = (*(std::uintptr_t(__thiscall*)(std::uintptr_t, int, std::uintptr_t, int))0x006CEEF0)(v4, 2, 1, 0);
-
-		//HM3_DEBUG("T1: 0x%.8X | T2: 0x%.8X\n", res0, res1);
+			"Trace:"
+			"\n\tpGameData     at 0x%.8X"
+			"\n\tpHM3Elements  at 0x%.8X"
+			"\n",
+			pGameData,
+			pHM3Elements
+		);
 	}
 }
 
@@ -313,4 +310,9 @@ void HM3Game::setupHookToNewSessionInstanceCreator()
 			x86_pop_eax,		///Restore EAX
 			x86_pop_ecx			///Restore ECX
 		});														//Prepare our hook function
+}
+
+std::uintptr_t HM3Game::GetGameDataInstancePtr() const
+{
+	return reinterpret_cast<std::uintptr_t>(*(void**)ioi::hm3::GameData);
 }

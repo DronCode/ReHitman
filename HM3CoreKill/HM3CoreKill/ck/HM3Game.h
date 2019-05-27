@@ -38,6 +38,8 @@ private:
 	void setupNoVideoMode();
 	void setupHookToNewSessionInstanceCreator();
 private:
+	std::uintptr_t GetGameDataInstancePtr() const;
+private:
 	bool m_isHackActive = false;
 	HM3Player::Ptr m_currentPlayer;
 };

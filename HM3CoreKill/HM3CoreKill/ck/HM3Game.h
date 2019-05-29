@@ -6,6 +6,7 @@
 #include <ck/HM3Player.h>
 
 #include <sdk/ZHM3Hitman3.h>
+#include <sdk/ZHM3GameData.h>
 
 typedef void* ZHM3Hitman3_t;	///For now this is unknown type for me (it's too big class)
 
@@ -38,7 +39,7 @@ private:
 	void setupNoVideoMode();
 	void setupHookToNewSessionInstanceCreator();
 private:
-	std::uintptr_t GetGameDataInstancePtr() const;
+	ioi::hm3::ZHM3GameData* GetGameDataInstancePtr() const;
 private:
 	bool m_isHackActive = false;
 	HM3Player::Ptr m_currentPlayer;

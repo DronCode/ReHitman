@@ -10,6 +10,7 @@
 
 #include <sdk/HM3DebugAPI.h>
 #include <sdk/ZGameGlobals.h>
+#include <sdk/InterfacesProvider.h>
 
 /// PRIVATE (TODO: Move into external file)
 int __stdcall OnParameterRequestFilterCallback(char* key)
@@ -82,10 +83,10 @@ void HM3Game::Initialise()
 		"\n"
 		"Core Kill\n");
 
-	setupInputWatcher();	///Make bugs, DO NOT USE IT
+	//setupInputWatcher();	///Make bugs, DO NOT USE IT
 	setupDoesPlayerAcceptDamage();
-	setupDropItemAction();
-	setupOverrideStartupGMSScriptPath();	/// Override path to GMS
+	//setupDropItemAction();	//In some cases (M04) we can get the crash here
+	//setupOverrideStartupGMSScriptPath();	/// Override path to GMS
 	setupNoVideoMode();
 	setupHookToNewSessionInstanceCreator();
 
@@ -147,26 +148,26 @@ void HM3Game::OnKeyRelease(uint32_t keyCode)
 	}
 	if (keyCode == VK_F6)
 	{
-		/***
-			REVERSAL CONCEPT ONLY!!!
-		***/
-		struct ZHM3GameData
+		auto session = GetGameDataInstancePtr();
+		if (!session)
 		{
-			char pad_0x0000[0xA1C];
-			std::uintptr_t m_AVZHM3MenuElements;
-		};
+			HM3_DEBUG("No active game session!\n");
+			return;
+		}
 
-		ZHM3GameData* pGameData = (ZHM3GameData*)GetGameDataInstancePtr();
-		std::uintptr_t pHM3Elements = pGameData->m_AVZHM3MenuElements;
-
-		HM3_DEBUG(
-			"Trace:"
-			"\n\tpGameData     at 0x%.8X"
-			"\n\tpHM3Elements  at 0x%.8X"
-			"\n",
-			pGameData,
-			pHM3Elements
-		);
+		HM3_DEBUG(" *** COMMON INFO ***\n");
+		HM3_DEBUG("Save name      : '%s'\n", session->m_ProfileName);
+		HM3_DEBUG("Player money   : %d\n", session->m_PlayerMoney);
+		HM3_DEBUG(" *** GAMEPLAY CAMERA: ***\n");
+		if (session->m_Camera)
+		{
+			HM3_DEBUG("Camera Z scale : %f\n", session->m_Camera->m_ZCamOffset);
+			session->m_Camera->m_ZCamOffset = 0.1f;
+		}
+		else
+		{
+			HM3_DEBUG("(No active camera!)\n");
+		}
 	}
 }
 
@@ -312,7 +313,7 @@ void HM3Game::setupHookToNewSessionInstanceCreator()
 		});														//Prepare our hook function
 }
 
-std::uintptr_t HM3Game::GetGameDataInstancePtr() const
+ioi::hm3::ZHM3GameData* HM3Game::GetGameDataInstancePtr() const
 {
-	return reinterpret_cast<std::uintptr_t>(*(void**)ioi::hm3::GameData);
+	return ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
 }

@@ -19,3 +19,9 @@ sub_569960 - GUI element creator
 
 INTR
 sub_675AD0
+
+Camera at *(g_GameData + 27000)
+sub_4E4300 - set camera position (__thiscall)
+
+Upgrades 
+int __thiscall sub_67F940(int (__thiscall ***this)(_DWORD, int), int a2, int a3)

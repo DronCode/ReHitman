@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include <sdk/ZHM3Camera.h>
+#include <sdk/ZHM3Actor.h>
 
 #define DECLARE_UNKNOWN_TYPE_PTR(name) using name = std::uintptr_t;
 
@@ -10,7 +11,6 @@ namespace ioi {
 namespace hm3 {
 	DECLARE_UNKNOWN_TYPE_PTR(ZHitman3);
 	DECLARE_UNKNOWN_TYPE_PTR(N00001B3F);
-	DECLARE_UNKNOWN_TYPE_PTR(ZHM3Actor);
 	DECLARE_UNKNOWN_TYPE_PTR(N000033C1);
 	DECLARE_UNKNOWN_TYPE_PTR(REFTAB);
 	DECLARE_UNKNOWN_TYPE_PTR(ZHM3MenuElements);
@@ -90,4 +90,4 @@ namespace hm3 {
 		ZHM3Camera* m_Camera; //0x6978 
 		char pad_0x697C[0x95C]; //0x697C
 	}; //Size=0x72D8
-} }
+}}

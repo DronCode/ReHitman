@@ -1,78 +1,13 @@
 #pragma once
 
-#include <cstdint>
-#include <sdk/MathCommon.h>
-
 namespace ioi {
 namespace hm3 {
-	/*
-	class ZHM3Camera
+	
+
+	// Created with ReClass.NET 1.2 by KN4CK3R
+	class ZRenderWintelD3D
 	{
 	public:
-		virtual void Function0(); //
-		virtual void Function1(); //
-		virtual void Function2(); //
-		virtual void Function3(); //
-		virtual void Function4(); //
-		virtual void Function5(); //
-		virtual void Function6(); //
-		virtual void Function7(); //
-		virtual void Function8(); //
-		virtual void Function9(); //
-		virtual void Function10(); //
-		virtual void Function11(); //
-		virtual void Function12(); //
-		virtual void Function13(); //
-		virtual void Function14(); //
-		virtual void Function15(); //
-		virtual void Function16(); //
-		virtual void Function17(); //
-		virtual void Function18(); //
-		virtual void Function19(); //
-		virtual void Function20(); //
-		virtual void Function21(); //
-		virtual void Function22(); //
-		virtual void Function23(); //
-
-		// sub_4E4300 - recalculate camera factor
-
-		char pad_0x0004[0x30];		//0x0004
-		Vector2 m_CameraSpaceSize;	//0x0034 
-		float m_ZCamOffset;			//0x003C 
-		float m_camZoom;			//0x0040 
-		float N00001B61;			//0x0044 
-		__int32 N00001B62;			//0x0048 
-		float N00001B6D;			//0x004C 
-		float m_fogDist;			//0x0050 (default 30000.0)
-		char pad_0x0054[0x50];		//0x0054
-		float N00001B83;			//0x00A4 
-		char pad_0x00A8[0x10];		//0x00A8
-		float N00001B88;			//0x00B8 
-		char pad_0x00BC[0x10];		//0x00BC
-	}; //Size=0x009C
-	*/
-
-	// --- 29 Jan 2020 ---
-	class N000024DE
-	{
-	public:
-		char pad_0000[260]; //0x0000
-	}; //Size: 0x0104
-
-	using Matrix4x4 = float[16];
-
-	class ZHM3Camera
-	{
-	public:
-		Matrix4x4 MVP; //0x0004
-		char pad_0044[44]; //0x0044
-		uint32_t cameraType; //0x0070
-		char pad_0074[4]; //0x0074
-		Vector3 viewportParameters; //0x0078
-		float cameraOffset; //0x0084
-		float cameraZoom; //0x0088
-		char pad_008C[252]; //0x008C
-		class N000024DE m_RendererInstance; //0x0188
 
 		virtual void Function0();
 		virtual void Function1();
@@ -215,7 +150,7 @@ namespace hm3 {
 		virtual void Function138();
 		virtual void Function139();
 		virtual void Function140();
-		virtual void recalculateCameraParameters();
+		virtual void Function141();
 		virtual void Function142();
 		virtual void Function143();
 		virtual void Function144();
@@ -227,7 +162,12 @@ namespace hm3 {
 		virtual void Function150();
 		virtual void Function151();
 		virtual void Function152();
-	}; //Size: 0x028C
-
-
+		virtual void Function153();
+		virtual void Function154();
+		virtual void Function155();
+		virtual void Function156();
+		virtual void Function157();
+		virtual void Function158();
+		virtual void Function159();
+	}; //Size: 0x0004
 }}

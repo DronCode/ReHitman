@@ -17,4 +17,9 @@ namespace ioi {
 	{
 		float x, y, z, w;
 	};
+
+	struct Matrix4x4
+	{
+		float data[16];
+	};
 }

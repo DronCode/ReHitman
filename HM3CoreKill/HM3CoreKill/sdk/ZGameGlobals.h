@@ -23,5 +23,10 @@ namespace hm3 {
 	static const std::uintptr_t QuazalComponent  = 0x008207FC;	//Based on Quazal::HBMDDLDeclarations : Quazal::DDLDeclarations : Quazal::RootObject
 	static const std::uintptr_t StreamLogger	 = 0x00820798;	//Based on StdStrLogger_t : StringStreamLogger_t
 	static const std::uintptr_t NetFactory		 = 0x00820790;	//Based on NetGateWin32NetFactory_t : NetLayerFactory_t
-
+	static const std::uintptr_t WintelInput		 = 0x008ACAA0;	//Based on ZSysInputWintel : ZSysInput : SysInput::ZInterface
+	static const std::uintptr_t MissionDLLFunc2  = 0x008289BC;	//DLL SECTION : ISF
+	static const std::uintptr_t MissionDLLFunc3  = 0x008A89D4;	//DLL SECTION : Scripts
+	static const std::uintptr_t IsScriptsLoaded  = 0x008ACA2C;	//BOOL FLAG
+	static const std::uintptr_t EventBuffer		 = 0x008BA0B8;	//Based on ZEventBuffer : ZSerializable : ZSerializableBase
+	static const std::uintptr_t F = 0x009728DC;
 }}

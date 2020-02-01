@@ -29,9 +29,12 @@ namespace HM3Offsets
 	static const FuncAddr_t ZGEOM_Constructor							= 0x004E8AA7;
 	static const FuncAddr_t ZPlayer_Constructor							= 0x005277E4;
 	
-	static const FuncAddr_t ZGetEntityByTheirName_Func					= 0x00426BA0;
-	static const FuncAddr_t ZGetRawEntity_Func							= 0x004614E0;
-	static const FuncAddr_t ZExecuteTeleport_Func						= 0x0052A970;
+	static const FuncAddr_t ZGetEntityByTheirName_Func					 = 0x00426BA0;
+	static const FuncAddr_t ZGetRawEntity_Func							 = 0x004614E0;
+	static const FuncAddr_t ZExecuteTeleport_Func						 = 0x0052A970;
+	static const FuncAddr_t ZHM3LevelControl_SetObjectiveStatus_Func	 = 0x006AC8F0;
+	static const FuncAddr_t ZHM3LevelControl_HasObjectiveWithStatus_Func = 0x006AC540;
+	static const FuncAddr_t ZHM3LevelControl_DoesObjectiveCompleted_Func = 0x006AC560;
 }
 
 namespace D3D9Offsets

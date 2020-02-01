@@ -165,6 +165,12 @@
     <ClInclude Include="utils\X86Backend.h">
       <Filter>utils</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\ZHM3MenuElements.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZHM3LevelControl.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">

@@ -5,6 +5,8 @@
 #include <sdk/ZHM3Camera.h>
 #include <sdk/ZHM3Actor.h>
 #include <sdk/ZOSD.h>
+#include <sdk/ZHM3MenuElements.h>
+#include <sdk/ZHM3LevelControl.h>
 
 #define DECLARE_UNKNOWN_TYPE_PTR(name) using name = std::uintptr_t;
 
@@ -14,10 +16,8 @@ namespace hm3 {
 	DECLARE_UNKNOWN_TYPE_PTR(N00001B3F);
 	DECLARE_UNKNOWN_TYPE_PTR(N000033C1);
 	DECLARE_UNKNOWN_TYPE_PTR(REFTAB);
-	DECLARE_UNKNOWN_TYPE_PTR(ZHM3MenuElements);
 	DECLARE_UNKNOWN_TYPE_PTR(ZHM3GameStats);
 	DECLARE_UNKNOWN_TYPE_PTR(N0000163D);
-	DECLARE_UNKNOWN_TYPE_PTR(HM3LevelController);
 	DECLARE_UNKNOWN_TYPE_PTR(ZGui);
 	DECLARE_UNKNOWN_TYPE_PTR(m_Gui);
 	DECLARE_UNKNOWN_TYPE_PTR(CIngameMap);
@@ -69,7 +69,7 @@ namespace hm3 {
 		ZHM3Actor* m_ActorsPool[512]; //0x000C 
 		N000033C1* m_UNKNOWN_LIST; //0x080C 
 		char pad_0x0810[0x208]; //0x0810
-		REFTAB* m_REFTAB00; //0x0A18 
+		REFTAB* m_REFTAB00; //0x0A18
 		ZHM3MenuElements* m_MenuElements; //0x0A1C 
 		ZHitman3* m_Hitman3; //0x0A20 (also in A40 located similar instance, it doesn't matter what I will use, but few instructions trying to talk with +A40)
 		char pad_0x0A24[0xC]; //0x0A24
@@ -77,7 +77,7 @@ namespace hm3 {
 		char pad_0x0A34[0xC]; //0x0A34
 		N0000163D* N0000357E; //0x0A40 unknown thing
 		char pad_0x0A44[0x4]; //0x0A44
-		HM3LevelController* m_LevelController; //0x0A48 
+		ZHM3LevelControl* m_LevelControl; //0x0A48 
 		ZOSD* m_OSD; //0x0A4C 
 		ZGui* m_Gui; //0x0A50 
 		CIngameMap* m_IngameMap; //0x0A54 
@@ -89,5 +89,8 @@ namespace hm3 {
 		char pad_0x0AD8[0x5EA0]; //0x0AD8
 		ZHM3Camera* m_Camera; //0x6978 
 		char pad_0x697C[0x95C]; //0x697C
+
+
+		//+68F8 - ZHM3BriefingControl
 	}; //Size=0x72D8
 }}

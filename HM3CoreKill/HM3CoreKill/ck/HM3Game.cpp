@@ -129,10 +129,13 @@ void HM3Game::fixEnableCheats()
 	HM3_DEBUG(" + Enable cheats menu\n");
 }
 
-
-
 void HM3Game::OnKeyRelease(uint32_t keyCode)
 {
+	if (keyCode == VK_F3)
+	{
+		ck::completeLevel();
+	}
+
 	if (keyCode == VK_F4)
 	{
 		printActorsPoolInfos();

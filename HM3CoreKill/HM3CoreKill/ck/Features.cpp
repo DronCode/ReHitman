@@ -101,4 +101,32 @@ namespace ck {
 		}
 	}
 
+	void completeTask(int taskId)
+	{
+		typedef bool(__stdcall* hasObjectiveWithStatus_t)(int, int);
+		typedef bool(__stdcall* doesObjectiveCompleted_t)(int);
+		typedef int (__stdcall* setObjectiveStatus_t)    (int, signed int);
+		
+		setObjectiveStatus_t     setObjectiveStatus     = (setObjectiveStatus_t)HM3Offsets::ZHM3LevelControl_SetObjectiveStatus_Func;
+		hasObjectiveWithStatus_t hasObjectiveWithStatus = (hasObjectiveWithStatus_t)HM3Offsets::ZHM3LevelControl_HasObjectiveWithStatus_Func;
+		doesObjectiveCompleted_t doesObjectiveCompleted = (doesObjectiveCompleted_t)HM3Offsets::ZHM3LevelControl_DoesObjectiveCompleted_Func;
+
+		if (hasObjectiveWithStatus(taskId, 0) && !doesObjectiveCompleted(taskId))
+		{
+			setObjectiveStatus(taskId, true);
+
+		}	
+	}
+
+	void completeLevel()
+	{
+		for (int i = 1; i < 9; i++)
+		{
+			completeTask(i);
+			break;
+		}
+
+		HM3Game::GetGameDataInstancePtr()->m_LevelControl->completeLevelRequest();
+	}
+
 }

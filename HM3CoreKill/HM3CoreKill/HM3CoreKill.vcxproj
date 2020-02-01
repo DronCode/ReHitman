@@ -167,6 +167,8 @@
     <ClInclude Include="sdk\ZGUIBase.h" />
     <ClInclude Include="sdk\ZHM3Camera.h" />
     <ClInclude Include="sdk\ZHM3Hitman3.h" />
+    <ClInclude Include="sdk\ZHM3LevelControl.h" />
+    <ClInclude Include="sdk\ZHM3MenuElements.h" />
     <ClInclude Include="sdk\ZOSD.h" />
     <ClInclude Include="sdk\ZRenderWintelD3D.h" />
     <ClInclude Include="sdk\ZSTD.h" />

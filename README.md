@@ -23,4 +23,15 @@ The goals
 =========
 
  - [ ] Create open source SDK for Glacier 1 Engine
+ -	[ ] Reverse rendering API
+ -		[ ] Implement ImGUI backend over Glacier renderer wrapper (ZWintelRendererD3D)
+ -	[ ] Reverse input API (mouse, keyboard)
+ -	[ ] Reverse GUI API
+ -		[ ] Implement custom widget with logic on CoreKill.dll side
+ -	[ ] Reverse scene format
  - [ ] Create toolset for Hitman Blood Money
+
+ Contacts
+=========
+
+You can contact with me in project issues tracker(any questions, ideas, etc).

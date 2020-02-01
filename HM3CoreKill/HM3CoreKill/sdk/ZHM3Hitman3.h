@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sdk/ZLnkAction.h>
+#include <sdk/actions/ZLnkAction.h>
 
 namespace ioi {
 namespace hm3 {

@@ -71,9 +71,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.dll</TargetExt>
-    <OutDir>..\..\..\..</OutDir>
-    <IncludePath>x86/zydis/include;.;$(IncludePath)</IncludePath>
-    <LibraryPath>x86/zydis/lib;$(LibraryPath)</LibraryPath>
+    <OutDir>Z:\Reverse\Games</OutDir>
+    <IncludePath>utils/zydis/include;.;$(IncludePath)</IncludePath>
+    <LibraryPath>utils/zydis/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -82,6 +82,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HM3_TRACE_HOOKS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,6 +131,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ck\Features.h" />
+    <ClInclude Include="ck\HM3ActionFactory.h" />
     <ClInclude Include="ck\HM3CrashHandler.h" />
     <ClInclude Include="ck\HM3DebugConsole.h" />
     <ClInclude Include="ck\HM3Function.h" />
@@ -143,8 +146,20 @@
     <ClInclude Include="ck\HM3Types.h" />
     <ClInclude Include="ck\HM3VFTableHook.h" />
     <ClInclude Include="mp\MP.h" />
+    <ClInclude Include="sdk\actions\ZLnkAction.h" />
+    <ClInclude Include="sdk\CTelePortList.h" />
     <ClInclude Include="sdk\HM3DebugAPI.h" />
+    <ClInclude Include="sdk\input\ZKeyboard.h" />
+    <ClInclude Include="sdk\input\ZKeyboardStorage.h" />
+    <ClInclude Include="sdk\input\ZSysInput.h" />
     <ClInclude Include="sdk\InterfacesProvider.h" />
+    <ClInclude Include="sdk\ResourceCollection.h" />
+    <ClInclude Include="sdk\scripting\ZScriptC.h" />
+    <ClInclude Include="sdk\ZEngineDatabase.h" />
+    <ClInclude Include="sdk\ZEventBuffer.h" />
+    <ClInclude Include="sdk\ZGameFunctions.h" />
+    <ClInclude Include="sdk\ZGeomBuffer.h" />
+    <ClInclude Include="sdk\ZHM3Actor.h" />
     <ClInclude Include="sdk\ZHM3GameData.h" />
     <ClInclude Include="sdk\MathCommon.h" />
     <ClInclude Include="sdk\ZGameDataFactory.h" />
@@ -152,16 +167,21 @@
     <ClInclude Include="sdk\ZGUIBase.h" />
     <ClInclude Include="sdk\ZHM3Camera.h" />
     <ClInclude Include="sdk\ZHM3Hitman3.h" />
-    <ClInclude Include="sdk\ZLnkAction.h" />
+    <ClInclude Include="sdk\ZOSD.h" />
+    <ClInclude Include="sdk\ZRenderWintelD3D.h" />
+    <ClInclude Include="sdk\ZSTD.h" />
     <ClInclude Include="sdk\ZSysFile.h" />
+    <ClInclude Include="sdk\ZSysInterfaceWintel.h" />
     <ClInclude Include="sdk\ZSysMem.h" />
-    <ClInclude Include="x86\X86Arch.h" />
-    <ClInclude Include="x86\X86Backend.h" />
-    <ClInclude Include="x86\X86MemAccessEngine.h" />
-    <ClInclude Include="x86\X86MemTools.h" />
-    <ClInclude Include="x86\X86Snippets.h" />
+    <ClInclude Include="utils\X86Arch.h" />
+    <ClInclude Include="utils\X86Backend.h" />
+    <ClInclude Include="utils\X86MemAccessEngine.h" />
+    <ClInclude Include="utils\X86MemTools.h" />
+    <ClInclude Include="utils\X86Snippets.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ck\Features.cpp" />
+    <ClCompile Include="ck\HM3ActionFactory.cpp" />
     <ClCompile Include="ck\HM3CrashHandler.cpp" />
     <ClCompile Include="ck\HM3DebugConsole.cpp" />
     <ClCompile Include="ck\HM3Game.cpp" />
@@ -170,9 +190,10 @@
     <ClCompile Include="ck\HM3Player.cpp" />
     <ClCompile Include="ck\HM3ProcessCache.cpp" />
     <ClCompile Include="DllEntry.cpp" />
-    <ClCompile Include="x86\X86Backend.cpp" />
-    <ClCompile Include="x86\X86MemAccessEngine.cpp" />
-    <ClCompile Include="x86\X86MemTools.cpp" />
+    <ClCompile Include="sdk\ZEngineDatabase.cpp" />
+    <ClCompile Include="utils\X86Backend.cpp" />
+    <ClCompile Include="utils\X86MemAccessEngine.cpp" />
+    <ClCompile Include="utils\X86MemTools.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

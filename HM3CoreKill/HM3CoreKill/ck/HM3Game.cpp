@@ -6,57 +6,13 @@
 #include <ck/HM3Offsets.h>
 #include <ck/HM3Hooks.h>
 
-#include <x86/X86Snippets.h>
+#include <utils/X86Snippets.h>
 
 #include <sdk/HM3DebugAPI.h>
 #include <sdk/ZGameGlobals.h>
 #include <sdk/InterfacesProvider.h>
-
-/// PRIVATE (TODO: Move into external file)
-int __stdcall OnParameterRequestFilterCallback(char* key)
-{
-	if (!key)
-		return 0;
-
-	auto gmsLen = strlen(".gms");
-	auto len = strlen(key);
-
-	if (strcmp(key + (len - gmsLen), ".gms") == 0)
-	{
-		HM3_DEBUG("Check value '%s' < FOUND\n", key);
-		return 1;
-	}
-	else
-	{
-		HM3_DEBUG("Check value '%s' < IGNORE\n", key);
-	}
-	return 0;
-}
-
-static const DWORD backJump = HM3Offsets::HM3ZIniParserOnGetValue + 5;
-static DWORD g_ignoredParameterValue;
-static const char* GMS_VAL = "M04/M04_main.gms\0";
-
-void __declspec(naked) ZHM3_GetIniParameter_Trampoline()
-{
-	__asm {
-		mov g_ignoredParameterValue, eax		// Save value of eax into temp variable
-
-		push eax								// Send EAX as argument to us
-		call OnParameterRequestFilterCallback	// Call our 'detector' function
-		test eax, eax							// Check result of detector (is eax == 0)
-		jz __ignore_and_restore__				// Detector tell 4 us that incoming value NOT scene name and we must jump to __ignore_and_restore__ label
-		mov eax, GMS_VAL						// Otherwise put our 'NEW' value into EAX
-		jmp __only_exit__						// Jump to exit
-
-		__ignore_and_restore__ :				// Restore point
-		mov eax, g_ignoredParameterValue		// Move back 'valid' value
-			__only_exit__ :						// Quit point
-		jmp dword ptr[backJump]					// Restore control back to process
-	}
-}
-
-/// -------------------------------------------------------
+#include <ck/HM3ActionFactory.h>
+#include <ck/Features.h>
 
 HM3Game::HM3Game()
 	: m_currentPlayer(std::make_shared<HM3Player>())
@@ -67,6 +23,11 @@ HM3Game& HM3Game::getInstance()
 {
 	static HM3Game instance;
 	return instance;
+}
+
+void __stdcall OnTeleportsListLoaded_Callback(DWORD R1)
+{
+	HM3_DEBUG("[ result at 0x%X ]\n", R1);
 }
 
 void HM3Game::Initialise()
@@ -83,12 +44,12 @@ void HM3Game::Initialise()
 		"\n"
 		"Core Kill\n");
 
-	//setupInputWatcher();	///Make bugs, DO NOT USE IT
+	fixEnableCheats();
+	setupInputWatcher();	///Make bugs, DO NOT USE IT
 	setupDoesPlayerAcceptDamage();
-	//setupDropItemAction();	//In some cases (M04) we can get the crash here
-	//setupOverrideStartupGMSScriptPath();	/// Override path to GMS
-	setupNoVideoMode();
 	setupHookToNewSessionInstanceCreator();
+	//setupHookZGEOMObjectConstructor();
+	setupHookZPlayerConstructor();
 
 	HM3_DEBUG("----------------< GAME STARTED >----------------\n");
 	m_isHackActive = true;
@@ -104,76 +65,127 @@ void HM3Game::DestroyHack()
 	m_isHackActive = false;
 }
 
-void HM3Game::CompleteCurrentLevel()
-{
-	auto lvlController = GetCurrentLevelController();
-	if (!lvlController)
-	{
-		HM3_DEBUG("HM3Game::CompleteCurrentLevel| No active level to complete!\n");
-		return;
-	}
-
-	bool hasAnyNotCompletedTargets = HasAnyUnCompletedTargets();
-
-	HM3_DEBUG("HM3Game::CompleteCurrentLevel| Any not completed targets : %c\n", (hasAnyNotCompletedTargets ? 'Y' : 'N'));
-}
-
-bool HM3Game::HasAnyUnCompletedTargets() const
-{
-	auto lvlController = GetCurrentLevelController();
-	if (!lvlController)
-	{
-		HM3_DEBUG("HM3Game::HasAnyUnCompletedTargets| No active level controller!\n");
-		return false;
-	}
-
-	return (*((bool(__stdcall*)(int, int))HM3Offsets::ZHM3LevelControllerHasAnyUnCompletedTargets))(1, 0);
-}
-
 void HM3Game::OnKeyPress(uint32_t keyCode)
 {
 }
 
+#define BOOL_TO_STR(b) (b ? "True" : "False")
+
+void HM3Game::printActorsPoolInfos()
+{
+	auto gameData = GetGameDataInstancePtr();
+	if (!gameData)
+		return;
+
+	HM3_DEBUG("Total actors count is %.4d\n", gameData->m_ActorsInPoolCount);
+
+	for (int actorIndex = 0; actorIndex < gameData->m_ActorsInPoolCount; actorIndex++)
+	{
+		auto location = gameData->m_ActorsPool[actorIndex]->ActorInformation->location;
+		HM3_DEBUG("Actor[%.4d] at 0x%.8X | name %.50s location at 0x%.8X ; position Vec3 { %.8f; %.8f; %.8f } ; is member of group 0x%.8X\n", 
+			actorIndex, 
+			gameData->m_ActorsPool[actorIndex], 
+			location->actorName, 
+			location,
+			location->position.x, 
+			location->position.y, 
+			location->position.z, 
+			location->group);
+	}
+}
+
+void HM3Game::hackActorsForAllDead() {
+	const std::uintptr_t addrBegin = 0x00504A20;
+	// the original code is 8A 91 E2 05 00 00 33 C0 84 D2 0F 94 C0
+	
+	HM3_DEBUG("----< Try to hack actor's alive getter to always false >----\n");
+	
+	/*HM3Function::overrideInstruction(HM3_PROCESS_NAME, addrBegin, {
+		//0x31, 0xC0, 0xC3, 
+		0xB8, 0xFF, 0x00, 0x00, 0x00, 0xC3,
+		0x90, 0x90, 0x90, 
+		0x90, 0x90, 0x90, 
+		//0x90, 0x90, 0x90, 
+		0x90
+	});*/
+
+	HM3Function::overrideInstruction(HM3_PROCESS_NAME, addrBegin, {
+		//8A 91 E2 05 00 00 33 C0 84 D2 0F 94 C0
+		//C7 81 E2 05 00 00 03 00 00 00 31 C0 C3
+		0xC7, 0x81, 0xE2, 0x05, 
+		0x00, 0x00, 0x02, 0x00, 
+		0x00, 0x00, 0x31, 0xC0, 
+		0xC3
+	});
+}
+
+void HM3Game::fixEnableCheats()
+{
+	DWORD toNop = 0x00448312;
+	DWORD toFix = 0x00448316;
+
+	HM3Function::overrideInstruction(HM3_PROCESS_NAME, toNop, { 0x90, 0x90, 0x90, 0x90 });
+	HM3Function::overrideInstruction(HM3_PROCESS_NAME, toFix, { 0xC6, 0x05, 0x89, 0xCA, 0x8A, 0x00, 0x01 });
+	HM3_DEBUG(" + Enable cheats menu\n");
+}
+
+
+
 void HM3Game::OnKeyRelease(uint32_t keyCode)
 {
+	if (keyCode == VK_F4)
+	{
+		printActorsPoolInfos();
+	}
+
 	if (keyCode == VK_F5)
 	{
 		const bool newGodModeValue = !m_currentPlayer->isDoesAcceptDamage();
-		HM3_DEBUG("God mode: %s\n", (newGodModeValue ? "ON": "OFF"));
+		HM3_DEBUG("God mode: %s\n", (newGodModeValue ? "ON" : "OFF"));
 		m_currentPlayer->setDoesAcceptDamage(newGodModeValue);
 	}
-	if (keyCode == VK_F9)	// Debug color (remove in future)
-	{
-		glacier::hm3::DebugColorReference(0, RGB(1, 1, 1), GetModuleHandle(0));
-	}
+
 	if (keyCode == VK_F6)
 	{
-		auto session = GetGameDataInstancePtr();
-		if (!session)
-		{
-			HM3_DEBUG("No active game session!\n");
-			return;
-		}
+		HM3_DEBUG(" [ current scene is %s | engine db at 0x%X | render instance at 0x%X ]\n", GetSystemInterface()->m_currentScene, GetSystemInterface()->m_engineDataBase, GetSystemInterface()->m_renderer);
+	}
 
-		HM3_DEBUG(" *** COMMON INFO ***\n");
-		HM3_DEBUG("Save name      : '%s'\n", session->m_ProfileName);
-		HM3_DEBUG("Player money   : %d\n", session->m_PlayerMoney);
-		HM3_DEBUG(" *** GAMEPLAY CAMERA: ***\n");
-		if (session->m_Camera)
-		{
-			HM3_DEBUG("Camera Z scale : %f\n", session->m_Camera->m_ZCamOffset);
-			session->m_Camera->m_ZCamOffset = 0.1f;
-		}
-		else
-		{
-			HM3_DEBUG("(No active camera!)\n");
-		}
+	if (keyCode == VK_F7)
+	{
+		ck::teleportPlayer();
+	}
+
+	if (keyCode == VK_F8)
+	{
+		ck::printTeleportPointsInCurrentLevel();
+	}
+
+	if (keyCode == VK_F9)
+	{
+		ck::setTeleportPointForAllTeleports(500.f, 500.f, 500.f);
 	}
 }
 
 void HM3Game::OnNewGameSession(ioi::hm3::ZHM3Hitman3_t gameSession)
 {
 	HM3_DEBUG("[HM3Game::OnNewGameSession] New session instance detected at 0x%.8X\n", gameSession);
+	printActorsPoolInfos();
+	/*HM3_DEBUG("[HM3Game::OnNewGameSession] Try to enable camera hack");
+	
+	auto gameDataPtr = GetGameDataInstancePtr();
+	auto cameraPtr = gameDataPtr->m_Camera;
+
+	HM3_DEBUG(
+		"MVP matrix : \n"
+		"| %.4f %.4f %.4f %.4f |\n"
+		"| %.4f %.4f %.4f %.4f |\n"
+		"| %.4f %.4f %.4f %.4f |\n"
+		"| %.4f %.4f %.4f %.4f |\n",
+		cameraPtr->MVP[ 0], cameraPtr->MVP[ 1], cameraPtr->MVP[ 2], cameraPtr->MVP[ 3],
+		cameraPtr->MVP[ 4], cameraPtr->MVP[ 5], cameraPtr->MVP[ 6], cameraPtr->MVP[ 7],
+		cameraPtr->MVP[ 8], cameraPtr->MVP[ 9], cameraPtr->MVP[10], cameraPtr->MVP[11],
+		cameraPtr->MVP[12], cameraPtr->MVP[13], cameraPtr->MVP[14], cameraPtr->MVP[15]
+	);*/
 }
 
 const HM3Player::Ptr& HM3Game::GetPlayer() const { return m_currentPlayer; }
@@ -238,54 +250,6 @@ void HM3Game::setupDoesPlayerAcceptDamage()
 		});
 }
 
-void HM3Game::setupDropItemAction()
-{
-	HM3Function::hookFunction<
-		void(__stdcall*)(DWORD),
-		11
-	>(
-		HM3_PROCESS_NAME,
-		"\x56\x8B\xF1\x8B\x4E\x0C\x8B\x01\xFF\x50\x0C",
-		"xxxxxxxxxxx",
-		(DWORD)ZHM3Action_OnDropItem,
-		{
-			x86_push_eax,
-			x86_push_esi
-		},
-		{
-			x86_pop_eax
-		});
-}
-
-void HM3Game::setupOverrideStartupGMSScriptPath()
-{
-	x86::X86NearJumpCommit_t customJump;
-	customJump.JMP_TO = x86::calculateOffset(
-		(DWORD)ZHM3_GetIniParameter_Trampoline, 
-		HM3Offsets::HM3ZIniParserOnGetValue, 
-		sizeof(customJump)
-	);
-
-	std::vector<uint8_t> pCommit(sizeof(customJump) + 0x03);	//Raw data; first 5 bytes - jmp, other 3 bytes - retn 4
-	memcpy(pCommit.data(), (void*)& customJump, sizeof(customJump));
-	*(pCommit.data() + sizeof(customJump) + 0x00) = 0xC2;		//RETN
-	*(pCommit.data() + sizeof(customJump) + 0x01) = 0x04;		//4
-	*(pCommit.data() + sizeof(customJump) + 0x02) = 0x00;		//
-
-	HM3Function::overrideInstruction(HM3_PROCESS_NAME, (DWORD)0x0042636F, pCommit);
-}
-
-void HM3Game::setupNoVideoMode()
-{
-	HM3Function::overrideInstruction(
-		HM3_PROCESS_NAME,
-		(DWORD)HM3Offsets::HM3ZBinkVideo_OpenFromFile_PostCheck,
-		{
-			x86_nop, //remove JNZ instruction
-			x86_nop
-		});
-}
-
 void HM3Game::setupHookToNewSessionInstanceCreator()
 {
 	HM3Function::moveInstructions<4>(
@@ -313,7 +277,53 @@ void HM3Game::setupHookToNewSessionInstanceCreator()
 		});														//Prepare our hook function
 }
 
-ioi::hm3::ZHM3GameData* HM3Game::GetGameDataInstancePtr() const
+void HM3Game::setupHookZGEOMObjectConstructor()
+{
+	HM3Function::hookFunction<void(__stdcall*)(DWORD), 6>(HM3_PROCESS_NAME, (DWORD)HM3Offsets::ZGEOM_Constructor, (DWORD)ZGEOM_Ctor_CALLBACK, {
+		// pre code
+		// pushad
+		// pushfd
+		// push ecx
+		0x60, 0x9C,
+		0x51
+		}, {
+
+			// post code
+			// popfd
+			// popad
+			//0x83, 0xC4, 0x04,
+			0x9D, 0x61
+		});
+}
+
+void HM3Game::setupHookZPlayerConstructor()
+{
+	HM3Function::hookFunction<void(__stdcall*)(DWORD), 13>(
+		HM3_PROCESS_NAME, 
+		(DWORD)HM3Offsets::ZPlayer_Constructor, 
+		(DWORD)ZPlayer_Constructor, 
+		{
+			// pre code
+			// pushad
+			// pushfd
+			// push ecx
+			0x60, 0x9C,
+			0x51
+		}, {
+
+			// post code
+			// popfd
+			// popad
+			0x9D, 0x61
+		});
+}
+
+ioi::hm3::ZHM3GameData* HM3Game::GetGameDataInstancePtr()
 {
 	return ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
+}
+
+ioi::hm3::ZSysInterfaceWintel* HM3Game::GetSystemInterface()
+{
+	return ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
 }

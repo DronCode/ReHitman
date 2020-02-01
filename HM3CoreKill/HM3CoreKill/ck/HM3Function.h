@@ -4,13 +4,14 @@
 
 #include <string>
 #include <vector>
+#include <type_traits>
 #include <unordered_map>
 
 #include <ck/HM3ProcessCache.h>
 
-#include <x86/X86Arch.h>
-#include <x86/X86MemTools.h>
-#include <x86/X86MemAccessEngine.h>
+#include <utils/X86Arch.h>
+#include <utils/X86MemTools.h>
+#include <utils/X86MemAccessEngine.h>
 /*
 									   ________  __    __  ________         ______   _______   ________
 									  /        |/  |  /  |/        |       /      \ /       \ /        |
@@ -335,5 +336,96 @@ public:
 			instance, 
 			newAddr, 
 			originalFuncAddr);
+	}
+
+	static void swapInstructions(const std::string& process, DWORD first, DWORD second, const DWORD count)
+	{
+		ProcessHandleCacheController::ProcessCacheRow cacheRow = ProcessHandleCacheController::getProcessHandle(process);
+		HANDLE pHandle = cacheRow.handle;
+		HM3_ASSERT(pHandle != 0, "Unable to locate required process!");
+
+		uint8_t* buff0 = (uint8_t*)calloc(1, sizeof(uint8_t) * count);
+		uint8_t* buff1 = (uint8_t*)calloc(1, sizeof(uint8_t) * count);
+
+		DWORD firstReady, secondReady;
+
+		ReadProcessMemory(pHandle, (LPVOID)first, (LPVOID)buff0, count, &firstReady);
+		HM3_ASSERT(firstReady == count, "Not all bytes ready to swap [B0]");
+
+		ReadProcessMemory(pHandle, (LPVOID)second, (LPVOID)buff1, count, &secondReady);
+		HM3_ASSERT(secondReady == count, "Not all bytes ready to swap [B1]");
+
+		WriteProcessMemory(pHandle, (LPVOID)first, (LPCVOID)buff1, count, &firstReady);
+		HM3_ASSERT(firstReady == count, "Not all bytes written [B0]");
+
+		WriteProcessMemory(pHandle, (LPVOID)second, (LPCVOID)buff0, count, &secondReady);
+		HM3_ASSERT(secondReady == count, "Not all bytes written [B1]");
+	}
+};
+
+template <typename TClass>
+struct HM3MemberFunction
+{
+	static void pureCall(TClass* instance, std::intptr_t index)
+	{
+		__asm {
+			pushad
+			pushfd
+			mov ecx, instance	//Place pointer to this
+		}
+
+		const std::intptr_t funcPtr = *(*((std::intptr_t**)instance) + index);	//extract pointer to function from vftable
+		HM3_DEBUG("HM3MemberFunction<TClass>::pureCall| funcPtr at 0x%.8X\n", funcPtr);
+		
+		__asm call funcPtr	//call the function (args not presented)
+
+		__asm {
+			popfd
+			popad
+		}
+	}
+
+	template <typename TArg0>
+	static void pureCall1(TClass* instance, std::intptr_t index, TArg0 arg0)
+	{
+		__asm {
+			pushad
+			pushfd
+			mov ecx, instance	//Place pointer to this
+
+			push arg0
+		}
+
+		const std::intptr_t funcPtr = *(*((std::intptr_t**)instance) + index);	//extract pointer to function from vftable
+
+		__asm {
+			call funcPtr
+			popfd
+			popad
+		}
+	}
+
+	template <typename TRet>
+	static TRet callGetter(TClass* instance, std::intptr_t index)
+	{
+		std::intptr_t result;
+
+		__asm {
+			pushad
+			pushfd
+			mov ecx, instance	//Place pointer to this
+		}
+
+		const std::intptr_t funcPtr = *(*((std::intptr_t * *)instance) + index);	//extract pointer to function from vftable
+
+		__asm {
+			call funcPtr
+			mov result, eax
+
+			popfd
+			popad
+		}
+
+		return (TRet)result;
 	}
 };

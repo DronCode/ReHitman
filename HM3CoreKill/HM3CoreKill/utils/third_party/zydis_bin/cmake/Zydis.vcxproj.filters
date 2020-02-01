@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\src\MetaInfo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\src\Mnemonic.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\src\Register.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\src\SharedData.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\src\String.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\src\Utils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\src\Zydis.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\src\Decoder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\src\DecoderData.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\src\Formatter.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\src\FormatterBuffer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\src\FormatterATT.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\src\FormatterBase.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\src\FormatterIntel.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\MetaInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\Mnemonic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\Register.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\SharedTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\ShortString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\Status.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\Zydis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\Internal\SharedData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\Internal\String.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\Decoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\DecoderTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\Internal\DecoderData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\Formatter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\FormatterBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\Internal\FormatterATT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\Internal\FormatterBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\include\Zydis\Internal\FormatterIntel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{303DFE92-31D3-33B7-9C72-FC07F05D55D2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{26C70D4B-3365-3CC2-BF10-037A8B5D6642}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

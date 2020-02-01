@@ -7,6 +7,8 @@
 
 #include <sdk/ZHM3Hitman3.h>
 #include <sdk/ZHM3GameData.h>
+#include <sdk/ZSysInterfaceWintel.h>
+#include <sdk/ZEngineDatabase.h>
 
 typedef void* ZHM3Hitman3_t;	///For now this is unknown type for me (it's too big class)
 
@@ -20,8 +22,6 @@ public:
 	void Initialise();
 	void Run();
 	void DestroyHack();
-	void CompleteCurrentLevel();
-	bool HasAnyUnCompletedTargets() const;
 
 	// Events
 	void OnKeyPress(uint32_t keyCode);
@@ -34,12 +34,15 @@ public:
 private:
 	void setupInputWatcher();
 	void setupDoesPlayerAcceptDamage();
-	void setupDropItemAction();
-	void setupOverrideStartupGMSScriptPath();
-	void setupNoVideoMode();
 	void setupHookToNewSessionInstanceCreator();
-private:
-	ioi::hm3::ZHM3GameData* GetGameDataInstancePtr() const;
+	void setupHookZGEOMObjectConstructor();
+	void setupHookZPlayerConstructor();
+	void printActorsPoolInfos();
+	void hackActorsForAllDead();
+	void fixEnableCheats();
+public:
+	static ioi::hm3::ZHM3GameData* GetGameDataInstancePtr();
+	static ioi::hm3::ZSysInterfaceWintel* GetSystemInterface();
 private:
 	bool m_isHackActive = false;
 	HM3Player::Ptr m_currentPlayer;

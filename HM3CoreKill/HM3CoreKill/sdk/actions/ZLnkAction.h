@@ -160,32 +160,6 @@ namespace hm3 {
 		virtual bool Function_12();								/// sub_69D5C0
 		virtual int Function_13(int, int);						/// sub_50E400
 	};
-
-	class ZHitmanAction : public ZLnkAction
-	{
-	public:
-		virtual ZLnkAction* Function_0(bool isFirstInstance);	/// sub_6FDBF0    +
-		virtual int Function_1();								/// sub_69D5C0    +
-		virtual bool ApplyAction();								/// sub_580400    +
-		virtual bool Function_3();								/// sub_580400    +
-		virtual bool Function_4();								/// sub_580400    +
-		virtual void Function_5(void*);							/// jpeg_mem_term +
-		virtual void Function_6();								/// nullsub_4     +
-		virtual const char* GetActionName();					/// nullsub_4     +
-		virtual void Function_8();								/// sub_6063B0    +
-		virtual bool Function_9();								/// sub_580400    +
-		virtual void* Function_10();							/// sub_6F7FC0    +
-		virtual bool Function_11(int, int);						/// sub_7113E0    +
-		virtual bool Function_12();								/// sub_69D5C0    +
-		virtual int Function_13(int, int);						/// sub_50E400	  +
-
-		// OWN
-		virtual void Function_14();								/// sub_60E190
-		virtual void Function_15();								/// sub_60E160
-		virtual void Function_16();								/// sub_60E130
-		virtual void Function_17();								/// sub_6063C0
-	};
-
 	/*
 HITMAN BLOOD MONEY ACTIONS LIST (TODO)
 

@@ -133,7 +133,8 @@ void HM3Game::OnKeyRelease(uint32_t keyCode)
 {
 	if (keyCode == VK_F3)
 	{
-		ck::completeLevel();
+		//GetGameDataInstancePtr()->m_LevelControl->failMissionWithMessage("AllLevels/Interface/MissionFailed/HitmanDied");
+		GetGameDataInstancePtr()->m_LevelControl->failMissionWithMessage("/AllLevels/Map");
 	}
 
 	if (keyCode == VK_F4)
@@ -172,6 +173,7 @@ void HM3Game::OnKeyRelease(uint32_t keyCode)
 void HM3Game::OnNewGameSession(ioi::hm3::ZHM3Hitman3_t gameSession)
 {
 	HM3_DEBUG("[HM3Game::OnNewGameSession] New session instance detected at 0x%.8X\n", gameSession);
+
 	printActorsPoolInfos();
 	/*HM3_DEBUG("[HM3Game::OnNewGameSession] Try to enable camera hack");
 	

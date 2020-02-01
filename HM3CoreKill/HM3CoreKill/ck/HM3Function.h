@@ -48,6 +48,30 @@
 										+-------------------< JUMP + 5 >----------------+
 		*/
 
+namespace vtable_hook {
+	int vtablehook_unprotect(void* region) {
+#ifdef WIN32
+		MEMORY_BASIC_INFORMATION mbi;
+		VirtualQuery((LPCVOID)region, &mbi, sizeof(mbi));
+		VirtualProtect(mbi.BaseAddress, mbi.RegionSize, PAGE_READWRITE, &mbi.Protect);
+		return mbi.Protect;
+#elif __linux__
+		mprotect((void*)((intptr_t)region & vtablehook_pagemask), vtablehook_pagesize, PROT_READ | PROT_WRITE | PROT_EXEC);
+		return PROT_READ | PROT_EXEC;
+#endif
+	}
+
+	void vtablehook_protect(void* region, int protection) {
+#ifdef WIN32
+		MEMORY_BASIC_INFORMATION mbi;
+		VirtualQuery((LPCVOID)region, &mbi, sizeof(mbi));
+		VirtualProtect(mbi.BaseAddress, mbi.RegionSize, protection, &mbi.Protect);
+#elif __linux__
+		mprotect((void*)((intptr_t)region & vtablehook_pagemask), vtablehook_pagesize, protection);
+#endif
+	}
+}
+
 class HM3Function
 {
 	// for comparing a region in memory, needed in finding a signature
@@ -304,38 +328,17 @@ public:
 		HM3_ASSERT(writtenBytes == chunkSize, "Count of written to new place bytes must be equal to count of required bytes");
 	}
 
-	static void hookVFTable(const std::string& process, DWORD instance, DWORD index, DWORD newAddr)
+	static void hookVFTable(DWORD instance, DWORD index, DWORD newAddr)
 	{
-		ProcessHandleCacheController::ProcessCacheRow cacheRow = ProcessHandleCacheController::getProcessHandle(process);
-		HANDLE pHandle = cacheRow.handle;
-		HM3_ASSERT(pHandle != 0, "Unable to locate required process!");
-		DWORD vftbl;
-		DWORD readyVFTBLBYTES;
-		DWORD readyFuncAddrBytes;
-		DWORD oldProtection;
-		DWORD originalFuncAddr;
-		DWORD writtenBytesOfAddr;
+		std::intptr_t vftable_ptr = *reinterpret_cast<std::intptr_t*>(instance);
+		std::intptr_t entity = vftable_ptr + sizeof(std::intptr_t) * index;
+		std::intptr_t original_func = *reinterpret_cast<std::intptr_t*>(entity);
 
-		ReadProcessMemory(pHandle, (LPCVOID)instance, (LPVOID)& vftbl, sizeof(DWORD), &readyVFTBLBYTES);
-		HM3_ASSERT(readyVFTBLBYTES == sizeof(DWORD), "Unable to read vftable");
+		int original_protection = vtable_hook::vtablehook_unprotect((void*)entity);
+		*reinterpret_cast<std::intptr_t*>(entity) = static_cast<std::intptr_t>(newAddr);
+		vtable_hook::vtablehook_protect((void*)entity, original_protection);
 
-		DWORD hookAt = vftbl + index * sizeof(DWORD);
-		VirtualProtect((LPVOID)hookAt, sizeof(DWORD), PAGE_READWRITE, &oldProtection);
-
-		ReadProcessMemory(pHandle, (LPCVOID)hookAt, (LPVOID)& originalFuncAddr, sizeof(DWORD), &readyFuncAddrBytes);
-		HM3_ASSERT(readyFuncAddrBytes == sizeof(DWORD), "Unable to read original address");
-
-		WriteProcessMemory(pHandle, (LPVOID)hookAt, (LPCVOID)& newAddr, sizeof(DWORD), &writtenBytesOfAddr);
-		HM3_ASSERT(writtenBytesOfAddr == sizeof(DWORD), "Unable to replace function addr");
-
-		VirtualProtect((LPVOID)hookAt, sizeof(DWORD), oldProtection, nullptr);
-
-		HM3_DEBUG(
-			"hookVFTable| Replace func #%d for instance 0x%.8X with new func addr 0x%.8X (old is 0x%.8X)\n", 
-			index, 
-			instance, 
-			newAddr, 
-			originalFuncAddr);
+		HM3_DEBUG(" Override function #%.3d of instance 0x%.8X replace member at 0x%.8X by 0x%.8X\n", index, instance, entity, newAddr);
 	}
 
 	static void swapInstructions(const std::string& process, DWORD first, DWORD second, const DWORD count)

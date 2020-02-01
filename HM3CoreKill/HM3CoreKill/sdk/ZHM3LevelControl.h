@@ -71,10 +71,10 @@ namespace ioi { namespace hm3 {
 		virtual void Function57();
 		virtual void Function58();
 		virtual void Function59();
-		virtual void Function60();
+		virtual void failMissionWithMessage(const char* dialogName); //#60
 		virtual void Function61();
 		virtual void Function62();
-		virtual void completeLevelRequest();
+		virtual void completeLevelRequest(); //63
 		virtual void Function64();
 		virtual void Function65();
 		virtual void Function66();

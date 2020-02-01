@@ -72,8 +72,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.dll</TargetExt>
     <OutDir>Z:\Reverse\Games</OutDir>
-    <IncludePath>x86/zydis/include;.;$(IncludePath)</IncludePath>
-    <LibraryPath>x86/zydis/lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>utils/zydis/include;.;$(IncludePath)</IncludePath>
+    <LibraryPath>utils/zydis/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -173,11 +173,11 @@
     <ClInclude Include="sdk\ZSysFile.h" />
     <ClInclude Include="sdk\ZSysInterfaceWintel.h" />
     <ClInclude Include="sdk\ZSysMem.h" />
-    <ClInclude Include="x86\X86Arch.h" />
-    <ClInclude Include="x86\X86Backend.h" />
-    <ClInclude Include="x86\X86MemAccessEngine.h" />
-    <ClInclude Include="x86\X86MemTools.h" />
-    <ClInclude Include="x86\X86Snippets.h" />
+    <ClInclude Include="utils\X86Arch.h" />
+    <ClInclude Include="utils\X86Backend.h" />
+    <ClInclude Include="utils\X86MemAccessEngine.h" />
+    <ClInclude Include="utils\X86MemTools.h" />
+    <ClInclude Include="utils\X86Snippets.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\Features.cpp" />
@@ -191,9 +191,9 @@
     <ClCompile Include="ck\HM3ProcessCache.cpp" />
     <ClCompile Include="DllEntry.cpp" />
     <ClCompile Include="sdk\ZEngineDatabase.cpp" />
-    <ClCompile Include="x86\X86Backend.cpp" />
-    <ClCompile Include="x86\X86MemAccessEngine.cpp" />
-    <ClCompile Include="x86\X86MemTools.cpp" />
+    <ClCompile Include="utils\X86Backend.cpp" />
+    <ClCompile Include="utils\X86MemAccessEngine.cpp" />
+    <ClCompile Include="utils\X86MemTools.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

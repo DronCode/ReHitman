@@ -4,7 +4,7 @@
 #include <ck/HM3MemoryProvider.h>
 #include <ck/HM3CrashHandler.h>
 
-#include <x86/X86MemAccessEngine.h>
+#include <utils/X86MemAccessEngine.h>
 
 DWORD WINAPI HM3Thread(VOID*)
 { 

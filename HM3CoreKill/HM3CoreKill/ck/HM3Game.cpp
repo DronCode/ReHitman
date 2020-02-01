@@ -6,7 +6,7 @@
 #include <ck/HM3Offsets.h>
 #include <ck/HM3Hooks.h>
 
-#include <x86/X86Snippets.h>
+#include <utils/X86Snippets.h>
 
 #include <sdk/HM3DebugAPI.h>
 #include <sdk/ZGameGlobals.h>

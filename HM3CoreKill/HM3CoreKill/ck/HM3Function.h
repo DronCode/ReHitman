@@ -9,9 +9,9 @@
 
 #include <ck/HM3ProcessCache.h>
 
-#include <x86/X86Arch.h>
-#include <x86/X86MemTools.h>
-#include <x86/X86MemAccessEngine.h>
+#include <utils/X86Arch.h>
+#include <utils/X86MemTools.h>
+#include <utils/X86MemAccessEngine.h>
 /*
 									   ________  __    __  ________         ______   _______   ________
 									  /        |/  |  /  |/        |       /      \ /       \ /        |

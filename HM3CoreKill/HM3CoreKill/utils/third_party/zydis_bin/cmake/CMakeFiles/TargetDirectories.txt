@@ -1,0 +1,14 @@
+C:/ReverseIt/HBM/Reversing/software/HBM_CoreKill/HM3CoreKill/HM3CoreKill/x86/third_party/zydis_bin/cmake/CMakeFiles/INSTALL.dir
+C:/ReverseIt/HBM/Reversing/software/HBM_CoreKill/HM3CoreKill/HM3CoreKill/x86/third_party/zydis_bin/cmake/CMakeFiles/Zydis.dir
+C:/ReverseIt/HBM/Reversing/software/HBM_CoreKill/HM3CoreKill/HM3CoreKill/x86/third_party/zydis_bin/cmake/CMakeFiles/Formatter01.dir
+C:/ReverseIt/HBM/Reversing/software/HBM_CoreKill/HM3CoreKill/HM3CoreKill/x86/third_party/zydis_bin/cmake/CMakeFiles/Formatter02.dir
+C:/ReverseIt/HBM/Reversing/software/HBM_CoreKill/HM3CoreKill/HM3CoreKill/x86/third_party/zydis_bin/cmake/CMakeFiles/ZydisPerfTest.dir
+C:/ReverseIt/HBM/Reversing/software/HBM_CoreKill/HM3CoreKill/HM3CoreKill/x86/third_party/zydis_bin/cmake/CMakeFiles/ZydisInfo.dir
+C:/ReverseIt/HBM/Reversing/software/HBM_CoreKill/HM3CoreKill/HM3CoreKill/x86/third_party/zydis_bin/cmake/CMakeFiles/Formatter03.dir
+C:/ReverseIt/HBM/Reversing/software/HBM_CoreKill/HM3CoreKill/HM3CoreKill/x86/third_party/zydis_bin/cmake/CMakeFiles/ZydisDisasm.dir
+C:/ReverseIt/HBM/Reversing/software/HBM_CoreKill/HM3CoreKill/HM3CoreKill/x86/third_party/zydis_bin/cmake/CMakeFiles/ZydisFuzzIn.dir
+C:/ReverseIt/HBM/Reversing/software/HBM_CoreKill/HM3CoreKill/HM3CoreKill/x86/third_party/zydis_bin/cmake/CMakeFiles/ALL_BUILD.dir
+C:/ReverseIt/HBM/Reversing/software/HBM_CoreKill/HM3CoreKill/HM3CoreKill/x86/third_party/zydis_bin/cmake/CMakeFiles/ZERO_CHECK.dir
+C:/ReverseIt/HBM/Reversing/software/HBM_CoreKill/HM3CoreKill/HM3CoreKill/x86/third_party/zydis_bin/cmake/dependencies/zycore/CMakeFiles/Zycore.dir
+C:/ReverseIt/HBM/Reversing/software/HBM_CoreKill/HM3CoreKill/HM3CoreKill/x86/third_party/zydis_bin/cmake/dependencies/zycore/CMakeFiles/INSTALL.dir
+C:/ReverseIt/HBM/Reversing/software/HBM_CoreKill/HM3CoreKill/HM3CoreKill/x86/third_party/zydis_bin/cmake/dependencies/zycore/CMakeFiles/ALL_BUILD.dir

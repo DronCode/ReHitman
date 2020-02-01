@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\tools\ZydisInfo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\ReverseIt\HBM\Reversing\software\HBM_CoreKill\HM3CoreKill\HM3CoreKill\x86\third_party\zydis\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{26C70D4B-3365-3CC2-BF10-037A8B5D6642}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

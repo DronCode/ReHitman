@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="x86">
-      <UniqueIdentifier>{3b43f60a-4677-4ed3-90de-5b6611177644}</UniqueIdentifier>
-    </Filter>
     <Filter Include="sdk">
       <UniqueIdentifier>{fe7787a7-b804-41d3-be48-199e3e976b58}</UniqueIdentifier>
     </Filter>
@@ -22,11 +19,11 @@
     <Filter Include="sdk\scripting">
       <UniqueIdentifier>{0f4aaaf4-19db-4d0f-9d9a-e5c29c8848bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{3b43f60a-4677-4ed3-90de-5b6611177644}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="x86\X86Arch.h">
-      <Filter>x86</Filter>
-    </ClInclude>
     <ClInclude Include="ck\HM3DebugConsole.h">
       <Filter>ck</Filter>
     </ClInclude>
@@ -48,23 +45,11 @@
     <ClInclude Include="ck\HM3Types.h">
       <Filter>ck</Filter>
     </ClInclude>
-    <ClInclude Include="x86\X86MemTools.h">
-      <Filter>x86</Filter>
-    </ClInclude>
-    <ClInclude Include="x86\X86Backend.h">
-      <Filter>x86</Filter>
-    </ClInclude>
-    <ClInclude Include="x86\X86MemAccessEngine.h">
-      <Filter>x86</Filter>
-    </ClInclude>
     <ClInclude Include="ck\HM3MemoryProvider.h">
       <Filter>ck</Filter>
     </ClInclude>
     <ClInclude Include="ck\HM3ProcessCache.h">
       <Filter>ck</Filter>
-    </ClInclude>
-    <ClInclude Include="x86\X86Snippets.h">
-      <Filter>x86</Filter>
     </ClInclude>
     <ClInclude Include="ck\HM3CrashHandler.h">
       <Filter>ck</Filter>
@@ -165,6 +150,21 @@
     <ClInclude Include="sdk\ZOSD.h">
       <Filter>sdk</Filter>
     </ClInclude>
+    <ClInclude Include="utils\X86Arch.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\X86MemAccessEngine.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\X86MemTools.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\X86Snippets.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\X86Backend.h">
+      <Filter>utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">
@@ -178,15 +178,6 @@
     </ClCompile>
     <ClCompile Include="ck\HM3Player.cpp">
       <Filter>ck</Filter>
-    </ClCompile>
-    <ClCompile Include="x86\X86MemTools.cpp">
-      <Filter>x86</Filter>
-    </ClCompile>
-    <ClCompile Include="x86\X86Backend.cpp">
-      <Filter>x86</Filter>
-    </ClCompile>
-    <ClCompile Include="x86\X86MemAccessEngine.cpp">
-      <Filter>x86</Filter>
     </ClCompile>
     <ClCompile Include="ck\HM3MemoryProvider.cpp">
       <Filter>ck</Filter>
@@ -206,6 +197,15 @@
     </ClCompile>
     <ClCompile Include="ck\Features.cpp">
       <Filter>ck</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\X86MemAccessEngine.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\X86MemTools.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\X86Backend.cpp">
+      <Filter>utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

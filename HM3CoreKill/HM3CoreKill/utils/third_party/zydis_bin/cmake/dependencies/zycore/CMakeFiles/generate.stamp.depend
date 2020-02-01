@@ -1,0 +1,7 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-3.14/Modules/CheckCCompilerFlag.cmake
+C:/Program Files/CMake/share/cmake-3.14/Modules/CheckCXXCompilerFlag.cmake
+C:/Program Files/CMake/share/cmake-3.14/Modules/GNUInstallDirs.cmake
+C:/Program Files/CMake/share/cmake-3.14/Modules/GenerateExportHeader.cmake
+C:/Program Files/CMake/share/cmake-3.14/Modules/exportheader.cmake.in
+C:/ReverseIt/HBM/Reversing/software/HBM_CoreKill/HM3CoreKill/HM3CoreKill/x86/third_party/zydis/dependencies/zycore/CMakeLists.txt

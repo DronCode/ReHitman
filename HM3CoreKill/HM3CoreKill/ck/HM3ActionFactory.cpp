@@ -1,7 +1,7 @@
 #include <ck/HM3ActionFactory.h>
 
 #include <sdk/ZGameFunctions.h>
-#include <x86/X86Snippets.h>
+#include <utils/X86Snippets.h>
 
 ioi::hm3::ZLnkAction* HM3ActionFactory::createActionByType(ioi::hm3::ZHitman3* hitman, ioi::hm3::ZLnkActionType actionType)
 {

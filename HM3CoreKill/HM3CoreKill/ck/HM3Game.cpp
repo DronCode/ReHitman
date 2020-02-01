@@ -44,33 +44,6 @@ void HM3Game::Initialise()
 		"\n"
 		"Core Kill\n");
 
-	{
-		DWORD addr = 0x0065B559;
-		//8
-		HM3Function::hookFunction<void(__stdcall*)(DWORD), 8>(
-			HM3_PROCESS_NAME, 
-			addr, 
-			(DWORD)OnTeleportsListLoaded_Callback, 
-		{
-			// pushad
-			// pushfd
-			// mov eax, [esp+4]
-			// push eax
-			// ... call
-			0x60, 
-			0x9C, 
-			//0x8B, 0x44, 0x24, 0x00,
-			//0x8B, 0x44, 0x24, 0x04, 
-			0x8B, 0x44, 0x24, 0x08,
-			0x50
-		}, {
-			// popfd
-			// popad
-			// ... jmp back ...
-			0x9D, 0x61
-		});
-	}
-
 	fixEnableCheats();
 	setupInputWatcher();	///Make bugs, DO NOT USE IT
 	setupDoesPlayerAcceptDamage();
@@ -108,7 +81,16 @@ void HM3Game::printActorsPoolInfos()
 
 	for (int actorIndex = 0; actorIndex < gameData->m_ActorsInPoolCount; actorIndex++)
 	{
-		HM3_DEBUG("Actor[%.4d] at 0x%.8X | _isPlayer %s\n", actorIndex, gameData->m_ActorsPool[actorIndex], "NO");
+		auto location = gameData->m_ActorsPool[actorIndex]->ActorInformation->location;
+		HM3_DEBUG("Actor[%.4d] at 0x%.8X | name %.50s location at 0x%.8X ; position Vec3 { %.8f; %.8f; %.8f } ; is member of group 0x%.8X\n", 
+			actorIndex, 
+			gameData->m_ActorsPool[actorIndex], 
+			location->actorName, 
+			location,
+			location->position.x, 
+			location->position.y, 
+			location->position.z, 
+			location->group);
 	}
 }
 
@@ -151,6 +133,11 @@ void HM3Game::fixEnableCheats()
 
 void HM3Game::OnKeyRelease(uint32_t keyCode)
 {
+	if (keyCode == VK_F4)
+	{
+		printActorsPoolInfos();
+	}
+
 	if (keyCode == VK_F5)
 	{
 		const bool newGodModeValue = !m_currentPlayer->isDoesAcceptDamage();
@@ -166,6 +153,16 @@ void HM3Game::OnKeyRelease(uint32_t keyCode)
 	if (keyCode == VK_F7)
 	{
 		ck::teleportPlayer();
+	}
+
+	if (keyCode == VK_F8)
+	{
+		ck::printTeleportPointsInCurrentLevel();
+	}
+
+	if (keyCode == VK_F9)
+	{
+		ck::setTeleportPointForAllTeleports(500.f, 500.f, 500.f);
 	}
 }
 

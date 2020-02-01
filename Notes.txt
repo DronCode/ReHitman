@@ -25,3 +25,36 @@ sub_4E4300 - set camera position (__thiscall)
 
 Upgrades 
 int __thiscall sub_67F940(int (__thiscall ***this)(_DWORD, int), int a2, int a3)
+
+--- 2020 ---
+
+class ZHitman3 usable offsets:
+(all offsets in HEX format!)
++ 744 - allowed actions mask (bit #8 - does player accepts collisions; bit #16 - does player accepts input from keyboard; other bits not used)
++ 700 - player position X (overrides by 00528FA0 ; char __thiscall setPosition(int *pUser); will reverse it later)
++ 704 - player position Y (overrides by 00528FA0 ; char __thiscall setPosition(int *pUser); will reverse it later)
++ 708 - player position Z (overrides by 00528FA0 ; char __thiscall setPosition(int *pUser); will reverse it later)
++ 3D0 - does player accepts any updates (boolean value, should use as int32_t value)
+
+class ZLIST for teleport entities
++ 0 - vftable
++ 4 - unknown
++ 8 - unknown
++ C - const 0x50000 (may be used for memcheck by custom ZMemAllocator)
++ 10 - REFTAB
++ 14 from this point and later - values (value by value, looks like static array of items, or inline memory allocation; don't know how it made for now)
+
+Each value contains
++ 0 - vftbl ZSTDOBJ
++ 4 - pointer to value
++ 8 - always zero
++ C - 0x50000 another const for memcheck
+
+REFTAB (for case with teleports, not tested with other entities)
++ 0 - vftbl
++ 4 - ?
++ 8 - ?
++ C - ?
++ 10 - ?
++ 14 - total count of sub elements (for ZLIST of teleports - total count of teleports in list)
++ 18 - ? unknown integer value, often less by 1 of +14 offset value; For the first time it seemed that this is the number of weak references to object, but for now, I guess that REFTAB is not shared_ptr. Also it could be used for garbage collector or other memory management stuff

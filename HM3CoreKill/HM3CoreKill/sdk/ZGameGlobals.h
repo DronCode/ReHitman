@@ -28,5 +28,6 @@ namespace hm3 {
 	static const std::uintptr_t MissionDLLFunc3  = 0x008A89D4;	//DLL SECTION : Scripts
 	static const std::uintptr_t IsScriptsLoaded  = 0x008ACA2C;	//BOOL FLAG
 	static const std::uintptr_t EventBuffer		 = 0x008BA0B8;	//Based on ZEventBuffer : ZSerializable : ZSerializableBase
+	static const std::uintptr_t FileSystem		 = 0x0082081C;  //Based on ZSysFileWintel : ZSysFile
 	static const std::uintptr_t F = 0x009728DC;
 }}

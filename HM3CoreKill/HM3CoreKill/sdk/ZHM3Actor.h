@@ -5,6 +5,38 @@
 namespace ioi {
 namespace hm3 {
 
+	class ZHM3Actor;
+
+	class ActorLocation
+	{
+	public:
+		char pad_0000[0x24]; //0x0000
+		Vector3 position; //0x0024
+		char pad_0030[0x30]; //0x0030
+		uint32_t group; //0x0060 [ptr]
+		char pad_0064[8]; //0x0064
+		char* actorName; //0x006C
+		char pad_0070[16]; //0x0070
+	}; //Size: 0x0080
+
+	class ActorInfos
+	{
+	public:
+		char pad_0000[0x50]; //0x0000
+		ActorLocation* location; //0x0050
+		char pad_0054[12]; //0x0054
+		ZHM3Actor* actor; //0x0060
+		char pad_0064[8]; //0x0064
+		char* unkType; //0x006C
+		char pad_0070[80]; //0x0070
+		uint32_t equipment; //0x00C0
+		char pad_00C4[12]; //0x00C4
+		uint32_t group; //0x00D0 [ptr]
+		char pad_00D4[92]; //0x00D4
+		uint32_t unk_equ2; //0x0130
+		char pad_0134[12]; //0x0134
+	}; //Size: 0x0140
+
 	class ZHM3Actor
 	{
 	public:
@@ -142,27 +174,7 @@ namespace hm3 {
 		virtual void Function131(); //
 		virtual void Function132(); //
 
-		char pad_0x0004[0x14]; //0x0004
-		int32_t N000004F3; //0x0018 
-		char pad_0x001C[0x234]; //0x001C
-		std::intptr_t* N00000581; //0x0250 
-		char pad_0x0254[0x8]; //0x0254
-		int32_t m_I32_25C; //0x025C 
-		char pad_0x0260[0x1]; //0x0260
-		unsigned char m_BYTE_25D; //0x0261 
-		unsigned char m_BYTE_25E; //0x0262 
-		char pad_0x0263[0x4]; //0x0263
-		unsigned char m_BYTE_267; //0x0267 
-		unsigned char m_BYTE_268; //0x0268 
-		unsigned char m_BYTE_269; //0x0269 
-		unsigned char m_BYTE_26A; //0x026A 
-		char pad_0x026B[0x57]; //0x026B
-		int16_t m_I16_2C2; //0x02C2 
-		char pad_0x02C4[0x9]; //0x02C4
-		int32_t m_I32_2CD; //0x02CD 
-		char pad_0x02D1[0x225]; //0x02D1
-		unsigned char m_BYTE_4F6; //0x04F6 
-
-	}; //Size=0x04F7
+		ActorInfos* ActorInformation; //0x0004
+	}; //Size: 0x0008
 
 }}

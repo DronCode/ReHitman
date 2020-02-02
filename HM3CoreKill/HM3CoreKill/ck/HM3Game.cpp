@@ -131,11 +131,9 @@ void HM3Game::fixEnableCheats()
 
 void HM3Game::setupD3DDeviceCreationHook()
 {
-	const DWORD addr = 0x0049091C;
-
 	HM3Function::hookFunction<void(__stdcall*)(DWORD), 10>(
 		HM3_PROCESS_NAME, 
-		addr, 
+		HM3Offsets::ZDirect3DDevice_ConstructorFunc,
 		(DWORD)ZDirect3DDevice_OnDeviceReady,
 		// pre
 		{

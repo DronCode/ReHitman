@@ -197,13 +197,10 @@ std::uintptr_t HM3Game::GetCurrentLevelController() const
 	return reinterpret_cast<std::uintptr_t>(*((void**)(pGameData + HM3Offsets::ZHM3LevelControllerOffset)));
 }
 
-void HM3Game::setupInputWatcher()	//Slow, do not use that (crashes M13)
+void HM3Game::setupInputWatcher()
 {
-	//CONST WNDCLASSEXA *
-
-	DWORD addr = 0x00453E68;
-	HM3Function::overrideInstruction(HM3_PROCESS_NAME, addr, { x86_nop, x86_nop, x86_nop, x86_nop, x86_nop, x86_nop });
-	HM3Function::hookFunction<bool(__stdcall*)(const WNDCLASSEXA*), 6>(HM3_PROCESS_NAME, addr, (DWORD)RegisterClassExA_Hooked, {}, {});
+	HM3Function::overrideInstruction(HM3_PROCESS_NAME, HM3Offsets::ZHM3RegisterWindowClassExA_Func, { x86_nop, x86_nop, x86_nop, x86_nop, x86_nop, x86_nop });
+	HM3Function::hookFunction<bool(__stdcall*)(const WNDCLASSEXA*), 6>(HM3_PROCESS_NAME, HM3Offsets::ZHM3RegisterWindowClassExA_Func, (DWORD)RegisterClassExA_Hooked, {}, {});
 }
 
 void HM3Game::setupDoesPlayerAcceptDamage()

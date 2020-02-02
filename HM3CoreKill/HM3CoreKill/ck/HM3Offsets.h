@@ -35,6 +35,7 @@ namespace HM3Offsets
 	static const FuncAddr_t ZHM3LevelControl_SetObjectiveStatus_Func	 = 0x006AC8F0;
 	static const FuncAddr_t ZHM3LevelControl_HasObjectiveWithStatus_Func = 0x006AC540;
 	static const FuncAddr_t ZHM3LevelControl_DoesObjectiveCompleted_Func = 0x006AC560;
+	static const FuncAddr_t ZHM3RegisterWindowClassExA_Func				 = 0x00453E68;
 }
 
 namespace D3D9Offsets

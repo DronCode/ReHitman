@@ -19,14 +19,11 @@ namespace ck
 	void HM3InGameTools::initialize(HWND hwnd, IDirect3DDevice9* dxDevice)
 	{
 		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
-		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+		ImGuiIO& io = ImGui::GetIO();
+		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
 
-		// Setup Dear ImGui style
-		ImGui::StyleColorsClassic();
+		ImGui::StyleColorsLight();
 
-		// Setup Platform/Renderer bindings
 		ImGui_ImplWin32_Init(hwnd);
 		ImGui_ImplDX9_Init(dxDevice);
 
@@ -55,10 +52,6 @@ namespace ck
 		// Draw UI
 		ImGui::EndFrame();
 
-		DWORD orgZEnable; m_device->GetRenderState(D3DRS_ZENABLE, &orgZEnable);
-		DWORD orgAlphaBlendEnabled; m_device->GetRenderState(D3DRS_ALPHABLENDENABLE, &orgAlphaBlendEnabled);
-		DWORD orgScissorsTestEnabled; m_device->GetRenderState(D3DRS_SCISSORTESTENABLE, &orgScissorsTestEnabled);
-
 		m_device->SetRenderState(D3DRS_ZENABLE, false);
 		m_device->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 		m_device->SetRenderState(D3DRS_SCISSORTESTENABLE, false);
@@ -72,8 +65,13 @@ namespace ck
 		bool result = ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam);
 
 		if (msg == WM_KEYUP && static_cast<uint32_t>(wParam) == VK_F3)
-			m_isVisible = !m_isVisible;
+			toggleVisibility();
 
 		return result;
+	}
+
+	void HM3InGameTools::toggleVisibility()
+	{
+		m_isVisible = !m_isVisible;
 	}
 }

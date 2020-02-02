@@ -49,7 +49,7 @@
 		*/
 
 namespace vtable_hook {
-	int vtablehook_unprotect(void* region) {
+	static int vtablehook_unprotect(void* region) {
 #ifdef WIN32
 		MEMORY_BASIC_INFORMATION mbi;
 		VirtualQuery((LPCVOID)region, &mbi, sizeof(mbi));
@@ -61,7 +61,7 @@ namespace vtable_hook {
 #endif
 	}
 
-	void vtablehook_protect(void* region, int protection) {
+	static void vtablehook_protect(void* region, int protection) {
 #ifdef WIN32
 		MEMORY_BASIC_INFORMATION mbi;
 		VirtualQuery((LPCVOID)region, &mbi, sizeof(mbi));
@@ -328,7 +328,7 @@ public:
 		HM3_ASSERT(writtenBytes == chunkSize, "Count of written to new place bytes must be equal to count of required bytes");
 	}
 
-	static void hookVFTable(DWORD instance, DWORD index, DWORD newAddr)
+	static DWORD hookVFTable(DWORD instance, DWORD index, DWORD newAddr, bool doLog = true)
 	{
 		std::intptr_t vftable_ptr = *reinterpret_cast<std::intptr_t*>(instance);
 		std::intptr_t entity = vftable_ptr + sizeof(std::intptr_t) * index;
@@ -338,7 +338,10 @@ public:
 		*reinterpret_cast<std::intptr_t*>(entity) = static_cast<std::intptr_t>(newAddr);
 		vtable_hook::vtablehook_protect((void*)entity, original_protection);
 
-		HM3_DEBUG(" Override function #%.3d of instance 0x%.8X replace member at 0x%.8X by 0x%.8X\n", index, instance, entity, newAddr);
+		if (doLog)
+			HM3_DEBUG(" Override function #%.3d of instance 0x%.8X replace member at 0x%.8X by 0x%.8X\n", index, instance, original_func, newAddr);
+		
+		return static_cast<DWORD>(original_func);
 	}
 
 	static void swapInstructions(const std::string& process, DWORD first, DWORD second, const DWORD count)

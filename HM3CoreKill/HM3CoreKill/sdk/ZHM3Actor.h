@@ -1,40 +1,29 @@
 #pragma once
 
 #include <cstdint>
+#include <sdk/ZEntityLocator.h>
 
 namespace ioi {
 namespace hm3 {
 
 	class ZHM3Actor;
 
-	class ActorLocation
-	{
-	public:
-		char pad_0000[0x24]; //0x0000
-		Vector3 position; //0x0024
-		char pad_0030[0x30]; //0x0030
-		uint32_t group; //0x0060 [ptr]
-		char pad_0064[8]; //0x0064
-		char* actorName; //0x006C
-		char pad_0070[16]; //0x0070
-	}; //Size: 0x0080
-
 	class ActorInfos
 	{
 	public:
-		char pad_0000[0x50]; //0x0000
-		ActorLocation* location; //0x0050
-		char pad_0054[12]; //0x0054
-		ZHM3Actor* actor; //0x0060
-		char pad_0064[8]; //0x0064
-		char* unkType; //0x006C
-		char pad_0070[80]; //0x0070
-		uint32_t equipment; //0x00C0
-		char pad_00C4[12]; //0x00C4
-		uint32_t group; //0x00D0 [ptr]
-		char pad_00D4[92]; //0x00D4
-		uint32_t unk_equ2; //0x0130
-		char pad_0134[12]; //0x0134
+		char pad_0000[0x50];		//0x0000
+		ZEntityLocator* location;	//0x0050
+		char pad_0054[12];			//0x0054
+		ZHM3Actor* actor;			//0x0060
+		char pad_0064[8];			//0x0064
+		char* unkType;				//0x006C
+		char pad_0070[80];			//0x0070
+		uint32_t equipment;			//0x00C0 [ptr]
+		char pad_00C4[12];			//0x00C4
+		uint32_t group;				//0x00D0 [ptr]
+		char pad_00D4[92];			//0x00D4
+		uint32_t unk_equ2;			//0x0130 [ptr]
+		char pad_0134[12];			//0x0134
 	}; //Size: 0x0140
 
 	class ZHM3Actor

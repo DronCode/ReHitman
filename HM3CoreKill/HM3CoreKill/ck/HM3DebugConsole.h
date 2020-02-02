@@ -27,7 +27,9 @@ public:
 	HM3_DEBUG("\n");
 
 #define HM3_ASSERT(condition, message)	\
-	if ((!condition)) {					\
+	if (!(condition)) {					\
 		HM3_DEBUG("%s\n", message);		\
 		assert(false);					\
 	}
+
+#define HM3_UNUSED(something) (void)something;

@@ -3,7 +3,13 @@
 #include <imgui.h>
 #include <imgui_impl_dx9.h>
 #include <imgui_impl_win32.h>
-#include <ck\HM3DebugConsole.h>
+#include <ck/HM3DebugConsole.h>
+
+#include <sdk/InterfacesProvider.h>
+#include <sdk/ZSysInterfaceWintel.h>
+#include <sdk/ZSysInputWintel.h>
+#include <sdk/ZMouseWintel.h>
+#include <sdk/ZGameGlobals.h>
 
 // Win32 message handler
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -20,6 +26,9 @@ namespace ck
 	{
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO();
+		io.MouseDrawCursor = true;
+		io.MousePos = ImVec2(0.f, 0.f);
+		io.MousePosPrev = io.MousePos;
 		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
 
 		ImGui::StyleColorsLight();
@@ -47,8 +56,10 @@ namespace ck
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-		ImGui::ShowDemoWindow();
+		ImGuiIO& io = ImGui::GetIO();
 
+		ImGui::ShowDemoWindow();
+		
 		// Draw UI
 		ImGui::EndFrame();
 

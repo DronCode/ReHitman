@@ -30,7 +30,8 @@ namespace hm3 {
 	static const std::uintptr_t EventBuffer		 = 0x008BA0B8;	//Based on ZEventBuffer : ZSerializable : ZSerializableBase
 	static const std::uintptr_t FileSystem		 = 0x0082081C;  //Based on ZSysFileWintel : ZSysFile
 	
-	static const std::uintptr_t Direct3DInterface = 0x090AF08;	//IDirect3D9 device
-	static const std::uintptr_t Direct3DDevice    = 0x090AF0C;	//Based on ZDirect3DDevice : ID3DXEffectStateManager : IUnknown
+	static const std::uintptr_t Direct3DInterface = 0x0090AF08;	//IDirect3D9 device
+	static const std::uintptr_t Direct3DDevice    = 0x0090AF0C;	//Based on ZDirect3DDevice : ID3DXEffectStateManager : IUnknown
+	static const std::uintptr_t DirectInputDevice = 0x008B4BA0; //DirectInput interface pointer
 
 }}

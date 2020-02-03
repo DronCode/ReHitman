@@ -11,6 +11,7 @@
 #include <sdk/ZGameDataFactory.h>
 #include <ck/HM3InGameTools.h>
 
+#include <windowsx.h>
 #include <d3d9.h>
 
 LRESULT WINAPI Glacier_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -21,7 +22,19 @@ LRESULT WINAPI Glacier_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 	if (ck::HM3InGameTools::getInstance().processEvent(hWnd, msg, wParam, lParam))
 		return true;
 
-	return glacierWndProc(hWnd, msg, wParam, lParam);
+	const bool glacierResult = glacierWndProc(hWnd, msg, wParam, lParam);
+
+	if (
+		msg == WM_LBUTTONUP || msg == WM_LBUTTONDOWN || msg == WM_LBUTTONDBLCLK ||
+		msg == WM_RBUTTONUP || msg == WM_RBUTTONDOWN || msg == WM_RBUTTONDBLCLK ||
+		msg == WM_MBUTTONUP || msg == WM_MBUTTONDOWN || msg == WM_MBUTTONDBLCLK ||
+		msg == WM_MOUSEMOVE || msg == WM_MOUSEACTIVATE || msg == WM_MOUSEWHEEL
+		)
+	{
+		HM3_DEBUG("MOUSE EVENT\n");
+	}
+
+	return glacierResult; //if glacier returns false we must ignore that event
 }
 
 ATOM __stdcall RegisterClassExA_Hooked(WNDCLASSEXA* wndClass)

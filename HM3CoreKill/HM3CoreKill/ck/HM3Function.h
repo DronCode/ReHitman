@@ -344,6 +344,71 @@ public:
 		return static_cast<DWORD>(original_func);
 	}
 
+	static DWORD hookIAT(const std::string& process, const char* functionName, DWORD to)
+	{
+		ProcessHandleCacheController::ProcessCacheRow cacheRow = ProcessHandleCacheController::getProcessHandle(process);
+		HANDLE pHandle = cacheRow.handle;
+		HM3_ASSERT(pHandle != 0, "Unable to locate required process!");
+
+		/*
+			Credits : Game Hacking: Developing Autonomous Bots for Online Games
+		*/
+
+		const DWORD DOSMagic = 0x5A4D;
+		const DWORD OptionalHeaderMagicBytes = 0x10B;
+
+		DWORD baseAddr = reinterpret_cast<DWORD>(cacheRow.handle);
+
+		auto dosHeader = (IMAGE_DOS_HEADER*)(baseAddr);
+		if (dosHeader->e_magic != DOSMagic)
+		{
+			HM3_DEBUG(" Failed to hook IAT method \"%s\". Bad DOS header magic bytes.\n", functionName);
+			return 0;
+		}
+
+		auto optHeader = (IMAGE_OPTIONAL_HEADER*)(baseAddr + dosHeader->e_lfanew + 24);
+		if (optHeader->Magic != OptionalHeaderMagicBytes)
+		{
+			HM3_DEBUG(" Failed to hook IAT method \"%s\". Bad optional header magic bytes.\n", functionName);
+			return 0;
+		}
+
+		auto IAT = optHeader->DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT];
+		if (IAT.Size == 0 || IAT.VirtualAddress == 0)
+		{
+			HM3_DEBUG(" Failed to hook IAT method \"%s\". Bad IAT table size.\n", functionName);
+			return 0;
+		}
+
+		auto impDesc = (IMAGE_IMPORT_DESCRIPTOR*)(baseAddr + IAT.VirtualAddress);
+
+		while (impDesc->FirstThunk)
+		{
+			auto thunkData = (IMAGE_THUNK_DATA*)(baseAddr + impDesc->OriginalFirstThunk);
+			
+			int n = 0;
+
+			while (thunkData->u1.Function)
+			{
+				char* importFuncName = (char*)(baseAddr + (DWORD)thunkData->u1.AddressOfData + 2);
+
+				if (strcmp(importFuncName, functionName) == 0)
+				{
+					auto vfTable = (DWORD*)(baseAddr + impDesc->FirstThunk);
+					DWORD original = vfTable[n];
+					int originalProtection = vtable_hook::vtablehook_unprotect(&vfTable[n]);
+					vfTable[n] = to;
+					vtable_hook::vtablehook_protect(&vfTable[n], originalProtection);	
+					HM3_DEBUG(" Hook IAT method \"%s\" 0x%.8X -> 0x%.8X DONE\n", functionName, original, to);
+					return original;
+				}
+			}
+		}
+
+		HM3_DEBUG(" Failed to hook IAT method \"%s\". Function not found in IAT table of process %s\n", functionName, process);
+		return 0;
+	}
+
 	static void swapInstructions(const std::string& process, DWORD first, DWORD second, const DWORD count)
 	{
 		ProcessHandleCacheController::ProcessCacheRow cacheRow = ProcessHandleCacheController::getProcessHandle(process);

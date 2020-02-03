@@ -9,6 +9,9 @@ namespace ck
 	{
 		bool m_isVisible = false;
 		IDirect3DDevice9* m_device = nullptr;
+		
+		void pollEventsFromGlacier();
+
 	public:
 		static HM3InGameTools& getInstance();
 

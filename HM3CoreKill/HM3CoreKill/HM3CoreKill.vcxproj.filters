@@ -66,9 +66,6 @@
     <ClInclude Include="ck\HM3ScopedProtection.h">
       <Filter>ck</Filter>
     </ClInclude>
-    <ClInclude Include="ck\HM3VFTableHook.h">
-      <Filter>ck</Filter>
-    </ClInclude>
     <ClInclude Include="sdk\ZHM3Hitman3.h">
       <Filter>sdk</Filter>
     </ClInclude>
@@ -212,6 +209,15 @@
     </ClInclude>
     <ClInclude Include="ck\HM3InGameTools.h">
       <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZSysInputWintel.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZKeyboardWintel.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZMouseWintel.h">
+      <Filter>sdk</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

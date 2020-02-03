@@ -2,7 +2,6 @@
 
 #include <ck/HM3ActionFactory.h>
 #include <ck/HM3DebugConsole.h>
-#include <ck/HM3VFTableHook.h>
 #include <utils/X86Snippets.h>
 #include <ck/HM3InGameTools.h>
 #include <ck/HM3Function.h>
@@ -16,6 +15,7 @@
 #include <sdk/InterfacesProvider.h>
 
 #include <functional>
+#include <algorithm>
 
 HM3Game::HM3Game()
 	: m_currentPlayer(std::make_shared<HM3Player>())
@@ -31,6 +31,12 @@ HM3Game& HM3Game::getInstance()
 void __stdcall OnTeleportsListLoaded_Callback(DWORD R1)
 {
 	HM3_DEBUG("[ result at 0x%X ]\n", R1);
+}
+
+void __stdcall ShowWindowRequest()
+{
+	HM3_DEBUG("Require show window with HWND is 0x%.8X\n", HM3Game::GetSystemInterface()->m_renderer->m_HWND);
+	ShowWindow(HM3Game::GetSystemInterface()->m_renderer->m_HWND, SW_SHOW);
 }
 
 void HM3Game::Initialise()
@@ -162,11 +168,18 @@ void HM3Game::setupD3DDeviceCreationHook()
 	ck::HM3Direct3D::getInstance().onEndScene   = std::bind(&HM3Game::onD3DEndScene, this, std::placeholders::_1);
 }
 
-bool g_isDebugUIActive = false;
+bool __stdcall Stub(DWORD ecx, bool someFlag)
+{
+	HM3_UNUSED(ecx);
+	HM3_UNUSED(someFlag);
+	HM3_DEBUG("STUBBED\n");
+	return true;
+}
 
 void HM3Game::onD3DInitialized(IDirect3DDevice9* device)
 {
 	const auto renderer = GetSystemInterface()->m_renderer;
+
 	ck::HM3InGameTools::getInstance().initialize(renderer->m_HWND, device);
 }
 

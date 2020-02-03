@@ -11,7 +11,9 @@ namespace hm3 {
 	class ZSysInterfaceWintel
 	{
 	public:
-		char pad_0000[184]; //0x0000
+		char pad_0000[40]; //0x0000
+		int32_t m_lastTickAt; //0x0028
+		char pad_002C[140]; //0x002C
 		ZEngineDatabase* m_engineDataBase; //0x00B8
 		char* m_basePath; //0x00BC
 		char pad_00C0[508]; //0x00C0

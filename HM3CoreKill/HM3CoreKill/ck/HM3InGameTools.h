@@ -20,6 +20,9 @@ namespace ck
 		void draw();
 		bool processEvent(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 		void toggleVisibility();
+		bool isVisible() const;
+		void setMouseButtonState(int button, bool state);
+		void setMouseWheelState(int value);
 	};
 
 }

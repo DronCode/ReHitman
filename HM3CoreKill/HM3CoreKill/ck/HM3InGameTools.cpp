@@ -70,13 +70,15 @@ namespace ck
 		ImGui::Render();
 		ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 	}
-	
+
 	bool HM3InGameTools::processEvent(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		bool result = ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam);
 
 		if (msg == WM_KEYUP && static_cast<uint32_t>(wParam) == VK_F3)
+		{
 			toggleVisibility();
+		}
 
 		return result;
 	}
@@ -84,5 +86,22 @@ namespace ck
 	void HM3InGameTools::toggleVisibility()
 	{
 		m_isVisible = !m_isVisible;
+	}
+
+	bool HM3InGameTools::isVisible() const
+	{
+		return m_isVisible;
+	}
+
+	void HM3InGameTools::setMouseButtonState(int button, bool state)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		io.MouseDown[button] = state;
+	}
+
+	void HM3InGameTools::setMouseWheelState(int value)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		io.MouseWheel += static_cast<float>(value) / static_cast<float>(WHEEL_DELTA);
 	}
 }

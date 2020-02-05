@@ -8,10 +8,10 @@ namespace ck
 
 	class HM3Direct3D
 	{
-		void setupHooks(IDirect3DDevice9* device);
 	public:
 		static HM3Direct3D& getInstance();
 		void initialize(IDirect3DDevice9* device);
+		void setupHooksDirectX9Hooks(IDirect3DDevice9* device);
 
 		using CommonCallback = std::function<void(IDirect3DDevice9*)>;
 

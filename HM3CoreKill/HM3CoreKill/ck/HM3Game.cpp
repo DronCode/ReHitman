@@ -138,7 +138,7 @@ void HM3Game::fixEnableCheats()
 void HM3Game::setupD3DDeviceCreationHook()
 {
 	HM3Function::hookFunction<void(__stdcall*)(DWORD), 10>(
-		HM3_PROCESS_NAME, 
+		HM3_PROCESS_NAME,
 		HM3Offsets::ZDirect3DDevice_ConstructorFunc,
 		(DWORD)ZDirect3DDevice_OnDeviceReady,
 		// pre
@@ -163,9 +163,27 @@ void HM3Game::setupD3DDeviceCreationHook()
 		});
 	HM3_DEBUG("[Setup ZDirect3DDevice hook]\n");
 
-	ck::HM3Direct3D::getInstance().onD3DReady   = std::bind(&HM3Game::onD3DInitialized, this, std::placeholders::_1);
-	ck::HM3Direct3D::getInstance().onBeginScene = std::bind(&HM3Game::onD3DBeginScene, this, std::placeholders::_1);
-	ck::HM3Direct3D::getInstance().onEndScene   = std::bind(&HM3Game::onD3DEndScene, this, std::placeholders::_1);
+	const DWORD addr = 0x0045007C;
+
+	HM3Function::hookFunction<void(__stdcall*)(DWORD), 5>(
+		HM3_PROCESS_NAME, 
+		addr, 
+		(DWORD)OnZMouseWintelCreated, 
+		// pre
+		{
+			x86_pushad,
+			x86_pushfd,
+			x86_push_eax
+		}, 
+		// post
+		{
+			x86_popfd,
+			x86_popad
+		});
+
+	ck::HM3Direct3D::getInstance().onD3DReady				= std::bind(&HM3Game::onD3DInitialized, this, std::placeholders::_1);
+	ck::HM3Direct3D::getInstance().onBeginScene				= std::bind(&HM3Game::onD3DBeginScene, this, std::placeholders::_1);
+	ck::HM3Direct3D::getInstance().onEndScene				= std::bind(&HM3Game::onD3DEndScene, this, std::placeholders::_1);
 }
 
 bool __stdcall Stub(DWORD ecx, bool someFlag)
@@ -212,6 +230,9 @@ void HM3Game::setupInputWatcher()
 {
 	HM3Function::overrideInstruction(HM3_PROCESS_NAME, HM3Offsets::ZHM3RegisterWindowClassExA_Func, { x86_nop, x86_nop, x86_nop, x86_nop, x86_nop, x86_nop });
 	HM3Function::hookFunction<bool(__stdcall*)(const WNDCLASSEXA*), 6>(HM3_PROCESS_NAME, HM3Offsets::ZHM3RegisterWindowClassExA_Func, (DWORD)RegisterClassExA_Hooked, {}, {});
+
+	HM3Function::overrideInstruction(HM3_PROCESS_NAME, 0x00453EC6, { x86_nop, x86_nop, x86_nop, x86_nop, x86_nop, x86_nop });
+	HM3Function::hookFunction<HWND(__stdcall*)(DWORD dwExStyle, LPCSTR, LPCSTR, DWORD, int, int, int, int, HWND, HMENU, HINSTANCE, LPVOID), 6>(HM3_PROCESS_NAME, 0x00453EC6, (DWORD)CreateWindowExA_Hooked, {}, {});
 }
 
 void HM3Game::setupDoesPlayerAcceptDamage()

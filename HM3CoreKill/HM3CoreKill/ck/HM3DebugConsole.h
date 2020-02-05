@@ -33,3 +33,6 @@ public:
 	}
 
 #define HM3_UNUSED(something) (void)something;
+
+#define HM3_PAUSE __asm { int 3 }
+#define HM3_PAUSE_UI() MessageBox(nullptr, "Pause", "Paused", MB_OK);

@@ -11,6 +11,8 @@
 #include <sdk/ZGameDataFactory.h>
 #include <ck/HM3InGameTools.h>
 
+#define DIRECTINPUT_VERSION 0x0800
+#include <dinput.h>
 #include <windowsx.h>
 #include <d3d9.h>
 
@@ -22,17 +24,10 @@ LRESULT WINAPI Glacier_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 	if (ck::HM3InGameTools::getInstance().processEvent(hWnd, msg, wParam, lParam))
 		return true;
 
-	const bool glacierResult = glacierWndProc(hWnd, msg, wParam, lParam);
+	if (msg == WM_ACTIVATE)
+		return 0;
 
-	if (
-		msg == WM_LBUTTONUP || msg == WM_LBUTTONDOWN || msg == WM_LBUTTONDBLCLK ||
-		msg == WM_RBUTTONUP || msg == WM_RBUTTONDOWN || msg == WM_RBUTTONDBLCLK ||
-		msg == WM_MBUTTONUP || msg == WM_MBUTTONDOWN || msg == WM_MBUTTONDBLCLK ||
-		msg == WM_MOUSEMOVE || msg == WM_MOUSEACTIVATE || msg == WM_MOUSEWHEEL
-		)
-	{
-		HM3_DEBUG("MOUSE EVENT\n");
-	}
+	const bool glacierResult = glacierWndProc(hWnd, msg, wParam, lParam);
 
 	return glacierResult; //if glacier returns false we must ignore that event
 }
@@ -42,6 +37,24 @@ ATOM __stdcall RegisterClassExA_Hooked(WNDCLASSEXA* wndClass)
 	HM3_DEBUG("Register window class with custom WndProc\n");
 	wndClass->lpfnWndProc = Glacier_WndProc;
 	return RegisterClassExA(wndClass);
+}
+
+HWND __stdcall CreateWindowExA_Hooked(
+	DWORD dwExStyle,
+	LPCSTR lpClassName,
+	LPCSTR lpWindowName,
+	DWORD dwStyle,
+	int X,
+	int Y,
+	int nWidth,
+	int nHeight,
+	HWND hWndParent,
+	HMENU hMenu,
+	HINSTANCE hInstance,
+	LPVOID lpParam)
+{
+	HWND result = CreateWindowExA(dwExStyle, lpClassName, lpWindowName, dwStyle, X, Y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
+	return result;
 }
 
 int __stdcall ZHM3Player_DoesPlayerAcceptAnyDamage(void* pThis)
@@ -79,4 +92,41 @@ void __stdcall ZDirect3DDevice_OnDeviceReady(ioi::hm3::ZDirect3DDevice* device)
 
 	ck::HM3Direct3D::getInstance().initialize(device->m_d3dDevice);
 	HM3_DEBUG(" D3D9 Hooked\n");
+}
+
+/// --------------------------------------------------------------------------------
+#include <sdk/ZMouseWintel.h>
+#include <sdk/ZSysInputWintel.h>
+
+DWORD originalMember = 0x0;
+
+DWORD __stdcall ZMouseWintel_OnUpdate()
+{
+	DWORD result = false;
+	ioi::hm3::ZSysInputWintel* input = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInputWintel>(ioi::hm3::WintelInput);
+	ioi::hm3::ZMouseWintel* mouse = input->m_mouseDevice;
+
+	__asm {
+		mov ecx, mouse
+		call [originalMember]
+		mov result, eax
+	}
+
+	{
+		ck::HM3InGameTools& instance = ck::HM3InGameTools::getInstance();
+
+		instance.setMouseButtonState(0, mouse->m_leftButton);
+		instance.setMouseButtonState(1, mouse->m_rightButton);
+		instance.setMouseWheelState(mouse->m_wheel);
+	}
+
+	__asm mov ecx, mouse
+	return result;
+}
+
+void __stdcall OnZMouseWintelCreated(DWORD device)
+{
+	HM3_DEBUG("ZMouseWintel created at 0x%.8X\n", device);
+
+	originalMember = HM3Function::hookVFTable(device, 26, (DWORD)ZMouseWintel_OnUpdate, true);
 }

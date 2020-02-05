@@ -5,6 +5,20 @@
 
 ATOM __stdcall RegisterClassExA_Hooked(WNDCLASSEXA* wndClass);
 
+HWND __stdcall CreateWindowExA_Hooked(
+	DWORD dwExStyle,
+	LPCSTR lpClassName,
+	LPCSTR lpWindowName,
+	DWORD dwStyle,
+	int X,
+	int Y,
+	int nWidth,
+	int nHeight,
+	HWND hWndParent,
+	HMENU hMenu,
+	HINSTANCE hInstance,
+	LPVOID lpParam);
+
 /***
 	Bugs:
  ***/
@@ -21,3 +35,5 @@ void __stdcall ZGEOM_Ctor_CALLBACK(DWORD ptr);
 void __stdcall ZPlayer_Constructor(DWORD instance);
 
 void __stdcall ZDirect3DDevice_OnDeviceReady(ioi::hm3::ZDirect3DDevice* device);
+
+void __stdcall OnZMouseWintelCreated(DWORD device);

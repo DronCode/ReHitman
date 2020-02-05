@@ -23,6 +23,9 @@ namespace ck
 		bool isVisible() const;
 		void setMouseButtonState(int button, bool state);
 		void setMouseWheelState(int value);
+
+	private:
+		void drawDebugMenu();
 	};
 
 }

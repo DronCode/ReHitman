@@ -163,11 +163,9 @@ void HM3Game::setupD3DDeviceCreationHook()
 		});
 	HM3_DEBUG("[Setup ZDirect3DDevice hook]\n");
 
-	const DWORD addr = 0x0045007C;
-
 	HM3Function::hookFunction<void(__stdcall*)(DWORD), 5>(
 		HM3_PROCESS_NAME, 
-		addr, 
+		HM3Offsets::ZWintelMouse_ContructorFunc,
 		(DWORD)OnZMouseWintelCreated, 
 		// pre
 		{
@@ -181,17 +179,9 @@ void HM3Game::setupD3DDeviceCreationHook()
 			x86_popad
 		});
 
-	ck::HM3Direct3D::getInstance().onD3DReady				= std::bind(&HM3Game::onD3DInitialized, this, std::placeholders::_1);
-	ck::HM3Direct3D::getInstance().onBeginScene				= std::bind(&HM3Game::onD3DBeginScene, this, std::placeholders::_1);
-	ck::HM3Direct3D::getInstance().onEndScene				= std::bind(&HM3Game::onD3DEndScene, this, std::placeholders::_1);
-}
-
-bool __stdcall Stub(DWORD ecx, bool someFlag)
-{
-	HM3_UNUSED(ecx);
-	HM3_UNUSED(someFlag);
-	HM3_DEBUG("STUBBED\n");
-	return true;
+	ck::HM3Direct3D::getInstance().onD3DReady	= std::bind(&HM3Game::onD3DInitialized, this, std::placeholders::_1);
+	ck::HM3Direct3D::getInstance().onBeginScene	= std::bind(&HM3Game::onD3DBeginScene, this, std::placeholders::_1);
+	ck::HM3Direct3D::getInstance().onEndScene	= std::bind(&HM3Game::onD3DEndScene, this, std::placeholders::_1);
 }
 
 void HM3Game::onD3DInitialized(IDirect3DDevice9* device)

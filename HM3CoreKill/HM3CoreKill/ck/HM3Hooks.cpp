@@ -4,28 +4,26 @@
 #include <ck/HM3DebugConsole.h>
 #include <ck/HM3Function.h>
 #include <ck/HM3Direct3D.h>
+#include <ck/HM3InGameTools.h>
+#include <ck/HM3Offsets.h>
 
+#include <sdk/ZMouseWintel.h>
+#include <sdk/ZSysInputWintel.h>
 #include <sdk/actions/ZLnkAction.h>
 #include <sdk/ZHM3Hitman3.h>
 #include <sdk/ZGameGlobals.h>
 #include <sdk/ZGameDataFactory.h>
-#include <ck/HM3InGameTools.h>
 
-#define DIRECTINPUT_VERSION 0x0800
-#include <dinput.h>
 #include <windowsx.h>
 #include <d3d9.h>
 
 LRESULT WINAPI Glacier_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	typedef LRESULT(__stdcall* GlacierWndProc_t)(HWND, UINT, WPARAM, LPARAM);
-	GlacierWndProc_t glacierWndProc = (GlacierWndProc_t)0x004513E0;
+	GlacierWndProc_t glacierWndProc = (GlacierWndProc_t)HM3Offsets::Glacier_OriginalWNDPROC;
 
 	if (ck::HM3InGameTools::getInstance().processEvent(hWnd, msg, wParam, lParam))
 		return true;
-
-	if (msg == WM_ACTIVATE)
-		return 0;
 
 	const bool glacierResult = glacierWndProc(hWnd, msg, wParam, lParam);
 
@@ -95,8 +93,6 @@ void __stdcall ZDirect3DDevice_OnDeviceReady(ioi::hm3::ZDirect3DDevice* device)
 }
 
 /// --------------------------------------------------------------------------------
-#include <sdk/ZMouseWintel.h>
-#include <sdk/ZSysInputWintel.h>
 
 DWORD originalMember = 0x0;
 

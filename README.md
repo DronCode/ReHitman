@@ -1,6 +1,8 @@
 ReHitman
 --------
 
+![Image description](GitHub/index_preview.png)
+
 What is it?
 ===========
 
@@ -22,13 +24,13 @@ This project includes 2 directories:
 The goals
 =========
 
- - [ ] Create open source SDK for Glacier 1 Engine
- -	[ ] Reverse rendering API
- -		[ ] Implement ImGUI backend over Glacier renderer wrapper (ZWintelRendererD3D)
- -	[ ] Reverse input API (mouse, keyboard)
- -	[ ] Reverse GUI API
- -		[ ] Implement custom widget with logic on CoreKill.dll side
- -	[ ] Reverse scene format
+ - [x] Create open source SDK for Glacier 1 Engine
+ - [ ] Reverse rendering API
+ - [x] Implement ImGUI backend over Glacier renderer wrapper (ZWintelRendererD3D)
+ - [x] Reverse input API (mouse, keyboard)
+ - [ ] Reverse GUI API
+ - [ ] Implement custom widget with logic on CoreKill.dll side
+ - [ ] Reverse scene format
  - [ ] Create toolset for Hitman Blood Money
 
  Contacts

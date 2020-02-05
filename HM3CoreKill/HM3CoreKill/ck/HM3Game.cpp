@@ -1,18 +1,21 @@
 ﻿#include <ck/HM3Game.h>
 
+#include <ck/HM3ActionFactory.h>
 #include <ck/HM3DebugConsole.h>
-#include <ck/HM3VFTableHook.h>
+#include <utils/X86Snippets.h>
+#include <ck/HM3InGameTools.h>
 #include <ck/HM3Function.h>
+#include <ck/HM3Direct3D.h>
 #include <ck/HM3Offsets.h>
 #include <ck/HM3Hooks.h>
-
-#include <utils/X86Snippets.h>
+#include <ck/Features.h>
 
 #include <sdk/HM3DebugAPI.h>
 #include <sdk/ZGameGlobals.h>
 #include <sdk/InterfacesProvider.h>
-#include <ck/HM3ActionFactory.h>
-#include <ck/Features.h>
+
+#include <functional>
+#include <algorithm>
 
 HM3Game::HM3Game()
 	: m_currentPlayer(std::make_shared<HM3Player>())
@@ -30,6 +33,12 @@ void __stdcall OnTeleportsListLoaded_Callback(DWORD R1)
 	HM3_DEBUG("[ result at 0x%X ]\n", R1);
 }
 
+void __stdcall ShowWindowRequest()
+{
+	HM3_DEBUG("Require show window with HWND is 0x%.8X\n", HM3Game::GetSystemInterface()->m_renderer->m_HWND);
+	ShowWindow(HM3Game::GetSystemInterface()->m_renderer->m_HWND, SW_SHOW);
+}
+
 void HM3Game::Initialise()
 {
 	HM3DebugConsole::init();
@@ -44,6 +53,7 @@ void HM3Game::Initialise()
 		"\n"
 		"Core Kill\n");
 
+	setupD3DDeviceCreationHook();
 	fixEnableCheats();
 	setupInputWatcher();	///Make bugs, DO NOT USE IT
 	setupDoesPlayerAcceptDamage();
@@ -65,10 +75,6 @@ void HM3Game::DestroyHack()
 	m_isHackActive = false;
 }
 
-void HM3Game::OnKeyPress(uint32_t keyCode)
-{
-}
-
 #define BOOL_TO_STR(b) (b ? "True" : "False")
 
 void HM3Game::printActorsPoolInfos()
@@ -85,7 +91,7 @@ void HM3Game::printActorsPoolInfos()
 		HM3_DEBUG("Actor[%.4d] at 0x%.8X | name %.50s location at 0x%.8X ; position Vec3 { %.8f; %.8f; %.8f } ; is member of group 0x%.8X\n", 
 			actorIndex, 
 			gameData->m_ActorsPool[actorIndex], 
-			location->actorName, 
+			location->entityName, 
 			location,
 			location->position.x, 
 			location->position.y, 
@@ -129,68 +135,77 @@ void HM3Game::fixEnableCheats()
 	HM3_DEBUG(" + Enable cheats menu\n");
 }
 
-void HM3Game::OnKeyRelease(uint32_t keyCode)
+void HM3Game::setupD3DDeviceCreationHook()
 {
-	if (keyCode == VK_F3)
-	{
-		//GetGameDataInstancePtr()->m_LevelControl->failMissionWithMessage("AllLevels/Interface/MissionFailed/HitmanDied");
-		GetGameDataInstancePtr()->m_LevelControl->failMissionWithMessage("/AllLevels/Map");
-	}
+	HM3Function::hookFunction<void(__stdcall*)(DWORD), 10>(
+		HM3_PROCESS_NAME,
+		HM3Offsets::ZDirect3DDevice_ConstructorFunc,
+		(DWORD)ZDirect3DDevice_OnDeviceReady,
+		// pre
+		{
+			/*
+				pushad
+				pushfd
+				push eax ; it's contains pointer to result structure
+			*/
+			x86_pushad,
+			x86_pushfd,
+			x86_push_eax
+		},
+		// post
+		{
+			/*
+				popfd
+				popad
+			*/
+			x86_popfd,
+			x86_popad
+		});
+	HM3_DEBUG("[Setup ZDirect3DDevice hook]\n");
 
-	if (keyCode == VK_F4)
-	{
-		printActorsPoolInfos();
-	}
+	HM3Function::hookFunction<void(__stdcall*)(DWORD), 5>(
+		HM3_PROCESS_NAME, 
+		HM3Offsets::ZWintelMouse_ContructorFunc,
+		(DWORD)OnZMouseWintelCreated, 
+		// pre
+		{
+			x86_pushad,
+			x86_pushfd,
+			x86_push_eax
+		}, 
+		// post
+		{
+			x86_popfd,
+			x86_popad
+		});
 
-	if (keyCode == VK_F5)
-	{
-		const bool newGodModeValue = !m_currentPlayer->isDoesAcceptDamage();
-		HM3_DEBUG("God mode: %s\n", (newGodModeValue ? "ON" : "OFF"));
-		m_currentPlayer->setDoesAcceptDamage(newGodModeValue);
-	}
+	ck::HM3Direct3D::getInstance().onD3DReady	= std::bind(&HM3Game::onD3DInitialized, this, std::placeholders::_1);
+	ck::HM3Direct3D::getInstance().onBeginScene	= std::bind(&HM3Game::onD3DBeginScene, this, std::placeholders::_1);
+	ck::HM3Direct3D::getInstance().onEndScene	= std::bind(&HM3Game::onD3DEndScene, this, std::placeholders::_1);
+}
 
-	if (keyCode == VK_F6)
-	{
-		HM3_DEBUG(" [ current scene is %s | engine db at 0x%X | render instance at 0x%X ]\n", GetSystemInterface()->m_currentScene, GetSystemInterface()->m_engineDataBase, GetSystemInterface()->m_renderer);
-	}
+void HM3Game::onD3DInitialized(IDirect3DDevice9* device)
+{
+	const auto renderer = GetSystemInterface()->m_renderer;
 
-	if (keyCode == VK_F7)
-	{
-		ck::teleportPlayer();
-	}
+	ck::HM3InGameTools::getInstance().initialize(renderer->m_HWND, device);
+}
 
-	if (keyCode == VK_F8)
-	{
-		ck::printTeleportPointsInCurrentLevel();
-	}
+void HM3Game::onD3DBeginScene(IDirect3DDevice9* device)
+{
+	HM3_UNUSED(device)
+}
 
-	if (keyCode == VK_F9)
-	{
-		ck::setTeleportPointForAllTeleports(500.f, 500.f, 500.f);
-	}
+void HM3Game::onD3DEndScene(IDirect3DDevice9* device)
+{
+	HM3_UNUSED(device)
+	ck::HM3InGameTools::getInstance().draw();
 }
 
 void HM3Game::OnNewGameSession(ioi::hm3::ZHM3Hitman3_t gameSession)
 {
 	HM3_DEBUG("[HM3Game::OnNewGameSession] New session instance detected at 0x%.8X\n", gameSession);
-
 	printActorsPoolInfos();
-	/*HM3_DEBUG("[HM3Game::OnNewGameSession] Try to enable camera hack");
-	
-	auto gameDataPtr = GetGameDataInstancePtr();
-	auto cameraPtr = gameDataPtr->m_Camera;
-
-	HM3_DEBUG(
-		"MVP matrix : \n"
-		"| %.4f %.4f %.4f %.4f |\n"
-		"| %.4f %.4f %.4f %.4f |\n"
-		"| %.4f %.4f %.4f %.4f |\n"
-		"| %.4f %.4f %.4f %.4f |\n",
-		cameraPtr->MVP[ 0], cameraPtr->MVP[ 1], cameraPtr->MVP[ 2], cameraPtr->MVP[ 3],
-		cameraPtr->MVP[ 4], cameraPtr->MVP[ 5], cameraPtr->MVP[ 6], cameraPtr->MVP[ 7],
-		cameraPtr->MVP[ 8], cameraPtr->MVP[ 9], cameraPtr->MVP[10], cameraPtr->MVP[11],
-		cameraPtr->MVP[12], cameraPtr->MVP[13], cameraPtr->MVP[14], cameraPtr->MVP[15]
-	);*/
 }
 
 const HM3Player::Ptr& HM3Game::GetPlayer() const { return m_currentPlayer; }
@@ -201,34 +216,13 @@ std::uintptr_t HM3Game::GetCurrentLevelController() const
 	return reinterpret_cast<std::uintptr_t>(*((void**)(pGameData + HM3Offsets::ZHM3LevelControllerOffset)));
 }
 
-void HM3Game::setupInputWatcher()	//Slow, do not use that (crashes M13)
+void HM3Game::setupInputWatcher()
 {
-	HM3Function::hookFunction<
-		void(__stdcall*)(HWND, UINT, WPARAM, LPARAM),
-		18
-	>(
-		HM3_PROCESS_NAME,
-		"\x55\x8B\x6C\x24\x10\x56\x8B\x74\x24\x10\x83\xFE\x07\x57",
-		"xxxxxxxxxxxxxx",
-		(DWORD)ZHM3WndProc_Hook,
-		/*
-			After trampoline & before hook call
-		 */
-		{
-			x86_push_ecx,				// Save ECX
-			0x8B, 0x4C, 0x24, 0x1C,		// mov  ecx,DWORD PTR [esp+0x1c]
-			x86_push_ecx,				// Store ECX to our func
-			x86_push_ebp,				// Store EBP to our func
-			x86_push_esi,				// Store ESI to our func
-			x86_push_edi				// Store EDI to our func
-		},
-		/*
-			After hook call & before jump back
-		*/
-		{
-			x86_pop_ecx					// Restore ECX
-		}
-	);
+	HM3Function::overrideInstruction(HM3_PROCESS_NAME, HM3Offsets::ZHM3RegisterWindowClassExA_Func, { x86_nop, x86_nop, x86_nop, x86_nop, x86_nop, x86_nop });
+	HM3Function::hookFunction<bool(__stdcall*)(const WNDCLASSEXA*), 6>(HM3_PROCESS_NAME, HM3Offsets::ZHM3RegisterWindowClassExA_Func, (DWORD)RegisterClassExA_Hooked, {}, {});
+
+	HM3Function::overrideInstruction(HM3_PROCESS_NAME, 0x00453EC6, { x86_nop, x86_nop, x86_nop, x86_nop, x86_nop, x86_nop });
+	HM3Function::hookFunction<HWND(__stdcall*)(DWORD dwExStyle, LPCSTR, LPCSTR, DWORD, int, int, int, int, HWND, HMENU, HINSTANCE, LPVOID), 6>(HM3_PROCESS_NAME, 0x00453EC6, (DWORD)CreateWindowExA_Hooked, {}, {});
 }
 
 void HM3Game::setupDoesPlayerAcceptDamage()

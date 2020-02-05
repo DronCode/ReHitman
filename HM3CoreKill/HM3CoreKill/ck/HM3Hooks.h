@@ -1,12 +1,24 @@
 #pragma once
 
 #include <Windows.h>
+#include <sdk/ZDirect3DDevice.h>
 
-/*** 
-	Bugs:
-		1) Shooting issues
- ***/
-void __stdcall ZHM3WndProc_Hook(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+ATOM __stdcall RegisterClassExA_Hooked(WNDCLASSEXA* wndClass);
+
+HWND __stdcall CreateWindowExA_Hooked(
+	DWORD dwExStyle,
+	LPCSTR lpClassName,
+	LPCSTR lpWindowName,
+	DWORD dwStyle,
+	int X,
+	int Y,
+	int nWidth,
+	int nHeight,
+	HWND hWndParent,
+	HMENU hMenu,
+	HINSTANCE hInstance,
+	LPVOID lpParam);
+
 /***
 	Bugs:
  ***/
@@ -21,3 +33,7 @@ void __stdcall ZHM3Hitman3_Constructor(DWORD result);
 void __stdcall ZGEOM_Ctor_CALLBACK(DWORD ptr);
 
 void __stdcall ZPlayer_Constructor(DWORD instance);
+
+void __stdcall ZDirect3DDevice_OnDeviceReady(ioi::hm3::ZDirect3DDevice* device);
+
+void __stdcall OnZMouseWintelCreated(DWORD device);

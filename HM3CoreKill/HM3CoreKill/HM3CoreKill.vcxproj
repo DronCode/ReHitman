@@ -72,7 +72,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.dll</TargetExt>
     <OutDir>Z:\Reverse\Games</OutDir>
-    <IncludePath>utils/zydis/include;.;$(IncludePath)</IncludePath>
+    <IncludePath>third_party/ImGUI/examples;third_party/ImGUI;third_party;utils/zydis/include;.;$(IncludePath)</IncludePath>
     <LibraryPath>utils/zydis/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -135,16 +135,17 @@
     <ClInclude Include="ck\HM3ActionFactory.h" />
     <ClInclude Include="ck\HM3CrashHandler.h" />
     <ClInclude Include="ck\HM3DebugConsole.h" />
+    <ClInclude Include="ck\HM3Direct3D.h" />
     <ClInclude Include="ck\HM3Function.h" />
     <ClInclude Include="ck\HM3Game.h" />
     <ClInclude Include="ck\HM3Hooks.h" />
+    <ClInclude Include="ck\HM3InGameTools.h" />
     <ClInclude Include="ck\HM3MemoryProvider.h" />
     <ClInclude Include="ck\HM3Offsets.h" />
     <ClInclude Include="ck\HM3Player.h" />
     <ClInclude Include="ck\HM3ProcessCache.h" />
     <ClInclude Include="ck\HM3ScopedProtection.h" />
     <ClInclude Include="ck\HM3Types.h" />
-    <ClInclude Include="ck\HM3VFTableHook.h" />
     <ClInclude Include="mp\MP.h" />
     <ClInclude Include="sdk\actions\ZLnkAction.h" />
     <ClInclude Include="sdk\CTelePortList.h" />
@@ -155,7 +156,9 @@
     <ClInclude Include="sdk\InterfacesProvider.h" />
     <ClInclude Include="sdk\ResourceCollection.h" />
     <ClInclude Include="sdk\scripting\ZScriptC.h" />
+    <ClInclude Include="sdk\ZDirect3DDevice.h" />
     <ClInclude Include="sdk\ZEngineDatabase.h" />
+    <ClInclude Include="sdk\ZEntityLocator.h" />
     <ClInclude Include="sdk\ZEventBuffer.h" />
     <ClInclude Include="sdk\ZGameFunctions.h" />
     <ClInclude Include="sdk\ZGeomBuffer.h" />
@@ -169,12 +172,23 @@
     <ClInclude Include="sdk\ZHM3Hitman3.h" />
     <ClInclude Include="sdk\ZHM3LevelControl.h" />
     <ClInclude Include="sdk\ZHM3MenuElements.h" />
+    <ClInclude Include="sdk\ZKeyboardWintel.h" />
+    <ClInclude Include="sdk\ZMouseWintel.h" />
     <ClInclude Include="sdk\ZOSD.h" />
     <ClInclude Include="sdk\ZRenderWintelD3D.h" />
     <ClInclude Include="sdk\ZSTD.h" />
     <ClInclude Include="sdk\ZSysFile.h" />
+    <ClInclude Include="sdk\ZSysInputWintel.h" />
     <ClInclude Include="sdk\ZSysInterfaceWintel.h" />
     <ClInclude Include="sdk\ZSysMem.h" />
+    <ClInclude Include="third_party\ImGUI\examples\imgui_impl_dx9.h" />
+    <ClInclude Include="third_party\ImGUI\examples\imgui_impl_win32.h" />
+    <ClInclude Include="third_party\ImGUI\imconfig.h" />
+    <ClInclude Include="third_party\ImGUI\imgui.h" />
+    <ClInclude Include="third_party\ImGUI\imgui_internal.h" />
+    <ClInclude Include="third_party\ImGUI\imstb_rectpack.h" />
+    <ClInclude Include="third_party\ImGUI\imstb_textedit.h" />
+    <ClInclude Include="third_party\ImGUI\imstb_truetype.h" />
     <ClInclude Include="utils\X86Arch.h" />
     <ClInclude Include="utils\X86Backend.h" />
     <ClInclude Include="utils\X86MemAccessEngine.h" />
@@ -186,13 +200,21 @@
     <ClCompile Include="ck\HM3ActionFactory.cpp" />
     <ClCompile Include="ck\HM3CrashHandler.cpp" />
     <ClCompile Include="ck\HM3DebugConsole.cpp" />
+    <ClCompile Include="ck\HM3Direct3D.cpp" />
     <ClCompile Include="ck\HM3Game.cpp" />
     <ClCompile Include="ck\HM3Hooks.cpp" />
+    <ClCompile Include="ck\HM3InGameTools.cpp" />
     <ClCompile Include="ck\HM3MemoryProvider.cpp" />
     <ClCompile Include="ck\HM3Player.cpp" />
     <ClCompile Include="ck\HM3ProcessCache.cpp" />
     <ClCompile Include="DllEntry.cpp" />
     <ClCompile Include="sdk\ZEngineDatabase.cpp" />
+    <ClCompile Include="third_party\ImGUI\examples\imgui_impl_dx9.cpp" />
+    <ClCompile Include="third_party\ImGUI\examples\imgui_impl_win32.cpp" />
+    <ClCompile Include="third_party\ImGUI\imgui.cpp" />
+    <ClCompile Include="third_party\ImGUI\imgui_demo.cpp" />
+    <ClCompile Include="third_party\ImGUI\imgui_draw.cpp" />
+    <ClCompile Include="third_party\ImGUI\imgui_widgets.cpp" />
     <ClCompile Include="utils\X86Backend.cpp" />
     <ClCompile Include="utils\X86MemAccessEngine.cpp" />
     <ClCompile Include="utils\X86MemTools.cpp" />

@@ -22,6 +22,12 @@
     <Filter Include="utils">
       <UniqueIdentifier>{3b43f60a-4677-4ed3-90de-5b6611177644}</UniqueIdentifier>
     </Filter>
+    <Filter Include="third_party">
+      <UniqueIdentifier>{3a6aab74-be8f-455c-8711-46c74989c178}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\ImGUI">
+      <UniqueIdentifier>{511e04c8-c4e2-4298-91e9-44c1d3e1d269}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ck\HM3DebugConsole.h">
@@ -58,9 +64,6 @@
       <Filter>sdk</Filter>
     </ClInclude>
     <ClInclude Include="ck\HM3ScopedProtection.h">
-      <Filter>ck</Filter>
-    </ClInclude>
-    <ClInclude Include="ck\HM3VFTableHook.h">
       <Filter>ck</Filter>
     </ClInclude>
     <ClInclude Include="sdk\ZHM3Hitman3.h">
@@ -171,6 +174,51 @@
     <ClInclude Include="sdk\ZHM3LevelControl.h">
       <Filter>sdk</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\ZEntityLocator.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZDirect3DDevice.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3Direct3D.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\ImGUI\examples\imgui_impl_dx9.h">
+      <Filter>third_party\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\ImGUI\examples\imgui_impl_win32.h">
+      <Filter>third_party\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\ImGUI\imconfig.h">
+      <Filter>third_party\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\ImGUI\imgui.h">
+      <Filter>third_party\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\ImGUI\imgui_internal.h">
+      <Filter>third_party\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\ImGUI\imstb_rectpack.h">
+      <Filter>third_party\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\ImGUI\imstb_textedit.h">
+      <Filter>third_party\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\ImGUI\imstb_truetype.h">
+      <Filter>third_party\ImGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3InGameTools.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZSysInputWintel.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZKeyboardWintel.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZMouseWintel.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">
@@ -212,6 +260,30 @@
     </ClCompile>
     <ClCompile Include="utils\X86Backend.cpp">
       <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ck\HM3Direct3D.cpp">
+      <Filter>ck</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\ImGUI\examples\imgui_impl_dx9.cpp">
+      <Filter>third_party\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\ImGUI\examples\imgui_impl_win32.cpp">
+      <Filter>third_party\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\ImGUI\imgui.cpp">
+      <Filter>third_party\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\ImGUI\imgui_demo.cpp">
+      <Filter>third_party\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\ImGUI\imgui_draw.cpp">
+      <Filter>third_party\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\ImGUI\imgui_widgets.cpp">
+      <Filter>third_party\ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ck\HM3InGameTools.cpp">
+      <Filter>ck</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

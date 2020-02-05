@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <d3d9.h>
 
 #include <ck/HM3ProcessCache.h>
 #include <ck/HM3Player.h>
@@ -24,9 +25,10 @@ public:
 	void DestroyHack();
 
 	// Events
-	void OnKeyPress(uint32_t keyCode);
-	void OnKeyRelease(uint32_t keyCode);
 	void OnNewGameSession(ioi::hm3::ZHM3Hitman3_t gameSession);
+	void onD3DInitialized(IDirect3DDevice9* device);
+	void onD3DBeginScene(IDirect3DDevice9* device);
+	void onD3DEndScene(IDirect3DDevice9* device);
 
 	// Getters
 	const HM3Player::Ptr& GetPlayer() const;
@@ -40,6 +42,7 @@ private:
 	void printActorsPoolInfos();
 	void hackActorsForAllDead();
 	void fixEnableCheats();
+	void setupD3DDeviceCreationHook();
 public:
 	static ioi::hm3::ZHM3GameData* GetGameDataInstancePtr();
 	static ioi::hm3::ZSysInterfaceWintel* GetSystemInterface();

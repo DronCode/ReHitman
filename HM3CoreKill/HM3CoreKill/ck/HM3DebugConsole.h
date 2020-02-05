@@ -27,7 +27,12 @@ public:
 	HM3_DEBUG("\n");
 
 #define HM3_ASSERT(condition, message)	\
-	if ((!condition)) {					\
+	if (!(condition)) {					\
 		HM3_DEBUG("%s\n", message);		\
 		assert(false);					\
 	}
+
+#define HM3_UNUSED(something) (void)something;
+
+#define HM3_PAUSE __asm { int 3 }
+#define HM3_PAUSE_UI() MessageBox(nullptr, "Pause", "Paused", MB_OK);

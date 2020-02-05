@@ -1,13 +1,19 @@
 #pragma once
 
+#include <Windows.h>
+
 namespace ioi {
 namespace hm3 {
 	
 
 	// Created with ReClass.NET 1.2 by KN4CK3R
+	// Created with ReClass.NET 1.2 by KN4CK3R
+
 	class ZRenderWintelD3D
 	{
 	public:
+		char pad_0004[796]; //0x0004
+		HWND m_HWND; //0x0320
 
 		virtual void Function0();
 		virtual void Function1();
@@ -152,7 +158,7 @@ namespace hm3 {
 		virtual void Function140();
 		virtual void Function141();
 		virtual void Function142();
-		virtual void Function143();
+		virtual void initializeDevice();
 		virtual void Function144();
 		virtual void Function145();
 		virtual void Function146();
@@ -169,5 +175,5 @@ namespace hm3 {
 		virtual void Function157();
 		virtual void Function158();
 		virtual void Function159();
-	}; //Size: 0x0004
+	}; //Size: 0x0324
 }}

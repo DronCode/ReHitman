@@ -13,6 +13,7 @@ Game Build Information
 ===========
 
 The project is built on the last build of Hitman Blood Money that IO Interactive released.
+
 Executable String: blood-build3-20060616-26123
 
 Directories
@@ -32,11 +33,11 @@ Current Project Goals
  - [x] Create an open source SDK for the Glacier 1 Engine
  - [ ] Reverse the rendering API
  - [x] Implement ImGUI backend over Glacier renderer wrapper (ZWintelRendererD3D)
- - [x] Reverse input API (mouse, keyboard)
- - [ ] Reverse GUI API
- - [ ] Implement custom widget with logic on CoreKill.dll side
- - [ ] Reverse scene format
- - [ ] Create toolset for Hitman Blood Money
+ - [x] Reverse the input API (mouse, keyboard)
+ - [ ] Reverse the GUI API
+ - [ ] Implement a custom widget with logic on CoreKill.dll side
+ - [ ] Reverse the scene format
+ - [ ] Create a toolset for Hitman Blood Money
 
 Contact Information.
 ===========

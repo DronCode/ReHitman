@@ -205,6 +205,10 @@ void HM3Game::onD3DEndScene(IDirect3DDevice9* device)
 void HM3Game::OnNewGameSession(ioi::hm3::ZHM3Hitman3_t gameSession)
 {
 	HM3_DEBUG("[HM3Game::OnNewGameSession] New session instance detected at 0x%.8X\n", gameSession);
+	{
+		auto gd = GetGameDataInstancePtr();
+		//HM3_DEBUG(" [BriefControl at 0x%.8X Camera at 0x%.8X ]\n", gd->m_BriefingControl, gd->m_Camera);
+	}
 	printActorsPoolInfos();
 }
 

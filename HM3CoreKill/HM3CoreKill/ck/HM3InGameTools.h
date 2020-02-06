@@ -26,6 +26,9 @@ namespace ck
 
 	private:
 		void drawDebugMenu();
+		void drawPlayerInfo();
+		void drawSystemsInfo();
+		void drawLevelInfo();
 	};
 
 }

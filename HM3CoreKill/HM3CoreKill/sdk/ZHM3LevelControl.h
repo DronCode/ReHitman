@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <sdk/ZHM3BriefingControl.h>
 
 namespace ioi { namespace hm3 {
 
@@ -77,7 +78,7 @@ namespace ioi { namespace hm3 {
 		virtual void completeLevelRequest(); //63
 		virtual void Function64();
 		virtual void Function65();
-		virtual void Function66();
+		virtual ZHM3BriefingControl* getBriefingControl(int a2); //66
 		virtual void Function67();
 		virtual void Function68();
 		virtual void Function69();

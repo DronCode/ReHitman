@@ -7,6 +7,7 @@
 #include <sdk/ZOSD.h>
 #include <sdk/ZHM3MenuElements.h>
 #include <sdk/ZHM3LevelControl.h>
+#include <sdk/ZHM3BriefingControl.h>
 
 #define DECLARE_UNKNOWN_TYPE_PTR(name) using name = std::uintptr_t;
 
@@ -22,6 +23,10 @@ namespace hm3 {
 	DECLARE_UNKNOWN_TYPE_PTR(m_Gui);
 	DECLARE_UNKNOWN_TYPE_PTR(CIngameMap);
 	DECLARE_UNKNOWN_TYPE_PTR(CGlobalCom);
+	DECLARE_UNKNOWN_TYPE_PTR(ZHM3WeaponUpgradeControl);
+	DECLARE_UNKNOWN_TYPE_PTR(ZHM3CameraEventCameraClass);
+	DECLARE_UNKNOWN_TYPE_PTR(ZClothTracker);
+	DECLARE_UNKNOWN_TYPE_PTR(ZHM3DialogControl);
 	
 	class ZHM3GameData
 	{
@@ -86,11 +91,15 @@ namespace hm3 {
 		char m_ProfileName[16]; //0xFC5888 
 		char pad_0x0A70[0x64]; //0x0A70
 		int32_t m_PlayerMoney; //0x0AD4 
-		char pad_0x0AD8[0x5EA0]; //0x0AD8
-		ZHM3Camera* m_Camera; //0x6978 
-		char pad_0x697C[0x95C]; //0x697C
-
-
-		//+68F8 - ZHM3BriefingControl
+		char pad_0AD8[24096]; //0x0AD8
+		ZHM3BriefingControl* m_BriefingControl; //0x68F8
+		char pad_68FC[116]; //0x68FC
+		ZHM3WeaponUpgradeControl* m_WeaponUpgradeControl; //0x6970
+		ZHM3CameraEventCameraClass* m_CameraEventCameraClass; //0x6974
+		ZHM3Camera* m_CameraClass; //0x6978
+		char pad_697C[32]; //0x697C
+		ZClothTracker* m_ClothTracker; //0x699C
+		char pad_69A0[8]; //0x69A0
+		ZHM3DialogControl* m_DialogControl; //0x69A8
 	}; //Size=0x72D8
 }}

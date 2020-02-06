@@ -12,6 +12,7 @@
 #include <sdk/ZGameGlobals.h>
 #include <sdk/ZEngineDatabase.h>
 #include <sdk/ZHM3GameData.h>
+#include <sdk/ZHM3BriefingControl.h>
 #include <sdk/ZOSD.h>
 
 // Win32 message handler
@@ -106,14 +107,24 @@ namespace ck
 
 	void HM3InGameTools::drawDebugMenu()
 	{
+		ImGui::Begin("ReHitman | Debugger");
+		
+		drawPlayerInfo();
+		drawSystemsInfo();
+		drawLevelInfo();
+
+		ImGui::End();
+	}
+
+	void HM3InGameTools::drawPlayerInfo()
+	{
 		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
 		auto sysInterface = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
 		auto inputInterface = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInputWintel>(ioi::hm3::WintelInput);
 		auto engineDB = sysInterface->m_engineDataBase;
 		auto osd = gameData->m_OSD;
 
-		ImGui::Begin("ReHitman | Debugger");
-		
+		if (ImGui::CollapsingHeader("Player info", ImGuiTreeNodeFlags_None))
 		{
 			{ // Common game & profile data
 				ImGui::Text("Profile: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), gameData->m_ProfileName);
@@ -129,6 +140,8 @@ namespace ck
 				ImGui::Text("Noise level: "); ImGui::SameLine(0.f, 15.f);
 
 				ImVec4 noiseLevelColor = ImVec4(0.f, 1.f, 0.f, 1.f);
+				ImGui::ProgressBar(osd->m_realNosieLevel / 100.f, ImVec2(0.0f, 0.0f)); ImGui::SameLine(0.f, 8.5f);
+				
 				if (osd->m_realNosieLevel >= 0.f && osd->m_realNosieLevel <= 40.f)
 					noiseLevelColor = ImVec4(0.f, 1.f, 0.f, 1.f);
 				else if (osd->m_realNosieLevel > 40.f && osd->m_realNosieLevel <= 70.f)
@@ -138,7 +151,15 @@ namespace ck
 				ImGui::TextColored(noiseLevelColor, "%.3f", osd->m_realNosieLevel);
 			}
 		}
+	}
 
+	void HM3InGameTools::drawSystemsInfo()
+	{
+		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
+		auto sysInterface = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
+		auto inputInterface = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInputWintel>(ioi::hm3::WintelInput);
+		auto engineDB = sysInterface->m_engineDataBase;
+		auto osd = gameData->m_OSD;
 
 		if (ImGui::CollapsingHeader("Glacier | Systems"))
 		{
@@ -146,7 +167,27 @@ namespace ck
 			ImGui::Text("ZSysInputWintel: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", inputInterface);
 			ImGui::Text("ZEngineDatabase: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", engineDB);
 		}
+	}
 
-		ImGui::End();
+	void HM3InGameTools::drawLevelInfo()
+	{
+		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
+		auto sysInterface = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
+		auto inputInterface = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInputWintel>(ioi::hm3::WintelInput);
+		auto engineDB = sysInterface->m_engineDataBase;
+		auto osd = gameData->m_OSD;
+		auto levelControl = gameData->m_LevelControl;
+
+		if (ImGui::CollapsingHeader("Glacier | Level info"))
+		{
+			if (!levelControl)
+			{
+				ImGui::Text("No active level");
+				return;
+			}
+			else {
+				ImGui::Text("Level control: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", levelControl);
+			}
+		}
 	}
 }

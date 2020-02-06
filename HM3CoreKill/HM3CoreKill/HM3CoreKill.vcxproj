@@ -163,6 +163,7 @@
     <ClInclude Include="sdk\ZGameFunctions.h" />
     <ClInclude Include="sdk\ZGeomBuffer.h" />
     <ClInclude Include="sdk\ZHM3Actor.h" />
+    <ClInclude Include="sdk\ZHM3BriefingControl.h" />
     <ClInclude Include="sdk\ZHM3GameData.h" />
     <ClInclude Include="sdk\MathCommon.h" />
     <ClInclude Include="sdk\ZGameDataFactory.h" />

@@ -12,7 +12,7 @@ The final goal of the project is to develop a multiplayer similar to Mafia 2's M
 Game Build Information
 ===========
 
-The project is built on the last build of Hitman Blood Money that IO Interactive released.
+This project is built on the last build of Hitman Blood Money that IO Interactive released.
 
 Executable String: blood-build3-20060616-26123
 

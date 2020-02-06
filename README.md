@@ -9,14 +9,14 @@ What is ReHitman?
 ReHitman is an attempt to reverse the executable of Hitman Blood Money.
 The final goal of the project is to develop a multiplayer similar to Mafia 2's Mutli-player.
 
-Game Build Information
+Game Build Information.
 ===========
 
 This project is built on the last build of Hitman Blood Money that IO Interactive released.
 
 Executable String: blood-build3-20060616-26123
 
-Directories
+Directories.
 ===========
 
 This project includes 2 directories:
@@ -27,7 +27,7 @@ This project includes 2 directories:
  * HM3CoreKill 
 	- This is the projects core of reverse engineering and contains various libaries
 
-Current Project Goals
+Current Project Goals.
 ===========
 
  - [x] Create an open source SDK for the Glacier 1 Engine

@@ -129,13 +129,13 @@ namespace ck
 				ImGui::Text("Noise level: "); ImGui::SameLine(0.f, 15.f);
 
 				ImVec4 noiseLevelColor = ImVec4(0.f, 1.f, 0.f, 1.f);
-				if (osd->m_realNoiseLevel >= 0.f && osd->m_realNoiseLevel <= 40.f)
+				if (osd->m_realNosieLevel >= 0.f && osd->m_realNoiseLevel <= 40.f)
 					noiseLevelColor = ImVec4(0.f, 1.f, 0.f, 1.f);
-				else if (osd->m_realNoiseLevel > 40.f && osd->m_realNoiseLevel <= 70.f)
+				else if (osd->m_realNosieLevel > 40.f && osd->m_realNosieLevel <= 70.f)
 					noiseLevelColor = ImVec4(1.f, 1.f, 0.f, 1.f);
 				else
 					noiseLevelColor = ImVec4(1.f, 0.f, 0.f, 1.f);
-				ImGui::TextColored(noiseLevelColor, "%.3f", osd->m_realNoiseLevel);
+				ImGui::TextColored(noiseLevelColor, "%.3f", osd->m_realNosieLevel);
 			}
 		}
 

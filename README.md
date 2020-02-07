@@ -1,39 +1,45 @@
 ReHitman
 --------
 
-![Image description](GitHub/index_preview.png)
+![Debug Console_Preview](GitHub/index_preview.png)
 
-What is it?
+What is ReHitman?
 ===========
 
-This is my try to reverse the executable of Hitman Blood Money. The final goal of this project is multiplayer in this game (like a Mafia 2 Mutliplayer)
+ReHitman is an attempt to reverse the executable of Hitman Blood Money.
+The final goal of the project is to develop a multiplayer similar to Mafia 2's Mutli-player.
 
-Game version
-=============
+Game Build Information.
+===========
 
-Currently I am using Hitman Blood Money 1.2 ENG release (NOT STEAM!)
+This project is built on the last build of Hitman Blood Money that IO Interactive released.
 
-About directories
-==================
+Executable String: blood-build3-20060616-26123
+
+Directories.
+===========
 
 This project includes 2 directories:
 
- * Launcher    - Main DLL injector and runner of game
- * HM3CoreKill - Core of my reverse library
+ * Launcher    
+	- The launcher is the Main DLL injector which controls the game.
 
-The goals
-=========
+ * HM3CoreKill 
+	- This is the projects core of reverse engineering and contains various libaries
 
- - [x] Create open source SDK for Glacier 1 Engine
- - [ ] Reverse rendering API
+Current Project Goals.
+===========
+
+ - [x] Create an open source SDK for the Glacier 1 Engine
+ - [ ] Reverse the rendering API
  - [x] Implement ImGUI backend over Glacier renderer wrapper (ZWintelRendererD3D)
- - [x] Reverse input API (mouse, keyboard)
- - [ ] Reverse GUI API
- - [ ] Implement custom widget with logic on CoreKill.dll side
- - [ ] Reverse scene format
- - [ ] Create toolset for Hitman Blood Money
+ - [x] Reverse the input API (mouse, keyboard)
+ - [ ] Reverse the GUI API
+ - [ ] Implement a custom widget with logic on CoreKill.dll side
+ - [ ] Reverse the scene format
+ - [ ] Create a toolset for Hitman Blood Money
 
- Contacts
-=========
+Contact Information.
+===========
 
-You can contact with me in project issues tracker(any questions, ideas, etc).
+You can contact me in the project's issue tracker (any questions, ideas, etc).

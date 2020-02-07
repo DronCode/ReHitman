@@ -126,17 +126,21 @@ namespace ck
 
 		if (ImGui::CollapsingHeader("Player info", ImGuiTreeNodeFlags_None))
 		{
-			{ // Common game & profile data
+			{ // Information Brief
+				// Get Profile Name from & Print to ImGui 
 				ImGui::Text("Profile: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), gameData->m_ProfileName);
 				{
+					// Get Money from ZHM3GameData -> m_PlayerMoney & Print to ImGui
 					ImGui::Text("Money: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "%.8d", gameData->m_PlayerMoney); ImGui::SameLine(0.f, 10.f);
+					// Add or Subtract 1000 Money
 					if (ImGui::Button("-")) gameData->m_PlayerMoney -= 1000;
 					ImGui::SameLine(0.f, 5.f);
 					if (ImGui::Button("+")) gameData->m_PlayerMoney += 1000;
 				}
+				// Get Scene from ZSysInterfaceWintel -> m_currentScene & Print to ImGui
 				ImGui::Text("Scene: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), sysInterface->m_currentScene);
 			}
-			{ //Noise level
+			{ //Get Noise Level from zOSD Data -> m_realNosieLevel & Print to ImGui
 				ImGui::Text("Noise level: "); ImGui::SameLine(0.f, 15.f);
 
 				ImVec4 noiseLevelColor = ImVec4(0.f, 1.f, 0.f, 1.f);
@@ -161,7 +165,8 @@ namespace ck
 		auto engineDB = sysInterface->m_engineDataBase;
 		auto osd = gameData->m_OSD;
 
-		if (ImGui::CollapsingHeader("Glacier | Systems"))
+      // Creates a Collapseable ImGui Header which shows the current output for Various Engine Systems
+      if (ImGui::CollapsingHeader("Glacier | Systems"))
 		{
 			ImGui::Text("ZSysInterfaceWintel: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", sysInterface);
 			ImGui::Text("ZSysInputWintel: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", inputInterface);

@@ -13,6 +13,7 @@
 #include <sdk/HM3DebugAPI.h>
 #include <sdk/ZGameGlobals.h>
 #include <sdk/InterfacesProvider.h>
+#include <sdk/ZSTD.h>
 
 #include <functional>
 #include <algorithm>
@@ -73,6 +74,11 @@ void HM3Game::Run()
 void HM3Game::DestroyHack()
 {
 	m_isHackActive = false;
+}
+
+bool HM3Game::IsActive() const
+{
+	return m_isHackActive;
 }
 
 #define BOOL_TO_STR(b) (b ? "True" : "False")

@@ -6,8 +6,10 @@
 
 #include <utils/X86MemAccessEngine.h>
 
+DWORD g_workerThreadId = 0x0;
+
 DWORD WINAPI HM3Thread(VOID*)
-{ 
+{
 	HM3CrashHandler::Setup();	/// RUN OUR CUSTOM CRASH HANDLER
 
 	HM3MemoryProvider* g_memoryProvider = new HM3MemoryProvider(); /// Our abstract memory provider (just concept)
@@ -25,7 +27,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 	if (fdwReason == DLL_PROCESS_ATTACH)
 	{
 		/// RUN THE EXTERNAL DETACHED THREAD AND RELEASE THIS THREAD NOW
-		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)HM3Thread, nullptr, 0, 0);
+		CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)HM3Thread, nullptr, 0, &g_workerThreadId);
 	}
 	else if (fdwReason == DLL_PROCESS_DETACH)
 	{

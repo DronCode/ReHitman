@@ -9,7 +9,7 @@
 #include <sdk/CTelePortList.h>
 
 namespace ck {
-
+	/*
 	void teleportPlayer()
 	{
 		ioi::hm3::ZEngineDatabase* engineDB = HM3Game::GetSystemInterface()->m_engineDataBase;
@@ -63,8 +63,8 @@ namespace ck {
 			HM3_DEBUG(" --- [ Teleports %d ] ---\n", teleportsList->m_teleportPointsList->m_refTab->subItemsCount);
 			for (int teleportId = 0; teleportId < teleportsList->m_teleportPointsList->m_refTab->subItemsCount; teleportId++)
 			{
-				const auto position = teleportsList->m_teleportPointsList->entities[teleportId].pValue->position;
-				const auto name = teleportsList->m_teleportPointsList->entities[teleportId].pValue->objectName;
+				const auto position = teleportsList->m_teleportPointsList->entities[teleportId].position;
+				const auto name = teleportsList->m_teleportPointsList->entities[teleportId].entityName;
 
 				HM3_DEBUG(" * Teleport point at { %.8f ; %.8f ; %.8f } with name \"%s\"\n", position.x, position.y, position.z, name);
 			}
@@ -96,10 +96,10 @@ namespace ck {
 
 			for (int teleportId = 0; teleportId < teleportsList->m_teleportPointsList->m_refTab->subItemsCount; teleportId++)
 			{
-				teleportsList->m_teleportPointsList->entities[teleportId].pValue->position = ioi::Vector3{ x, y, z };
+				teleportsList->m_teleportPointsList->entities[teleportId].position = ioi::Vector3{ x, y, z };
 			}
 		}
-	}
+	}*/
 
 	void completeTask(int taskId)
 	{

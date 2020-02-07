@@ -1,4 +1,5 @@
 #include <Windows.h>
+
 #include <iostream>
 #include <psapi.h>
 #include <tchar.h>
@@ -10,9 +11,8 @@
 
 #define TARGET_DLL_NAME				"HM3CoreKill.dll"
 #define TARGET_EXE_NAME				"HitmanBloodMoney.exe"
-#define TARGET_PROCESS_BASE_PATH	"C:\\ReverseIt\\setup_hitman_blood_money_1.2_(27639)"
 
-#define TARGET_PROCESS_MODULE_NAME TARGET_PROCESS_BASE_PATH"\\"TARGET_EXE_NAME
+#define CK_AWAIT_TIME 1000 ///Time in ms for CoreKill init process (TODO: Rewrite to IPC in future)
 
 bool SpawnProcess(const char* processName, const char* basePath, HANDLE& processHandle, DWORD& processId, HANDLE& processMainThread)
 {
@@ -93,29 +93,23 @@ void InjectDLL(DWORD processId, HANDLE targetProcess, HANDLE processSuspendedThr
 	threadHandle = CreateRemoteThread(targetProcess, &sa, 0, (LPTHREAD_START_ROUTINE)LoadLibraryA, patch_dll_path_addr, 0, &remoteThreadId);
 	assert(threadHandle);
 
-	/// WAIT FOR DLLMAIN
-	WaitForSingleObject(threadHandle, 35000);
+	std::cout << "[Launcher] wait for ready status from CoreKill component ...\n";
+
+	WaitForSingleObject(threadHandle, INFINITY);
 	DWORD exitCode = 0;
 	if (GetExitCodeThread(threadHandle, &exitCode)) {
 		std::cout << "Remote thread done (exit code: " << exitCode << ")\n";
 		CloseHandle(threadHandle);	/// CLOSE THREAD HANDLER
 	}
-	
-	/// PATCH GAME FOR MANUAL CHEAT ENABLER (IT CAN BE ENABLED VIA HM3_LAUNCHER_MANUAL_CHEAT_ENABLER
-#ifdef HM3_LAUNCHER_MANUAL_CHEAT_ENABLER
-	uint8_t patch [7] = { 0xC6, 0x05, 0x89, 0xCA, 0x8A, 0x00, 0x01 }; ///REPLACE ORIGINAL INSTRUCTION FROM 'ALWAYS PUSH 0' TO 'ALWAYS PUSH 1'
-	
-	WriteProcessMemory(targetProcess, (LPVOID)0x00448316, (LPCVOID)patch, 7, nullptr);
-	
-	std::cout << "[patch] Cheat enabler active!\n";
-#endif
-	
+
+	Sleep(CK_AWAIT_TIME);
+
 	/// OUR 'DEBUG' FEATURE.
 	/// THE PROCESS WILL BE PAUSED BEFORE ANY KEY NOT PRESSED.
 	/// YOU CAN READ ANY PARTS OF DATA FROM MEMORY, BY CHEAT ENGINE OR OTHER TOOL,
 	/// AND ANALYZE POSSIBLE ERRORS BEFORE PROCESS WILL BE CRASHED.
 #ifdef HM3_DEBUG_ENABLED
-	std::cout << "Press any key to start process...\n";
+	std::cout << " < PROCESS PAUSED | DEBUG WHAT YOU WANT > \n";
 	system("pause");
 #endif
 

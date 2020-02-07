@@ -13,9 +13,6 @@
     <Filter Include="sdk\actions">
       <UniqueIdentifier>{7281a3ff-33d7-46a3-a796-aa6206d6a19e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sdk\input">
-      <UniqueIdentifier>{b90da0c3-cc4e-489a-a7a6-eb1e91fec4ff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="sdk\scripting">
       <UniqueIdentifier>{0f4aaaf4-19db-4d0f-9d9a-e5c29c8848bc}</UniqueIdentifier>
     </Filter>
@@ -108,9 +105,6 @@
     <ClInclude Include="sdk\actions\ZLnkAction.h">
       <Filter>sdk\actions</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\input\ZSysInput.h">
-      <Filter>sdk\input</Filter>
-    </ClInclude>
     <ClInclude Include="sdk\scripting\ZScriptC.h">
       <Filter>sdk\scripting</Filter>
     </ClInclude>
@@ -119,12 +113,6 @@
     </ClInclude>
     <ClInclude Include="sdk\ZHM3Actor.h">
       <Filter>sdk</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\input\ZKeyboardStorage.h">
-      <Filter>sdk\input</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\input\ZKeyboard.h">
-      <Filter>sdk\input</Filter>
     </ClInclude>
     <ClInclude Include="sdk\ZSysInterfaceWintel.h">
       <Filter>sdk</Filter>
@@ -220,6 +208,9 @@
       <Filter>sdk</Filter>
     </ClInclude>
     <ClInclude Include="sdk\ZHM3BriefingControl.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZBoxPrimitive.h">
       <Filter>sdk</Filter>
     </ClInclude>
   </ItemGroup>

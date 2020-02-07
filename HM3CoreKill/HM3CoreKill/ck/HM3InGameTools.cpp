@@ -124,6 +124,14 @@ namespace ck
 		auto engineDB = sysInterface->m_engineDataBase;
 		auto osd = gameData->m_OSD;
 
+		const bool isAllReady = gameData && gameData->m_ProfileName && sysInterface && engineDB && inputInterface && osd;
+
+		if (!isAllReady)
+		{
+			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "NO ACTIVE PROFILE");
+			return;
+		}
+
 		if (ImGui::CollapsingHeader("Player info", ImGuiTreeNodeFlags_None))
 		{
 			{ // Common game & profile data

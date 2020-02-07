@@ -150,12 +150,10 @@
     <ClInclude Include="sdk\actions\ZLnkAction.h" />
     <ClInclude Include="sdk\CTelePortList.h" />
     <ClInclude Include="sdk\HM3DebugAPI.h" />
-    <ClInclude Include="sdk\input\ZKeyboard.h" />
-    <ClInclude Include="sdk\input\ZKeyboardStorage.h" />
-    <ClInclude Include="sdk\input\ZSysInput.h" />
     <ClInclude Include="sdk\InterfacesProvider.h" />
     <ClInclude Include="sdk\ResourceCollection.h" />
     <ClInclude Include="sdk\scripting\ZScriptC.h" />
+    <ClInclude Include="sdk\ZBoxPrimitive.h" />
     <ClInclude Include="sdk\ZDirect3DDevice.h" />
     <ClInclude Include="sdk\ZEngineDatabase.h" />
     <ClInclude Include="sdk\ZEntityLocator.h" />

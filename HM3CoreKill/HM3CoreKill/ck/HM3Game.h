@@ -23,6 +23,7 @@ public:
 	void Initialise();
 	void Run();
 	void DestroyHack();
+	bool IsActive() const;
 
 	// Events
 	void OnNewGameSession(ioi::hm3::ZHM3Hitman3_t gameSession);

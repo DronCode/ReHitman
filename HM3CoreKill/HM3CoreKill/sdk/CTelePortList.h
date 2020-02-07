@@ -11,7 +11,8 @@ namespace hm3 {
 	{
 	public:
 		char pad_0004[32]; //0x0004
-		ZLIST_TeleportEntities* m_teleportPointsList; //0x0024
+		//ZLIST_TeleportEntities* m_teleportPointsList; //0x0024
+		ZLIST* m_pointsList; //0x024
 		char pad_0028[24]; //0x0028
 
 		virtual void Function0();

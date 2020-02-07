@@ -79,7 +79,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HM3_LAUNCHER_MANUAL_CHEAT_ENABLER;HM3_DEBUG_ENABLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HM3_LAUNCHER_MANUAL_CHEAT_ENABLER;__HM3_DEBUG_ENABLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

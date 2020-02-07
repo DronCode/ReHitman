@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <sdk/MathCommon.h>
+#include <sdk/ZEntityLocator.h>
 
 namespace ioi
 {
@@ -152,13 +153,12 @@ namespace ioi
 		virtual void Function117();
 	}; //Size: 0x0010
 
-	class ZLIST_TeleportEntities
+	class ZLIST
 	{
 	public:
 		char pad_0004[12]; //0x0004
 		REFTAB* m_refTab; //0x0010
-		ZSTDOBJ entities[0xFF];
-
+		
 		virtual void Function0();
 		virtual void Function1();
 		virtual void Function2();
@@ -286,4 +286,24 @@ namespace ioi
 		virtual void Function124();
 		virtual void Function125();
 	}; //Size: 0x0014
+
+	template <typename _ItemType>
+	struct ZListGetItem
+	{
+		static _ItemType* getItem(ZLIST* list, size_t itemIndex)
+		{
+			if (!list || list->m_refTab->subItemsCount <= itemIndex)
+				return nullptr;
+
+			return reinterpret_cast<_ItemType*>(reinterpret_cast<std::uintptr_t>(&list->m_refTab) + 0x4 + (sizeof(_ItemType) * itemIndex));
+		}
+	};
+
+	static size_t getListLength(ZLIST* list)
+	{
+		if (!list)
+			return 0;
+
+		return list->m_refTab->subItemsCount;
+	}
 }

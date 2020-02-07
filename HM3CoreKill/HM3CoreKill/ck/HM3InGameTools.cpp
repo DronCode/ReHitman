@@ -143,7 +143,7 @@ namespace ck
 			}
 		}
 
-
+		// Creates a Collapseable ImGui Header which shows the current output for Various Engine Systems
 		if (ImGui::CollapsingHeader("Glacier | Systems"))
 		{
 			ImGui::Text("ZSysInterfaceWintel: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", sysInterface);

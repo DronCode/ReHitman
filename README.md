@@ -1,7 +1,7 @@
 ReHitman
 --------
 
-![Image description](GitHub/index_preview.png)
+![Debug Console_Preview](GitHub/index_preview.png)
 
 What is ReHitman?
 ===========
@@ -42,4 +42,4 @@ Current Project Goals.
 Contact Information.
 ===========
 
-You can contact with me in the project's issue tracker(any questions, ideas, etc).
+You can contact me in the project's issue tracker (any questions, ideas, etc).

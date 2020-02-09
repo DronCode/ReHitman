@@ -3,7 +3,11 @@
 #include <imgui.h>
 #include <imgui_impl_dx9.h>
 #include <imgui_impl_win32.h>
+
+#include <ck/HM3Game.h>
+#include <ck/HM3Offsets.h>
 #include <ck/HM3DebugConsole.h>
+#include <ck/HM3Function.h>
 
 #include <sdk/InterfacesProvider.h>
 #include <sdk/ZSysInterfaceWintel.h>
@@ -13,6 +17,8 @@
 #include <sdk/ZEngineDatabase.h>
 #include <sdk/ZHM3GameData.h>
 #include <sdk/ZHM3BriefingControl.h>
+#include <sdk/ZEventBuffer.h>
+#include <sdk/CTelePortList.h>
 #include <sdk/ZOSD.h>
 
 // Win32 message handler
@@ -61,6 +67,7 @@ namespace ck
 		ImGui::NewFrame();
 
 		drawDebugMenu();
+
 		ImGui::EndFrame();
 
 		m_device->SetRenderState(D3DRS_ZENABLE, false);
@@ -107,13 +114,28 @@ namespace ck
 
 	void HM3InGameTools::drawDebugMenu()
 	{
-		ImGui::Begin("ReHitman | Debugger");
-		
+		static bool showActorsViewer = false;
+
+		ImGui::Begin("ReHitman | Debugger", nullptr, ImGuiWindowFlags_MenuBar);
+
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::BeginMenu("Level tools"))
+			{
+				ImGui::MenuItem("Actors viewer", nullptr, &showActorsViewer);
+				ImGui::EndMenu();
+			}
+		}
+		ImGui::EndMenuBar();
+
 		drawPlayerInfo();
 		drawSystemsInfo();
 		drawLevelInfo();
 
 		ImGui::End();
+
+		if (showActorsViewer)
+			showDebugActorsWindow(&showActorsViewer);
 	}
 
 	void HM3InGameTools::drawPlayerInfo()
@@ -126,14 +148,14 @@ namespace ck
 
 		const bool isAllReady = gameData && gameData->m_ProfileName && sysInterface && engineDB && inputInterface && osd;
 
-		if (!isAllReady)
-		{
-			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "NO ACTIVE PROFILE");
-			return;
-		}
-
 		if (ImGui::CollapsingHeader("Player info", ImGuiTreeNodeFlags_None))
 		{
+			if (!isAllReady)
+			{
+				ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "NO ACTIVE PROFILE");
+				return;
+			}
+
 			{ // Information Brief
 				// Get Profile Name from & Print to ImGui 
 				ImGui::Text("Profile: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), gameData->m_ProfileName);
@@ -148,6 +170,7 @@ namespace ck
 				// Get Scene from ZSysInterfaceWintel -> m_currentScene & Print to ImGui
 				ImGui::Text("Scene: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), sysInterface->m_currentScene);
 			}
+			
 			{ //Get Noise Level from zOSD Data -> m_realNosieLevel & Print to ImGui
 				ImGui::Text("Noise level: "); ImGui::SameLine(0.f, 15.f);
 
@@ -172,13 +195,36 @@ namespace ck
 		auto inputInterface = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInputWintel>(ioi::hm3::WintelInput);
 		auto engineDB = sysInterface->m_engineDataBase;
 		auto osd = gameData->m_OSD;
-
-      // Creates a Collapseable ImGui Header which shows the current output for Various Engine Systems
-      if (ImGui::CollapsingHeader("Glacier | Systems"))
+		
+		// Creates a Collapseable ImGui Header which shows the current output for Various Engine Systems
+		if (ImGui::CollapsingHeader("Glacier | Systems"))
 		{
-			ImGui::Text("ZSysInterfaceWintel: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", sysInterface);
-			ImGui::Text("ZSysInputWintel: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", inputInterface);
-			ImGui::Text("ZEngineDatabase: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", engineDB);
+			{
+				ImGui::Text("ZSysInterfaceWintel: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", sysInterface);
+			}
+
+			{
+				ImGui::Text("ZSysInputWintel: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", inputInterface);
+			}
+
+			{
+				ImGui::Text("ZEngineDatabase: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", engineDB);
+				ImGui::SameLine(0.f, 10.f);
+				if (ImGui::Button("Dump vftable"))
+				{
+					HM3Function::dumpVirtualTableOfInstance((DWORD)engineDB, 80, "ZEngineDataBase.txt", "ZEngineDataBase");
+					ImGui::OpenPopup("Dump vftable");
+				}
+
+				if (ImGui::BeginPopupModal("Dump vftable", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ImGui::Text("Virtual Functions table was of ZEngineDataBase object was dumped into ZEngineDataBase.txt file");
+					ImGui::Separator();
+
+					if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+					ImGui::EndPopup();
+				}
+			}
 		}
 	}
 
@@ -202,5 +248,76 @@ namespace ck
 				ImGui::Text("Level control: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", levelControl);
 			}
 		}
+	}
+
+	void HM3InGameTools::showDebugActorsWindow(bool* pOpen)
+	{
+		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
+		if (!gameData || !gameData->m_LevelControl)
+			return;
+
+		ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
+		if (ImGui::Begin("Actors viewer", pOpen))
+		{
+			// left
+			static int selected = 0;
+			ImGui::BeginChild("left pane", ImVec2(150, 0), true);
+			for (int i = 0; i < gameData->m_ActorsInPoolCount; i++)
+			{
+				char label[128];
+				sprintf(label, "Actor #%.2d", i + 1);
+				if (ImGui::Selectable(label, selected == i))
+					selected = i;
+			}
+			ImGui::EndChild();
+			ImGui::SameLine();
+
+			// right
+			ImGui::BeginGroup();
+			ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+			ImGui::Text("Actor: %.2d", selected + 1);
+			ImGui::Separator();
+			if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
+			{
+				ioi::hm3::ZHM3Actor* currentActor = gameData->m_ActorsPool[selected];
+
+				if (ImGui::BeginTabItem("General"))
+				{
+					ImGui::Text("Entity name: "); ImGui::SameLine(.0f, 4.f); ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), currentActor->ActorInformation->location->entityName);
+					
+					float actorPosition[4] = { 
+						currentActor->ActorInformation->location->position.x,
+						currentActor->ActorInformation->location->position.y,
+						currentActor->ActorInformation->location->position.z,
+						.0f
+					};
+					ImGui::Text("Location pointer at 0x%.8X", currentActor->ActorInformation->location);
+					ImGui::Text("Position:"); ImGui::SameLine(0.f, 4.f); ImGui::InputFloat3("", actorPosition); ImGui::SameLine(0.f, 4.f);
+
+					ImGui::EndTabItem();
+
+					if (actorPosition[0] != currentActor->ActorInformation->location->position.x ||
+						actorPosition[1] != currentActor->ActorInformation->location->position.y ||
+						actorPosition[2] != currentActor->ActorInformation->location->position.z)
+					{
+						currentActor->ActorInformation->location->position.x = actorPosition[0];
+						currentActor->ActorInformation->location->position.y = actorPosition[1];
+						currentActor->ActorInformation->location->position.z = actorPosition[2];
+					}
+				}
+				ImGui::EndTabBar();
+			}
+			ImGui::EndChild();
+			ImGui::EndGroup();
+		}
+		ImGui::End();
+
+		//ImGui::Text("Actors (%.3d)", gameData->m_ActorsInPoolCount);
+
+		//for (int actorIndex = 0; actorIndex < gameData->m_ActorsInPoolCount; actorIndex++)
+		//{
+		//	auto location = gameData->m_ActorsPool[actorIndex]->ActorInformation->location;
+		//	
+		//}
 	}
 }

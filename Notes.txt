@@ -58,3 +58,5 @@ REFTAB (for case with teleports, not tested with other entities)
 + 10 - ?
 + 14 - total count of sub elements (for ZLIST of teleports - total count of teleports in list)
 + 18 - ? unknown integer value, often less by 1 of +14 offset value; For the first time it seemed that this is the number of weak references to object, but for now, I guess that REFTAB is not shared_ptr. Also it could be used for garbage collector or other memory management stuff
+
+006A151A - check if mission scripts enabled (and it can override scripts path if it defined in HitmanBloodMoney.ini). it refs to unk_8168B8, that value was initialized by static constructor (thx cxx)

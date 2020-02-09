@@ -328,6 +328,14 @@ public:
 		HM3_ASSERT(writtenBytes == chunkSize, "Count of written to new place bytes must be equal to count of required bytes");
 	}
 
+	static DWORD getVirtualFunctionAddress(DWORD instance, DWORD vftableOffset)
+	{
+		std::intptr_t vftable_ptr = *reinterpret_cast<std::intptr_t*>(instance);
+		std::intptr_t entity = vftable_ptr + vftableOffset;
+		std::intptr_t original_func = *reinterpret_cast<std::intptr_t*>(entity);
+		return original_func;
+	}
+
 	static DWORD hookVFTable(DWORD instance, DWORD index, DWORD newAddr, bool doLog = true)
 	{
 		std::intptr_t vftable_ptr = *reinterpret_cast<std::intptr_t*>(instance);
@@ -407,6 +415,27 @@ public:
 
 		HM3_DEBUG(" Failed to hook IAT method \"%s\". Function not found in IAT table of process %s\n", functionName, process);
 		return 0;
+	}
+
+	static bool dumpVirtualTableOfInstance(DWORD instance, DWORD functionsCount, const char* outputFile, const char* className)
+	{
+		FILE* fp = fopen(outputFile, "w+");
+		if (!fp)
+			return false;
+
+		DWORD totalFunctions = functionsCount * 4;
+
+		fprintf(fp, "class %s {\npublic:\n", className);
+
+		for (DWORD funcIndex = 0; funcIndex <= totalFunctions; funcIndex += 4)
+		{
+			DWORD funcAddr = HM3Function::getVirtualFunctionAddress(instance, funcIndex);
+			fprintf(fp, "\tvirtual void Function_%.2d(); //+0x%.X | sub_%.8X\n", (funcIndex == 0 ? 0 : (funcIndex / 4)), funcIndex, funcAddr);
+		}
+
+		fprintf(fp, "};");
+
+		fclose(fp);
 	}
 
 	static void swapInstructions(const std::string& process, DWORD first, DWORD second, const DWORD count)

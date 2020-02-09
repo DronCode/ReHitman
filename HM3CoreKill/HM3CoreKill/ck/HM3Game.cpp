@@ -61,6 +61,7 @@ void HM3Game::Initialise()
 	setupHookToNewSessionInstanceCreator();
 	//setupHookZGEOMObjectConstructor();
 	setupHookZPlayerConstructor();
+	patchFreeBeamHere();
 
 	HM3_DEBUG("----------------< GAME STARTED >----------------\n");
 	m_isHackActive = true;
@@ -79,31 +80,6 @@ void HM3Game::DestroyHack()
 bool HM3Game::IsActive() const
 {
 	return m_isHackActive;
-}
-
-#define BOOL_TO_STR(b) (b ? "True" : "False")
-
-void HM3Game::printActorsPoolInfos()
-{
-	auto gameData = GetGameDataInstancePtr();
-	if (!gameData)
-		return;
-
-	HM3_DEBUG("Total actors count is %.4d\n", gameData->m_ActorsInPoolCount);
-
-	for (int actorIndex = 0; actorIndex < gameData->m_ActorsInPoolCount; actorIndex++)
-	{
-		auto location = gameData->m_ActorsPool[actorIndex]->ActorInformation->location;
-		HM3_DEBUG("Actor[%.4d] at 0x%.8X | name %.50s location at 0x%.8X ; position Vec3 { %.8f; %.8f; %.8f } ; is member of group 0x%.8X\n", 
-			actorIndex, 
-			gameData->m_ActorsPool[actorIndex], 
-			location->entityName, 
-			location,
-			location->position.x, 
-			location->position.y, 
-			location->position.z, 
-			location->group);
-	}
 }
 
 void HM3Game::hackActorsForAllDead() {
@@ -190,6 +166,11 @@ void HM3Game::setupD3DDeviceCreationHook()
 	ck::HM3Direct3D::getInstance().onEndScene	= std::bind(&HM3Game::onD3DEndScene, this, std::placeholders::_1);
 }
 
+void HM3Game::patchFreeBeamHere()
+{
+	HM3Function::overrideInstruction(HM3_PROCESS_NAME, 0x0065BC07, { 0x90, 0x90 });
+}
+
 void HM3Game::onD3DInitialized(IDirect3DDevice9* device)
 {
 	const auto renderer = GetSystemInterface()->m_renderer;
@@ -211,11 +192,6 @@ void HM3Game::onD3DEndScene(IDirect3DDevice9* device)
 void HM3Game::OnNewGameSession(ioi::hm3::ZHM3Hitman3_t gameSession)
 {
 	HM3_DEBUG("[HM3Game::OnNewGameSession] New session instance detected at 0x%.8X\n", gameSession);
-	{
-		auto gd = GetGameDataInstancePtr();
-		//HM3_DEBUG(" [BriefControl at 0x%.8X Camera at 0x%.8X ]\n", gd->m_BriefingControl, gd->m_Camera);
-	}
-	printActorsPoolInfos();
 }
 
 const HM3Player::Ptr& HM3Game::GetPlayer() const { return m_currentPlayer; }

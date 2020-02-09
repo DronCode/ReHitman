@@ -311,13 +311,5 @@ namespace ck
 			ImGui::EndGroup();
 		}
 		ImGui::End();
-
-		//ImGui::Text("Actors (%.3d)", gameData->m_ActorsInPoolCount);
-
-		//for (int actorIndex = 0; actorIndex < gameData->m_ActorsInPoolCount; actorIndex++)
-		//{
-		//	auto location = gameData->m_ActorsPool[actorIndex]->ActorInformation->location;
-		//	
-		//}
 	}
 }

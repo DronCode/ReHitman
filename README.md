@@ -67,4 +67,5 @@ Current Project Goals.
 Contact Information.
 ---------------
 
-The team can be contacted in the Project's issue tracker (any questions, ideas, etc).
+The team can be contacted in the Project's issue tracker or via Discord (any questions, ideas, etc).
+ - Discord: https://discord.gg/WK9jbqR

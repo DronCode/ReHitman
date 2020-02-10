@@ -1,34 +1,59 @@
-ReHitman
---------
+#ReHitman
+===============
+
 
 ![Debug Console_Preview](GitHub/index_preview.png)
 
 What is ReHitman?
-===========
+---------------
 
-ReHitman is an attempt to reverse the executable of Hitman Blood Money.
+ReHitman is an attempt to reverse the executable of "Hitman: Blood Money".
 The final goal of the project is to develop a multiplayer similar to Mafia 2's Mutli-player.
 
 Game Build Information.
-===========
+---------------
 
 This project is built on the last build of Hitman Blood Money that IO Interactive released.
 
-Executable String: blood-build3-20060616-26123
+Executable String:
 
-Directories.
-===========
+	blood-build3-20060616-26123
 
-This project includes 2 directories:
+Installation Instructions.
+---------------
+ * Ensure you meet the requirements
 
- * Launcher    
-	- The launcher is the Main DLL injector which controls the game.
+   - Game Build Information
+   
+ * Place the Pre-compiled files into the "Hitman: Blood Money" game installation folder.
+ * Run Launcher.exe
+ 
+Project Runtimes.
+---------------
 
- * HM3CoreKill 
-	- This is the projects core of reverse engineering and contains various libaries
+This project includes 2 runtimes:
 
+ * Launcher
+	- This simply just hooks "Hitman: Blood Money"
+
+ * HM3CoreKill
+ 
+	- This is the projects core for future development, this will be later useful for multiplayer development.
+		- ck
+			- (CoreKill) Future Multi-player development.
+		- docs
+			- Documentation.
+		- mp
+			- Multiplayer development
+		- sdk
+			- Our IO-Interactive reversed engineered software development kit, this is used for controlling the Glacier Engine
+		- third_party
+			- Third Party runtimes etc
+		- utils
+			- Various tools for internal project use
+	
 Current Project Goals.
-===========
+---------------
 
  - [x] Create an open source SDK for the Glacier 1 Engine
  - [ ] Reverse the rendering API
@@ -40,6 +65,7 @@ Current Project Goals.
  - [ ] Create a toolset for Hitman Blood Money
 
 Contact Information.
-===========
+---------------
 
-You can contact me in the project's issue tracker (any questions, ideas, etc).
+The team can be contacted in the Project's issue tracker or via Discord (any questions, ideas, etc).
+ - Discord: https://discord.gg/WK9jbqR

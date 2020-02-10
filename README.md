@@ -1,6 +1,7 @@
-#ReHitman
+ReHitman
 ===============
 
+[![Build status](https://ci.appveyor.com/api/projects/status/roum4p326855okuy?svg=true)](https://ci.appveyor.com/project/DronCode/rehitman)
 
 ![Debug Console_Preview](GitHub/index_preview.png)
 

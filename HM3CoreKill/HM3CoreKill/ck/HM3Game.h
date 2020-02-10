@@ -35,6 +35,7 @@ public:
 	const HM3Player::Ptr& GetPlayer() const;
 	std::uintptr_t GetCurrentLevelController() const;
 private:
+	bool checkBuildVersion();
 	void setupInputWatcher();
 	void setupDoesPlayerAcceptDamage();
 	void setupHookToNewSessionInstanceCreator();

@@ -18,6 +18,8 @@
 #include <functional>
 #include <algorithm>
 
+#define HM3_BUILDSTR "blood-build3-20060616-26123"
+
 HM3Game::HM3Game()
 	: m_currentPlayer(std::make_shared<HM3Player>())
 {
@@ -42,13 +44,11 @@ void __stdcall ShowWindowRequest()
 
 static DWORD pThis;
 
-DWORD __stdcall ExecuteBeamHereCall(DWORD* a1, float* a2)
+/*DWORD __stdcall ExecuteBeamHereCall(DWORD* a1, float* a2)
 {
 	__asm mov pThis, ecx
 	/// --------------------------
-	/***
-		Get active camera class [IT WORKS!]
-	 ***/
+	
 	HM3_DEBUG("[BeamHere::called] REQUEST TELEPORT TO ecx=0x%.8X a1=0x%.8X | a2=(%f;%f;%f) \n", pThis, a1, a2[0], a2[1], a2[2]);
 	DWORD camId = HM3Game::GetSystemInterface()->m_renderer->Function38(0);
 	HM3_DEBUG("CAM ID 0x%.8X\n", camId);
@@ -61,10 +61,16 @@ DWORD __stdcall ExecuteBeamHereCall(DWORD* a1, float* a2)
 	/// --------------------------
 	__asm mov ecx, pThis
 	return true;
-}
+}*/
 
 void HM3Game::Initialise()
 {
+	if (!checkBuildVersion())
+	{
+		MessageBox(nullptr, "This version of Hitman Blood Money not supported by ReHitman.\nGame will works in normal mode.", "Version not supported", MB_ICONEXCLAMATION | MB_OK);
+		return;
+	}
+
 	HM3DebugConsole::init();
 
 	HM3_DEBUG(
@@ -86,10 +92,10 @@ void HM3Game::Initialise()
 	setupHookZPlayerConstructor();
 	patchFreeBeamHere();
 
-	{
-		HM3Function::overrideInstruction(HM3_PROCESS_NAME, 0x0065BC17, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
-		HM3Function::hookFunction<DWORD(__stdcall*)(DWORD&, DWORD&), 6>(HM3_PROCESS_NAME, 0x0065BC17, (DWORD)ExecuteBeamHereCall);
-	}
+	//{
+	//	HM3Function::overrideInstruction(HM3_PROCESS_NAME, 0x0065BC17, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
+	//	HM3Function::hookFunction<DWORD(__stdcall*)(DWORD&, DWORD&), 6>(HM3_PROCESS_NAME, 0x0065BC17, (DWORD)ExecuteBeamHereCall);
+	//}
 
 	HM3_DEBUG("----------------< GAME STARTED >----------------\n");
 	m_isHackActive = true;
@@ -228,6 +234,13 @@ std::uintptr_t HM3Game::GetCurrentLevelController() const
 {
 	std::uintptr_t pGameData = reinterpret_cast<std::uintptr_t>(*(void**)ioi::hm3::GameData);
 	return reinterpret_cast<std::uintptr_t>(*((void**)(pGameData + HM3Offsets::ZHM3LevelControllerOffset)));
+}
+
+bool HM3Game::checkBuildVersion()
+{
+	const char* buildString = reinterpret_cast<const char*>(HM3Offsets::HM3_BuildString);
+
+	return (strcmp(buildString, HM3_BUILDSTR) == 0);
 }
 
 void HM3Game::setupInputWatcher()

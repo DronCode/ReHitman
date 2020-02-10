@@ -37,19 +37,20 @@ This project includes 2 runtimes:
 	- This simply just hooks "Hitman: Blood Money"
 
  * HM3CoreKill
-	This is the projects core for future development, this will be later useful for multiplayer development.
-	- ck
-		- (CoreKill) Future Multi-player development.
-	- docs
-		- Documentation.
-	- mp
-		- Multiplayer development
-	- sdk
-		- Our IO-Interactive reversed engineered software development kit, this is used for controlling the Glacier Engine
-	- third_party
-		- Third Party runtimes etc
-	- utils
-		- Various tools for internal project use
+ 
+	- This is the projects core for future development, this will be later useful for multiplayer development.
+		- ck
+			- (CoreKill) Future Multi-player development.
+		- docs
+			- Documentation.
+		- mp
+			- Multiplayer development
+		- sdk
+			- Our IO-Interactive reversed engineered software development kit, this is used for controlling the Glacier Engine
+		- third_party
+			- Third Party runtimes etc
+		- utils
+			- Various tools for internal project use
 	
 Current Project Goals.
 ---------------

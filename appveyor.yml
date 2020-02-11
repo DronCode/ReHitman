@@ -11,19 +11,22 @@ build:
   parallel: true                  # enable MSBuild parallel builds
   project: HM3CoreKill/HM3CoreKill.sln     # path to Visual Studio solution or project
 
-  #---------------------------------#
-  #      artifacts configuration    #
-  #---------------------------------#
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
 
-  artifacts:
-    # pushing a single file with environment variable in path and "Deployment name" specified
-    - path: HM3CoreKill\Debug\Launcher.exe
-      name: Launcher
+artifacts:
 
-    - path: HM3CoreKill\Debug\HM3CoreKill.dll
-      name: HM3CoreKill
+  - path: HM3CoreKill\Debug\Launcher.exe
+    name: Launcher
 
-# Discord WebHook
+  - path: HM3CoreKill\Debug\HM3CoreKill.dll
+    name: HM3CoreKill
+
+#---------------------------------#
+#         Discord WebHook         #
+#---------------------------------#
+
 on_success:
   - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1
   - ps: ./send.ps1 success $env:WEBHOOK_URL

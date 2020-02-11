@@ -1,7 +1,7 @@
 ReHitman
 ===============
 
-[![Build status](https://ci.appveyor.com/api/projects/status/roum4p326855okuy?svg=true)](https://ci.appveyor.com/project/DronCode/rehitman)
+[![Build status](https://ci.appveyor.com/api/projects/status/roum4p326855okuy/branch/master?svg=true)](https://ci.appveyor.com/project/DronCode/rehitman/branch/master)
 
 ![Debug Console_Preview](GitHub/index_preview.png)
 

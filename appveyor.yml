@@ -11,17 +11,17 @@ build:
   parallel: true                  # enable MSBuild parallel builds
   project: HM3CoreKill/HM3CoreKill.sln     # path to Visual Studio solution or project
 
+# scripts to run after build (working directory and environment changes are persisted from the previous steps)
+after_build: 7z a ReHitman.zip HM3CoreKill\Debug\Launcher.exe HM3CoreKill\Debug\HM3CoreKill.dll
+
 #---------------------------------#
 #      artifacts configuration    #
 #---------------------------------#
 
 artifacts:
 
-  - path: HM3CoreKill\Debug\Launcher.exe
-    name: Launcher
-
-  - path: HM3CoreKill\Debug\HM3CoreKill.dll
-    name: HM3CoreKill
+  - path: ReHitman.zip
+    name: ReHitman
 
 #---------------------------------#
 #         Discord WebHook         #

@@ -27,6 +27,13 @@ This project includes 2 directories:
  * HM3CoreKill 
 	- This is the projects core of reverse engineering and contains various libaries
 
+For developers
+===============
+
+You can build & debug ReHitman with game. 
+
+For this just switch solution configuration to "DebugGame" and write path to folder with game into environment variable `ReHitmanGameFolder`
+
 Current Project Goals.
 ===========
 

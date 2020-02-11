@@ -42,27 +42,6 @@ void __stdcall ShowWindowRequest()
 	ShowWindow(HM3Game::GetSystemInterface()->m_renderer->m_HWND, SW_SHOW);
 }
 
-static DWORD pThis;
-
-/*DWORD __stdcall ExecuteBeamHereCall(DWORD* a1, float* a2)
-{
-	__asm mov pThis, ecx
-	/// --------------------------
-	
-	HM3_DEBUG("[BeamHere::called] REQUEST TELEPORT TO ecx=0x%.8X a1=0x%.8X | a2=(%f;%f;%f) \n", pThis, a1, a2[0], a2[1], a2[2]);
-	DWORD camId = HM3Game::GetSystemInterface()->m_renderer->Function38(0);
-	HM3_DEBUG("CAM ID 0x%.8X\n", camId);
-
-	typedef DWORD(__cdecl* getCameraClassById_t)(DWORD);
-	getCameraClassById_t getCameraClassById = (getCameraClassById_t)0x004E5BE0;
-
-	DWORD camPtr = getCameraClassById(camId);
-	HM3_DEBUG("CAM PTR IS 0x%.8X\n", camPtr);
-	/// --------------------------
-	__asm mov ecx, pThis
-	return true;
-}*/
-
 void HM3Game::Initialise()
 {
 	if (!checkBuildVersion())
@@ -91,11 +70,6 @@ void HM3Game::Initialise()
 	//setupHookZGEOMObjectConstructor();
 	setupHookZPlayerConstructor();
 	patchFreeBeamHere();
-
-	//{
-	//	HM3Function::overrideInstruction(HM3_PROCESS_NAME, 0x0065BC17, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
-	//	HM3Function::hookFunction<DWORD(__stdcall*)(DWORD&, DWORD&), 6>(HM3_PROCESS_NAME, 0x0065BC17, (DWORD)ExecuteBeamHereCall);
-	//}
 
 	HM3_DEBUG("----------------< GAME STARTED >----------------\n");
 	m_isHackActive = true;

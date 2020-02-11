@@ -41,6 +41,7 @@ namespace HM3Offsets
 	static const FuncAddr_t Glacier_OriginalWNDPROC						 = 0x004513E0;
 
 	static const FuncAddr_t HM3_BuildString								 = 0x007562C0;
+	static const FuncAddr_t GetCameraClassById_Func						 = 0x004E5BE0;
 }
 
 namespace D3D9Offsets

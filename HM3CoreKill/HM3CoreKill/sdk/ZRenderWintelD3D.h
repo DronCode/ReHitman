@@ -1,14 +1,10 @@
 #pragma once
 
 #include <Windows.h>
+#include <cstdint>
 
 namespace ioi {
 namespace hm3 {
-	
-
-	// Created with ReClass.NET 1.2 by KN4CK3R
-	// Created with ReClass.NET 1.2 by KN4CK3R
-
 	class ZRenderWintelD3D
 	{
 	public:
@@ -53,7 +49,7 @@ namespace hm3 {
 		virtual void Function35(); //+0x8c
 		virtual void Function36(); //+0x90
 		virtual void Function37(); //+0x94
-		virtual DWORD Function38(int); //+0x98
+		virtual std::uintptr_t getCameraIdByIndex(int); //+0x98
 		virtual void Function39(); //+0x9c
 		virtual void Function40(); //+0xa0
 		virtual void Function41(); //+0xa4

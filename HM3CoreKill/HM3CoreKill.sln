@@ -13,6 +13,8 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		DebugGame|x64 = DebugGame|x64
+		DebugGame|x86 = DebugGame|x86
 		MinSizeRel|x64 = MinSizeRel|x64
 		MinSizeRel|x86 = MinSizeRel|x86
 		Release|x64 = Release|x64
@@ -21,10 +23,14 @@ Global
 		RelWithDebInfo|x86 = RelWithDebInfo|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.Debug|x64.ActiveCfg = Debug|x64
-		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.Debug|x64.Build.0 = Debug|x64
+		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.Debug|x64.ActiveCfg = CK_DebugGame|Win32
+		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.Debug|x64.Build.0 = CK_DebugGame|Win32
 		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.Debug|x86.ActiveCfg = Debug|Win32
 		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.Debug|x86.Build.0 = Debug|Win32
+		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.DebugGame|x64.ActiveCfg = CK_DebugGame|Win32
+		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.DebugGame|x64.Build.0 = CK_DebugGame|Win32
+		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.DebugGame|x86.ActiveCfg = CK_DebugGame|Win32
+		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.DebugGame|x86.Build.0 = CK_DebugGame|Win32
 		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.MinSizeRel|x64.ActiveCfg = Release|x64
 		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.MinSizeRel|x64.Build.0 = Release|x64
 		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.MinSizeRel|x86.ActiveCfg = Release|Win32
@@ -37,10 +43,14 @@ Global
 		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.RelWithDebInfo|x64.Build.0 = Release|x64
 		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.RelWithDebInfo|x86.ActiveCfg = Release|Win32
 		{96A29EF4-D34F-4E3F-BA66-7BE209CEA59F}.RelWithDebInfo|x86.Build.0 = Release|Win32
-		{F0F5C749-5905-4278-989E-5E5D1DA6D0AE}.Debug|x64.ActiveCfg = Debug|x64
-		{F0F5C749-5905-4278-989E-5E5D1DA6D0AE}.Debug|x64.Build.0 = Debug|x64
+		{F0F5C749-5905-4278-989E-5E5D1DA6D0AE}.Debug|x64.ActiveCfg = Launcher_DebugGame|Win32
+		{F0F5C749-5905-4278-989E-5E5D1DA6D0AE}.Debug|x64.Build.0 = Launcher_DebugGame|Win32
 		{F0F5C749-5905-4278-989E-5E5D1DA6D0AE}.Debug|x86.ActiveCfg = Debug|Win32
 		{F0F5C749-5905-4278-989E-5E5D1DA6D0AE}.Debug|x86.Build.0 = Debug|Win32
+		{F0F5C749-5905-4278-989E-5E5D1DA6D0AE}.DebugGame|x64.ActiveCfg = Launcher_DebugGame|Win32
+		{F0F5C749-5905-4278-989E-5E5D1DA6D0AE}.DebugGame|x64.Build.0 = Launcher_DebugGame|Win32
+		{F0F5C749-5905-4278-989E-5E5D1DA6D0AE}.DebugGame|x86.ActiveCfg = Launcher_DebugGame|Win32
+		{F0F5C749-5905-4278-989E-5E5D1DA6D0AE}.DebugGame|x86.Build.0 = Launcher_DebugGame|Win32
 		{F0F5C749-5905-4278-989E-5E5D1DA6D0AE}.MinSizeRel|x64.ActiveCfg = Release|x64
 		{F0F5C749-5905-4278-989E-5E5D1DA6D0AE}.MinSizeRel|x64.Build.0 = Release|x64
 		{F0F5C749-5905-4278-989E-5E5D1DA6D0AE}.MinSizeRel|x86.ActiveCfg = Release|Win32

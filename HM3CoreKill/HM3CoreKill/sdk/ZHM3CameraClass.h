@@ -8,5 +8,5 @@ namespace ioi { namespace hm3 {
 		virtual void Func0();
 	};
 
-	static ZHM3CameraClass* getCameraClassByIndex(int cameraIndex);
+	ZHM3CameraClass* getCameraClassByIndex(int cameraIndex);
 }}

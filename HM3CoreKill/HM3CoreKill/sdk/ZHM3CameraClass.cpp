@@ -7,11 +7,11 @@
 #include <cstdint>
 
 namespace ioi { namespace hm3 {
-	typedef ZHM3CameraClass* (__cdecl* getCameraClassById_t)(std::uintptr_t);
-	getCameraClassById_t getCameraClassById = (getCameraClassById_t)HM3Offsets::GetCameraClassById_Func;
-
 	ZHM3CameraClass* getCameraClassByIndex(int cameraIndex)
 	{
+		typedef ZHM3CameraClass* (__cdecl* getCameraClassById_t)(std::uintptr_t);
+		getCameraClassById_t getCameraClassById = (getCameraClassById_t)HM3Offsets::GetCameraClassById_Func;
+
 		auto systemInterface = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
 		if (!systemInterface)
 			return nullptr;

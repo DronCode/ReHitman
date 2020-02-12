@@ -166,4 +166,9 @@ namespace hm3 {
 		ActorInfos* ActorInformation; //0x0004
 	}; //Size: 0x0008
 
+	//"THINKER" code sub_504CB0
+	//REMOVE GUN FROM HAND OF ACTOR - sub_59E160
+	//Called before actor dead sub_59C610 (sometimes)
+	//Combat prepare sub_607000
+
 }}

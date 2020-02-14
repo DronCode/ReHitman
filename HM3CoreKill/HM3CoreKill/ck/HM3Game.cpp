@@ -18,6 +18,8 @@
 #include <functional>
 #include <algorithm>
 
+#define HM3_BUILDSTR "blood-build3-20060616-26123"
+
 HM3Game::HM3Game()
 	: m_currentPlayer(std::make_shared<HM3Player>())
 {
@@ -42,6 +44,12 @@ void __stdcall ShowWindowRequest()
 
 void HM3Game::Initialise()
 {
+	if (!checkBuildVersion())
+	{
+		MessageBox(nullptr, "This version of Hitman Blood Money not supported by ReHitman.\nGame will works in normal mode.", "Version not supported", MB_ICONEXCLAMATION | MB_OK);
+		return;
+	}
+
 	HM3DebugConsole::init();
 
 	HM3_DEBUG(
@@ -61,7 +69,27 @@ void HM3Game::Initialise()
 	setupHookToNewSessionInstanceCreator();
 	//setupHookZGEOMObjectConstructor();
 	setupHookZPlayerConstructor();
+	patchFreeBeamHere();
 
+	/*
+	
+	sub_4E6AF0 <- Add resource frontend
+sub_4E7770
+sub_50C620 <- very interesting too but not used in action
+sub_502A80 interesting
+sub_502A80
+
+//                                                    * (IDUNNO)
+005FC331 -> (ZHM3Actor) sub_516960 - Apply animation (+500) : {animPtr}, {loopsCount}, {?}, {?}
+==============================
+
+
+		sub_45DD10(ZEngineDataBase* pThis, ZPackedInput* pPackedInput, DWORD pEntity)
+			|
+			*
+		sub_459B80(ZPackedInput* pThis, ZCheckDistance* pDistanceChecker)
+
+	*/
 	HM3_DEBUG("----------------< GAME STARTED >----------------\n");
 	m_isHackActive = true;
 }
@@ -79,31 +107,6 @@ void HM3Game::DestroyHack()
 bool HM3Game::IsActive() const
 {
 	return m_isHackActive;
-}
-
-#define BOOL_TO_STR(b) (b ? "True" : "False")
-
-void HM3Game::printActorsPoolInfos()
-{
-	auto gameData = GetGameDataInstancePtr();
-	if (!gameData)
-		return;
-
-	HM3_DEBUG("Total actors count is %.4d\n", gameData->m_ActorsInPoolCount);
-
-	for (int actorIndex = 0; actorIndex < gameData->m_ActorsInPoolCount; actorIndex++)
-	{
-		auto location = gameData->m_ActorsPool[actorIndex]->ActorInformation->location;
-		HM3_DEBUG("Actor[%.4d] at 0x%.8X | name %.50s location at 0x%.8X ; position Vec3 { %.8f; %.8f; %.8f } ; is member of group 0x%.8X\n", 
-			actorIndex, 
-			gameData->m_ActorsPool[actorIndex], 
-			location->entityName, 
-			location,
-			location->position.x, 
-			location->position.y, 
-			location->position.z, 
-			location->group);
-	}
 }
 
 void HM3Game::hackActorsForAllDead() {
@@ -190,6 +193,11 @@ void HM3Game::setupD3DDeviceCreationHook()
 	ck::HM3Direct3D::getInstance().onEndScene	= std::bind(&HM3Game::onD3DEndScene, this, std::placeholders::_1);
 }
 
+void HM3Game::patchFreeBeamHere()
+{
+	HM3Function::overrideInstruction(HM3_PROCESS_NAME, HM3Offsets::ZHM3CheatMenu_BeamHereFuncPatch, { 0x90, 0x90 });
+}
+
 void HM3Game::onD3DInitialized(IDirect3DDevice9* device)
 {
 	const auto renderer = GetSystemInterface()->m_renderer;
@@ -211,11 +219,6 @@ void HM3Game::onD3DEndScene(IDirect3DDevice9* device)
 void HM3Game::OnNewGameSession(ioi::hm3::ZHM3Hitman3_t gameSession)
 {
 	HM3_DEBUG("[HM3Game::OnNewGameSession] New session instance detected at 0x%.8X\n", gameSession);
-	{
-		auto gd = GetGameDataInstancePtr();
-		//HM3_DEBUG(" [BriefControl at 0x%.8X Camera at 0x%.8X ]\n", gd->m_BriefingControl, gd->m_Camera);
-	}
-	printActorsPoolInfos();
 }
 
 const HM3Player::Ptr& HM3Game::GetPlayer() const { return m_currentPlayer; }
@@ -224,6 +227,13 @@ std::uintptr_t HM3Game::GetCurrentLevelController() const
 {
 	std::uintptr_t pGameData = reinterpret_cast<std::uintptr_t>(*(void**)ioi::hm3::GameData);
 	return reinterpret_cast<std::uintptr_t>(*((void**)(pGameData + HM3Offsets::ZHM3LevelControllerOffset)));
+}
+
+bool HM3Game::checkBuildVersion()
+{
+	const char* buildString = reinterpret_cast<const char*>(HM3Offsets::HM3_BuildString);
+
+	return (strcmp(buildString, HM3_BUILDSTR) == 0);
 }
 
 void HM3Game::setupInputWatcher()

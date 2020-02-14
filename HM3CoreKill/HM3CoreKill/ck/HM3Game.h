@@ -35,15 +35,16 @@ public:
 	const HM3Player::Ptr& GetPlayer() const;
 	std::uintptr_t GetCurrentLevelController() const;
 private:
+	bool checkBuildVersion();
 	void setupInputWatcher();
 	void setupDoesPlayerAcceptDamage();
 	void setupHookToNewSessionInstanceCreator();
 	void setupHookZGEOMObjectConstructor();
 	void setupHookZPlayerConstructor();
-	void printActorsPoolInfos();
 	void hackActorsForAllDead();
 	void fixEnableCheats();
 	void setupD3DDeviceCreationHook();
+	void patchFreeBeamHere();
 public:
 	static ioi::hm3::ZHM3GameData* GetGameDataInstancePtr();
 	static ioi::hm3::ZSysInterfaceWintel* GetSystemInterface();

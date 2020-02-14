@@ -3,7 +3,11 @@
 #include <imgui.h>
 #include <imgui_impl_dx9.h>
 #include <imgui_impl_win32.h>
+
+#include <ck/HM3Game.h>
+#include <ck/HM3Offsets.h>
 #include <ck/HM3DebugConsole.h>
+#include <ck/HM3Function.h>
 
 #include <sdk/InterfacesProvider.h>
 #include <sdk/ZSysInterfaceWintel.h>
@@ -13,6 +17,9 @@
 #include <sdk/ZEngineDatabase.h>
 #include <sdk/ZHM3GameData.h>
 #include <sdk/ZHM3BriefingControl.h>
+#include <sdk/ZHM3CameraClass.h>
+#include <sdk/ZEventBuffer.h>
+#include <sdk/CTelePortList.h>
 #include <sdk/ZOSD.h>
 
 // Win32 message handler
@@ -61,6 +68,7 @@ namespace ck
 		ImGui::NewFrame();
 
 		drawDebugMenu();
+
 		ImGui::EndFrame();
 
 		m_device->SetRenderState(D3DRS_ZENABLE, false);
@@ -107,13 +115,28 @@ namespace ck
 
 	void HM3InGameTools::drawDebugMenu()
 	{
-		ImGui::Begin("ReHitman | Debugger");
-		
+		static bool showActorsViewer = false;
+
+		ImGui::Begin("ReHitman | Debugger", nullptr, ImGuiWindowFlags_MenuBar);
+
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::BeginMenu("Level tools"))
+			{
+				ImGui::MenuItem("Actors viewer", nullptr, &showActorsViewer);
+				ImGui::EndMenu();
+			}
+		}
+		ImGui::EndMenuBar();
+
 		drawPlayerInfo();
 		drawSystemsInfo();
 		drawLevelInfo();
 
 		ImGui::End();
+
+		if (showActorsViewer)
+			showDebugActorsWindow(&showActorsViewer);
 	}
 
 	void HM3InGameTools::drawPlayerInfo()
@@ -123,17 +146,21 @@ namespace ck
 		auto inputInterface = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInputWintel>(ioi::hm3::WintelInput);
 		auto engineDB = sysInterface->m_engineDataBase;
 		auto osd = gameData->m_OSD;
+		auto hitman3 = gameData->m_Hitman3;
+
+		if (!hitman3)
+			return;
 
 		const bool isAllReady = gameData && gameData->m_ProfileName && sysInterface && engineDB && inputInterface && osd;
 
-		if (!isAllReady)
-		{
-			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "NO ACTIVE PROFILE");
-			return;
-		}
-
 		if (ImGui::CollapsingHeader("Player info", ImGuiTreeNodeFlags_None))
 		{
+			if (!isAllReady)
+			{
+				ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "NO ACTIVE PROFILE");
+				return;
+			}
+
 			{ // Information Brief
 				// Get Profile Name from & Print to ImGui 
 				ImGui::Text("Profile: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), gameData->m_ProfileName);
@@ -148,6 +175,7 @@ namespace ck
 				// Get Scene from ZSysInterfaceWintel -> m_currentScene & Print to ImGui
 				ImGui::Text("Scene: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), sysInterface->m_currentScene);
 			}
+			
 			{ //Get Noise Level from zOSD Data -> m_realNosieLevel & Print to ImGui
 				ImGui::Text("Noise level: "); ImGui::SameLine(0.f, 15.f);
 
@@ -162,6 +190,21 @@ namespace ck
 					noiseLevelColor = ImVec4(1.f, 0.f, 0.f, 1.f);
 				ImGui::TextColored(noiseLevelColor, "%.3f", osd->m_realNosieLevel);
 			}
+
+			{ //Teleport
+				static float newActorPosition[4] = { 0.f, 0.f, 0.f, 0.f };
+				float actorTransform[16] = { 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f };
+				ImGui::Separator();
+				ImGui::Text("Teleport player to: "); ImGui::SameLine(0.f, 5.f); ImGui::InputFloat3("", newActorPosition); ImGui::SameLine(0.f, 2.f);
+				if (ImGui::Button("Teleport"))
+				{
+					DWORD methodAddr = HM3Function::getVirtualFunctionAddress((DWORD)hitman3, 0x2A4);
+					typedef int(__thiscall* SetEntityPosition_t)(ioi::hm3::ZHitman3*, float*, float*);
+					SetEntityPosition_t SetEntityPosition = (SetEntityPosition_t)methodAddr;
+
+					SetEntityPosition(hitman3, actorTransform, newActorPosition);
+				}
+			}
 		}
 	}
 
@@ -172,13 +215,36 @@ namespace ck
 		auto inputInterface = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInputWintel>(ioi::hm3::WintelInput);
 		auto engineDB = sysInterface->m_engineDataBase;
 		auto osd = gameData->m_OSD;
-
-      // Creates a Collapseable ImGui Header which shows the current output for Various Engine Systems
-      if (ImGui::CollapsingHeader("Glacier | Systems"))
+		
+		// Creates a Collapseable ImGui Header which shows the current output for Various Engine Systems
+		if (ImGui::CollapsingHeader("Glacier | Systems"))
 		{
-			ImGui::Text("ZSysInterfaceWintel: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", sysInterface);
-			ImGui::Text("ZSysInputWintel: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", inputInterface);
-			ImGui::Text("ZEngineDatabase: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", engineDB);
+			{
+				ImGui::Text("ZSysInterfaceWintel: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", sysInterface);
+			}
+
+			{
+				ImGui::Text("ZSysInputWintel: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", inputInterface);
+			}
+
+			{
+				ImGui::Text("ZEngineDatabase: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", engineDB);
+				ImGui::SameLine(0.f, 10.f);
+				if (ImGui::Button("Dump vftable"))
+				{
+					HM3Function::dumpVirtualTableOfInstance((DWORD)engineDB, 80, "ZEngineDataBase.txt", "ZEngineDataBase");
+					ImGui::OpenPopup("Dump vftable");
+				}
+
+				if (ImGui::BeginPopupModal("Dump vftable", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+				{
+					ImGui::Text("Virtual Functions table was of ZEngineDataBase object was dumped into ZEngineDataBase.txt file");
+					ImGui::Separator();
+
+					if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+					ImGui::EndPopup();
+				}
+			}
 		}
 	}
 
@@ -187,9 +253,11 @@ namespace ck
 		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
 		auto sysInterface = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
 		auto inputInterface = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInputWintel>(ioi::hm3::WintelInput);
+		auto renderer = sysInterface->m_renderer;
 		auto engineDB = sysInterface->m_engineDataBase;
 		auto osd = gameData->m_OSD;
 		auto levelControl = gameData->m_LevelControl;
+		auto hitman3 = gameData->m_Hitman3;
 
 		if (ImGui::CollapsingHeader("Glacier | Level info"))
 		{
@@ -198,9 +266,77 @@ namespace ck
 				ImGui::Text("No active level");
 				return;
 			}
-			else {
-				ImGui::Text("Level control: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", levelControl);
-			}
+			
+			ImGui::Text("Level control: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", levelControl);
+
+			//Get camera transform
+			//{
+			//	float oldPos[4] = { 0.f, 0.f, 0.f, 0.f };
+			//
+			//	auto cameraClass = ioi::hm3::getCameraClassByIndex(0);
+			//
+			//	DWORD cameraClass_Method0 = HM3Function::getVirtualFunctionAddress((DWORD)cameraClass, 0x254);
+			//	typedef int(__thiscall* Method0_t)(ioi::hm3::ZHM3CameraClass*, float*, DWORD, signed int, DWORD);
+			//	Method0_t Method0 = (Method0_t)cameraClass_Method0;
+			//
+			//	Method0(cameraClass, oldPos, 0, 39, 0);
+			//	ImGui::Text("TEST: "); ImGui::SameLine(0.f, 10.f); ImGui::InputFloat3("", oldPos);
+			//}			
 		}
+	}
+
+	void HM3InGameTools::showDebugActorsWindow(bool* pOpen)
+	{
+		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
+		if (!gameData || !gameData->m_LevelControl)
+			return;
+
+		ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
+		if (ImGui::Begin("Actors viewer", pOpen))
+		{
+			// left
+			static int selected = 0;
+			ImGui::BeginChild("left pane", ImVec2(150, 0), true);
+			for (int i = 0; i < gameData->m_ActorsInPoolCount; i++)
+			{
+				char label[128];
+				sprintf(label, "Actor #%.2d", i + 1);
+				if (ImGui::Selectable(label, selected == i))
+					selected = i;
+			}
+			ImGui::EndChild();
+			ImGui::SameLine();
+
+			// right
+			ioi::hm3::ZHM3Actor* currentActor = gameData->m_ActorsPool[selected];
+
+			ImGui::BeginGroup();
+			ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+			ImGui::Text("Actor: %.2d at 0x%.8X", selected + 1, currentActor);
+			ImGui::Separator();
+			if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
+			{
+				if (ImGui::BeginTabItem("General"))
+				{
+					ImGui::Text("Entity name: "); ImGui::SameLine(.0f, 4.f); ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), currentActor->ActorInformation->location->entityName);
+					
+					float actorPosition[4] = {
+						currentActor->ActorInformation->location->position.x,
+						currentActor->ActorInformation->location->position.y,
+						currentActor->ActorInformation->location->position.z,
+						.0f
+					};
+					
+					ImGui::Text("Location pointer at 0x%.8X", currentActor->ActorInformation->location);
+					ImGui::Text("Position:"); ImGui::SameLine(0.f, 4.f); ImGui::InputFloat3("", actorPosition); 
+
+					ImGui::EndTabItem();
+				}
+				ImGui::EndTabBar();
+			}
+			ImGui::EndChild();
+			ImGui::EndGroup();
+		}
+		ImGui::End();
 	}
 }

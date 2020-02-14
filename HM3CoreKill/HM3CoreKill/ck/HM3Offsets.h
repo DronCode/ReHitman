@@ -39,6 +39,10 @@ namespace HM3Offsets
 	static const FuncAddr_t ZDirect3DDevice_ConstructorFunc				 = 0x0049091C;
 	static const FuncAddr_t ZWintelMouse_ContructorFunc					 = 0x0045007C;
 	static const FuncAddr_t Glacier_OriginalWNDPROC						 = 0x004513E0;
+
+	static const FuncAddr_t HM3_BuildString								 = 0x007562C0;
+	static const FuncAddr_t GetCameraClassById_Func						 = 0x004E5BE0;
+	static constexpr const FuncAddr_t ZHM3CheatMenu_BeamHereFuncPatch	 = 0x0065BC07;
 }
 
 namespace D3D9Offsets

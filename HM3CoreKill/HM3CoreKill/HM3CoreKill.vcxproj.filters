@@ -213,6 +213,9 @@
     <ClInclude Include="sdk\ZBoxPrimitive.h">
       <Filter>sdk</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\ZHM3CameraClass.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">
@@ -278,6 +281,9 @@
     </ClCompile>
     <ClCompile Include="ck\HM3InGameTools.cpp">
       <Filter>ck</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\ZHM3CameraClass.cpp">
+      <Filter>sdk</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -29,6 +29,7 @@ namespace ck
 		void drawPlayerInfo();
 		void drawSystemsInfo();
 		void drawLevelInfo();
+		void showDebugActorsWindow(bool* pOpen);
 	};
 
 }

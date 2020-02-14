@@ -29,7 +29,15 @@ namespace hm3 {
 	static const std::uintptr_t IsScriptsLoaded  = 0x008ACA2C;	//BOOL FLAG
 	static const std::uintptr_t EventBuffer		 = 0x008BA0B8;	//Based on ZEventBuffer : ZSerializable : ZSerializableBase
 	static const std::uintptr_t FileSystem		 = 0x0082081C;  //Based on ZSysFileWintel : ZSysFile
+	static const std::uintptr_t ScriptCComponent = 0x008ACA28;	//Based on  ZScriptCComponent: ZComponentSingleton<ZScriptCComponent,ZRuntimeComponentBase>, ZRuntimeComponentBase, ZComponent<ZRuntimeComponentBase,ZComponentDescription<0,ZComponentDefaultAllocator> >, ZComponentBase, NotCopyable
+	static const std::uintptr_t CollisionWintel  = 0x0090DE98;	//Based on ZCollisionWintel : ZCollisionBase
+	static const std::uintptr_t RigidBodyPool	 = 0x009A3554;	//Based on ZRigidBodyPoolManager
+	static const std::uintptr_t BoneExtendPool	 = 0x009A37B4;	//Based on ZBoneExtendPool 
+	static const std::uintptr_t VertexExtendPool = 0x009A37B8;  //Based on ZVertexExtendPool
+	static const std::uintptr_t ScriptComponent  = 0x008A89CC;  //Based on ZScriptComponent
 	
+	static const std::uintptr_t ComponentManager_RuntimeComponentBase = 0x002DB0038;	//Based on ZComponentManager<ZRuntimeComponentBase> : ZComponentManagerBase : ZComponentBase : NotCopyable
+
 	static const std::uintptr_t Direct3DInterface = 0x0090AF08;	//IDirect3D9 device
 	static const std::uintptr_t Direct3DDevice    = 0x0090AF0C;	//Based on ZDirect3DDevice : ID3DXEffectStateManager : IUnknown
 	static const std::uintptr_t DirectInputDevice = 0x008B4BA0; //DirectInput interface pointer

@@ -1,7 +1,7 @@
 ReHitman
 ===============
 
-[![Build status](https://ci.appveyor.com/api/projects/status/roum4p326855okuy?svg=true)](https://ci.appveyor.com/project/DronCode/rehitman)
+[![Build status](https://ci.appveyor.com/api/projects/status/roum4p326855okuy/branch/master?svg=true)](https://ci.appveyor.com/project/DronCode/rehitman/branch/master)
 
 ![Debug Console_Preview](GitHub/index_preview.png)
 
@@ -28,6 +28,13 @@ Installation Instructions.
    
  * Place the Pre-compiled files into the "Hitman: Blood Money" game installation folder.
  * Run Launcher.exe
+ 
+For developers
+===============
+
+You can build & debug ReHitman with game. 
+
+For this just switch solution configuration to "DebugGame" and write path to folder with game into environment variable `ReHitmanGameFolder` 
  
 Project Runtimes.
 ---------------

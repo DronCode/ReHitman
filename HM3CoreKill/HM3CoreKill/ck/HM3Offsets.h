@@ -42,6 +42,7 @@ namespace HM3Offsets
 
 	static const FuncAddr_t HM3_BuildString								 = 0x007562C0;
 	static const FuncAddr_t GetCameraClassById_Func						 = 0x004E5BE0;
+	static constexpr const FuncAddr_t ZHM3CheatMenu_BeamHereFuncPatch	 = 0x0065BC07;
 }
 
 namespace D3D9Offsets

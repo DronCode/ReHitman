@@ -17,6 +17,7 @@
 
 #define x86_pop_eax  0x58
 #define x86_pop_ecx  0x59
+#define x86_pop_esi  0x5E
 
 #define x86_nop		 0x90
 

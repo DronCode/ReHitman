@@ -57,7 +57,7 @@ HWND __stdcall CreateWindowExA_Hooked(
 
 int __stdcall ZHM3Player_DoesPlayerAcceptAnyDamage(void* pThis)
 {
-	HM3_DEBUG("ZHM3Player_DoesPlayerAcceptAnyDamage| ZHitman3 vftable instance at 0x%X", pThis);
+	//HM3_DEBUG("ZHM3Player_DoesPlayerAcceptAnyDamage| ZHitman3 vftable instance at 0x%X", pThis);
 	return static_cast<int>(HM3Game::getInstance().GetPlayer()->isDoesAcceptDamage());
 }
 

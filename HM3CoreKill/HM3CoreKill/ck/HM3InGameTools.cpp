@@ -269,19 +269,19 @@ namespace ck
 			
 			ImGui::Text("Level control: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", levelControl);
 
-
-			{
-				float oldPos[4] = { 0.f, 0.f, 0.f, 0.f };
-
-				auto cameraClass = ioi::hm3::getCameraClassByIndex(0);
-
-				DWORD cameraClass_Method0 = HM3Function::getVirtualFunctionAddress((DWORD)cameraClass, 0x254);
-				typedef int(__thiscall* Method0_t)(ioi::hm3::ZHM3CameraClass*, float*, DWORD, signed int, DWORD);
-				Method0_t Method0 = (Method0_t)cameraClass_Method0;
-
-				Method0(cameraClass, oldPos, 0, 39, 0);
-				ImGui::Text("TEST: "); ImGui::SameLine(0.f, 10.f); ImGui::InputFloat3("", oldPos);
-			}			
+			//Get camera transform
+			//{
+			//	float oldPos[4] = { 0.f, 0.f, 0.f, 0.f };
+			//
+			//	auto cameraClass = ioi::hm3::getCameraClassByIndex(0);
+			//
+			//	DWORD cameraClass_Method0 = HM3Function::getVirtualFunctionAddress((DWORD)cameraClass, 0x254);
+			//	typedef int(__thiscall* Method0_t)(ioi::hm3::ZHM3CameraClass*, float*, DWORD, signed int, DWORD);
+			//	Method0_t Method0 = (Method0_t)cameraClass_Method0;
+			//
+			//	Method0(cameraClass, oldPos, 0, 39, 0);
+			//	ImGui::Text("TEST: "); ImGui::SameLine(0.f, 10.f); ImGui::InputFloat3("", oldPos);
+			//}			
 		}
 	}
 

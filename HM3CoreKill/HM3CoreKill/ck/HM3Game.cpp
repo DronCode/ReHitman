@@ -71,6 +71,25 @@ void HM3Game::Initialise()
 	setupHookZPlayerConstructor();
 	patchFreeBeamHere();
 
+	/*
+	
+	sub_4E6AF0 <- Add resource frontend
+sub_4E7770
+sub_50C620 <- very interesting too but not used in action
+sub_502A80 interesting
+sub_502A80
+
+//                                                    * (IDUNNO)
+005FC331 -> (ZHM3Actor) sub_516960 - Apply animation (+500) : {animPtr}, {loopsCount}, {?}, {?}
+==============================
+
+
+		sub_45DD10(ZEngineDataBase* pThis, ZPackedInput* pPackedInput, DWORD pEntity)
+			|
+			*
+		sub_459B80(ZPackedInput* pThis, ZCheckDistance* pDistanceChecker)
+
+	*/
 	HM3_DEBUG("----------------< GAME STARTED >----------------\n");
 	m_isHackActive = true;
 }
@@ -176,7 +195,7 @@ void HM3Game::setupD3DDeviceCreationHook()
 
 void HM3Game::patchFreeBeamHere()
 {
-	HM3Function::overrideInstruction(HM3_PROCESS_NAME, 0x0065BC07, { 0x90, 0x90 });
+	HM3Function::overrideInstruction(HM3_PROCESS_NAME, HM3Offsets::ZHM3CheatMenu_BeamHereFuncPatch, { 0x90, 0x90 });
 }
 
 void HM3Game::onD3DInitialized(IDirect3DDevice9* device)

@@ -48,6 +48,8 @@
 										+-------------------< JUMP + 5 >----------------+
 		*/
 
+#define GET_MEMBER_BY_OFFSET(base, offset) ((DWORD*)((char*)base + offset))
+
 namespace vtable_hook {
 	static int vtablehook_unprotect(void* region) {
 #ifdef WIN32

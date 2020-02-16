@@ -8,6 +8,7 @@
 #include <ck/HM3Offsets.h>
 #include <ck/HM3DebugConsole.h>
 #include <ck/HM3Function.h>
+#include <ck/HM3AnimationRegistry.h>
 
 #include <sdk/InterfacesProvider.h>
 #include <sdk/ZSysInterfaceWintel.h>
@@ -20,6 +21,7 @@
 #include <sdk/ZHM3CameraClass.h>
 #include <sdk/ZEventBuffer.h>
 #include <sdk/CTelePortList.h>
+#include <sdk/ZAnimationInfo.h>
 #include <sdk/ZOSD.h>
 
 // Win32 message handler
@@ -329,6 +331,55 @@ namespace ck
 					
 					ImGui::Text("Location pointer at 0x%.8X", currentActor->ActorInformation->location);
 					ImGui::Text("Position:"); ImGui::SameLine(0.f, 4.f); ImGui::InputFloat3("", actorPosition); 
+
+					{
+						ImGui::Text("Set animation: "); ImGui::SameLine(0.f, 5.f);
+
+						static std::string item_current = "(None)";            // Here our selection is a single pointer stored outside the object.
+						static ioi::hm3::ZAnimationInfo* current_anim = nullptr;
+
+						if (ImGui::BeginCombo("CXX", item_current.c_str())) // The second parameter is the label previewed before opening the combo.
+						{
+							const ck::HM3AnimationRegistry& registry = ck::HM3AnimationRegistry::getRegistry();
+							std::vector<ioi::hm3::ZAnimationInfo*> animations;
+							registry.getLoadedAnimations(animations);
+
+							for (int i = 0; i < animations.size(); i++)
+							{
+								if (!animations[i])
+									continue;
+
+								bool is_selected = (item_current == animations[i]->m_name);
+								if (ImGui::Selectable(animations[i]->m_name, is_selected))
+								{
+									item_current = animations[i]->m_name;
+									current_anim = animations[i];
+								}
+
+								if (is_selected)
+									ImGui::SetItemDefaultFocus();
+							}
+
+							ImGui::EndCombo();
+						}
+						ImGui::SameLine(0.f, 5.f);
+						if (current_anim && ImGui::Button("Apply"))
+						{
+							DWORD pFunc0 = HM3Function::getVirtualFunctionAddress((DWORD)currentActor, 0x164);
+							typedef void(__stdcall* TestFunc0_t)(int, int);
+							TestFunc0_t TestFunc0 = (TestFunc0_t)pFunc0;
+							TestFunc0(6, 0);
+							// ------------------------------------------------------------------------------------
+							//sub_516960 - Apply animation (+1F4) : {animPtr}, {loopsCount}, {?}, {?}
+							DWORD pFunc = HM3Function::getVirtualFunctionAddress((DWORD)currentActor, 0x1F8);
+							typedef int(__thiscall* TestFunc_t)(ioi::hm3::ZHM3Actor*, ioi::hm3::ZAnimationInfo*, int);
+							TestFunc_t test = (TestFunc_t)pFunc;
+							test(currentActor, current_anim, 1);
+
+							HM3_DEBUG("[InGameDebugger] try to apply animation at 0x%.8X for instance 0x%.8X with VFOffset %.4X final addr 0x%.8X\n", current_anim, currentActor, 0x1F8, pFunc);
+							// Somebody should be in focus before apply this animation. See ref sub_519610
+						}
+					}
 
 					ImGui::EndTabItem();
 				}

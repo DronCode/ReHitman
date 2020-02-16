@@ -14,6 +14,7 @@
 #include <sdk/ZGameGlobals.h>
 #include <sdk/InterfacesProvider.h>
 #include <sdk/ZSTD.h>
+#include <sdk/ZAnimationInfo.h>
 
 #include <functional>
 #include <algorithm>
@@ -70,6 +71,7 @@ void HM3Game::Initialise()
 	//setupHookZGEOMObjectConstructor();
 	setupHookZPlayerConstructor();
 	patchFreeBeamHere();
+	setupLoadAnimationHook();
 
 	/*
 	
@@ -80,7 +82,7 @@ sub_502A80 interesting
 sub_502A80
 
 //                                                    * (IDUNNO)
-005FC331 -> (ZHM3Actor) sub_516960 - Apply animation (+500) : {animPtr}, {loopsCount}, {?}, {?}
+005FC331 -> (ZHM3Actor) sub_516960 - Apply animation (+1F4) : {animPtr}, {loopsCount}, {?}, {?}
 ==============================
 
 
@@ -89,6 +91,8 @@ sub_502A80
 			*
 		sub_459B80(ZPackedInput* pThis, ZCheckDistance* pDistanceChecker)
 
+
+		sub_5EFC00 - preload animations into ZHitman3
 	*/
 	HM3_DEBUG("----------------< GAME STARTED >----------------\n");
 	m_isHackActive = true;
@@ -196,6 +200,29 @@ void HM3Game::setupD3DDeviceCreationHook()
 void HM3Game::patchFreeBeamHere()
 {
 	HM3Function::overrideInstruction(HM3_PROCESS_NAME, HM3Offsets::ZHM3CheatMenu_BeamHereFuncPatch, { 0x90, 0x90 });
+}
+
+void HM3Game::setupLoadAnimationHook()
+{
+	/*
+		It's better to relocate some original instructions instead read non original data but for now it doesn't matter for us.
+	*/
+	HM3Function::overrideInstruction(HM3_PROCESS_NAME, 0x00519B0B, { 0x90, 0x90, 0x90 });
+
+	HM3Function::hookFunction<void(__stdcall)(ioi::hm3::ZAnimationInfo*), 5>(
+		HM3_PROCESS_NAME,
+		0x00519B09,
+		(DWORD)ZHM3_OnAnimationLoaded,
+		{
+			x86_pushad,
+			x86_pushfd,
+			x86_push_eax
+		},
+			{
+				x86_popfd,
+				x86_popad,
+				0xC2, 0x04, 0x00 //retn 4
+			});
 }
 
 void HM3Game::onD3DInitialized(IDirect3DDevice9* device)
@@ -320,7 +347,7 @@ void HM3Game::setupHookZPlayerConstructor()
 	HM3Function::hookFunction<void(__stdcall*)(DWORD), 13>(
 		HM3_PROCESS_NAME, 
 		(DWORD)HM3Offsets::ZPlayer_Constructor, 
-		(DWORD)ZPlayer_Constructor, 
+		(DWORD)ZPlayer_Destructor, 
 		{
 			// pre code
 			// pushad

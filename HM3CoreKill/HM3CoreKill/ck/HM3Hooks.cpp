@@ -6,12 +6,14 @@
 #include <ck/HM3Direct3D.h>
 #include <ck/HM3InGameTools.h>
 #include <ck/HM3Offsets.h>
+#include <ck/HM3AnimationRegistry.h>
 
 #include <sdk/ZMouseWintel.h>
 #include <sdk/ZSysInputWintel.h>
 #include <sdk/actions/ZLnkAction.h>
 #include <sdk/ZHM3Hitman3.h>
 #include <sdk/ZGameGlobals.h>
+#include <sdk/ZHM3GameData.h>
 #include <sdk/ZGameDataFactory.h>
 
 #include <windowsx.h>
@@ -77,9 +79,12 @@ void __stdcall ZGEOM_Ctor_CALLBACK(DWORD ptr)
 	HM3_DEBUG("ZGEOM::ZGEOM() at 0x%X\n", ptr);
 }
 
-void __stdcall ZPlayer_Constructor(DWORD instance)
+void __stdcall ZPlayer_Destructor(DWORD instance)
 {
-	HM3_DEBUG("ZPlayer::ZPlayer() at 0x%X\n", instance);
+	HM3_DEBUG("ZPlayer::~ZPlayer() at 0x%X\n", instance);
+	
+	// Free session base data
+	ck::HM3AnimationRegistry::getRegistry().reset();
 }
 
 void __stdcall ZDirect3DDevice_OnDeviceReady(ioi::hm3::ZDirect3DDevice* device)
@@ -125,4 +130,22 @@ void __stdcall OnZMouseWintelCreated(DWORD device)
 	HM3_DEBUG("ZMouseWintel created at 0x%.8X\n", device);
 
 	originalMember = HM3Function::hookVFTable(device, 26, (DWORD)ZMouseWintel_OnUpdate, true);
+}
+
+void __stdcall ZHM3_OnAnimationLoaded(ioi::hm3::ZAnimationInfo* animationInstance)
+{
+	auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
+	if (!gameData || !gameData->m_LevelControl)
+	{
+		/*
+		 * @brief Here we must know that we have an active mission before register new animation.
+		 *        The main menu trying to load animations too, but that animations will be invalidated in missions and our cache could be poisoned by us.
+		 */
+		return;
+	}
+
+	if (animationInstance)
+	{		
+		ck::HM3AnimationRegistry::getRegistry().registerAnimation(animationInstance);
+	}
 }

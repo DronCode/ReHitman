@@ -69,7 +69,7 @@ void HM3Game::Initialise()
 	setupDoesPlayerAcceptDamage();
 	setupHookToNewSessionInstanceCreator();
 	//setupHookZGEOMObjectConstructor();
-	setupHookZPlayerConstructor();
+	setupHookZPlayerDestructor();
 	patchFreeBeamHere();
 	setupLoadAnimationHook();
 
@@ -204,25 +204,22 @@ void HM3Game::patchFreeBeamHere()
 
 void HM3Game::setupLoadAnimationHook()
 {
-	/*
-		It's better to relocate some original instructions instead read non original data but for now it doesn't matter for us.
-	*/
-	HM3Function::overrideInstruction(HM3_PROCESS_NAME, 0x00519B0B, { 0x90, 0x90, 0x90 });
+	HM3Function::overrideInstruction(HM3_PROCESS_NAME, HM3Offsets::ZHM3AnimationManager_Pre_OnLoadAnimation, { 0x90, 0x90, 0x90 });
 
 	HM3Function::hookFunction<void(__stdcall)(ioi::hm3::ZAnimationInfo*), 5>(
 		HM3_PROCESS_NAME,
-		0x00519B09,
+		HM3Offsets::ZHM3AnimationManager_OnLoadAnimation,
 		(DWORD)ZHM3_OnAnimationLoaded,
 		{
 			x86_pushad,
 			x86_pushfd,
 			x86_push_eax
 		},
-			{
-				x86_popfd,
-				x86_popad,
-				0xC2, 0x04, 0x00 //retn 4
-			});
+		{
+			x86_popfd,
+			x86_popad,
+			x86_ret_4
+		});
 }
 
 void HM3Game::onD3DInitialized(IDirect3DDevice9* device)
@@ -342,7 +339,7 @@ void HM3Game::setupHookZGEOMObjectConstructor()
 		});
 }
 
-void HM3Game::setupHookZPlayerConstructor()
+void HM3Game::setupHookZPlayerDestructor()
 {
 	HM3Function::hookFunction<void(__stdcall*)(DWORD), 13>(
 		HM3_PROCESS_NAME, 

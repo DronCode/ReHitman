@@ -336,9 +336,9 @@ namespace ck
 						ImGui::Text("Set animation: "); ImGui::SameLine(0.f, 5.f);
 
 						static std::string item_current = "(None)";            // Here our selection is a single pointer stored outside the object.
-						static ioi::hm3::ZAnimationInfo* current_anim = nullptr;
+						static ioi::hm3::ZAnimationInfo* currentAnim = nullptr;
 
-						if (ImGui::BeginCombo("CXX", item_current.c_str())) // The second parameter is the label previewed before opening the combo.
+						if (ImGui::BeginCombo(" ", item_current.c_str())) // The second parameter is the label previewed before opening the combo.
 						{
 							const ck::HM3AnimationRegistry& registry = ck::HM3AnimationRegistry::getRegistry();
 							std::vector<ioi::hm3::ZAnimationInfo*> animations;
@@ -353,7 +353,7 @@ namespace ck
 								if (ImGui::Selectable(animations[i]->m_name, is_selected))
 								{
 									item_current = animations[i]->m_name;
-									current_anim = animations[i];
+									currentAnim = animations[i];
 								}
 
 								if (is_selected)
@@ -363,21 +363,10 @@ namespace ck
 							ImGui::EndCombo();
 						}
 						ImGui::SameLine(0.f, 5.f);
-						if (current_anim && ImGui::Button("Apply"))
+						if (currentAnim && ImGui::Button("Apply"))
 						{
-							DWORD pFunc0 = HM3Function::getVirtualFunctionAddress((DWORD)currentActor, 0x164);
-							typedef void(__stdcall* TestFunc0_t)(int, int);
-							TestFunc0_t TestFunc0 = (TestFunc0_t)pFunc0;
-							TestFunc0(6, 0);
-							// ------------------------------------------------------------------------------------
-							//sub_516960 - Apply animation (+1F4) : {animPtr}, {loopsCount}, {?}, {?}
-							DWORD pFunc = HM3Function::getVirtualFunctionAddress((DWORD)currentActor, 0x1F8);
-							typedef int(__thiscall* TestFunc_t)(ioi::hm3::ZHM3Actor*, ioi::hm3::ZAnimationInfo*, int);
-							TestFunc_t test = (TestFunc_t)pFunc;
-							test(currentActor, current_anim, 1);
-
-							HM3_DEBUG("[InGameDebugger] try to apply animation at 0x%.8X for instance 0x%.8X with VFOffset %.4X final addr 0x%.8X\n", current_anim, currentActor, 0x1F8, pFunc);
-							// Somebody should be in focus before apply this animation. See ref sub_519610
+							currentActor->dropAnimation(6, 0);
+							currentActor->setAnimation(currentAnim);
 						}
 					}
 

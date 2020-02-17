@@ -17,6 +17,7 @@ namespace ck {
 
 		void registerAnimation(ioi::hm3::ZAnimationInfo* info);
 		void reset();
+		ioi::hm3::ZAnimationInfo* loadCustomAnimation(const char* animationPath);
 
 		void getLoadedAnimations(std::vector<ioi::hm3::ZAnimationInfo*>& animations) const;
 	};

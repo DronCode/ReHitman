@@ -1,5 +1,8 @@
 #include <ck/HM3AnimationRegistry.h>
 #include <ck/HM3DebugConsole.h>
+#include <sdk/InterfacesProvider.h>
+#include <sdk/ZGameGlobals.h>
+#include <sdk/ZHM3GameData.h> //ZHitman3 definition (pre-def)
 
 namespace ck
 {
@@ -23,6 +26,29 @@ namespace ck
 	{
 		m_loadedAnimations.clear();
 		HM3_DEBUG("[HM3AnimationRegistry::reset] unload all!\n");
+	}
+
+	ioi::hm3::ZAnimationInfo* HM3AnimationRegistry::loadCustomAnimation(const char* animationPath)
+	{
+		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
+		if (!gameData)
+		{
+			HM3_DEBUG("[HM3AnimationRegistry::loadCustomAnimation] Failed to load custom animation : game data service not available\n");
+			return nullptr;
+		}
+
+		typedef ioi::hm3::ZAnimationInfo* (__thiscall* Glacier_PreloadAnimation_t)(ioi::hm3::ZHitman3*, const char*);
+		Glacier_PreloadAnimation_t preloadAnimation = (Glacier_PreloadAnimation_t)0x00519AE0;
+		
+		auto animation = preloadAnimation(gameData->m_Hitman3, animationPath);
+		if (!animation)
+		{
+			HM3_DEBUG("[HM3AnimationRegistry::loadCustomAnimation] failed to load animation \"%s\"\n", animationPath);
+			return nullptr;
+		}
+
+		registerAnimation(animation);
+		return animation;
 	}
 
 	void HM3AnimationRegistry::getLoadedAnimations(std::vector<ioi::hm3::ZAnimationInfo*>& animations) const

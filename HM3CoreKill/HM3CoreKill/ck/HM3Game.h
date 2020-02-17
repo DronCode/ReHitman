@@ -40,7 +40,7 @@ private:
 	void setupDoesPlayerAcceptDamage();
 	void setupHookToNewSessionInstanceCreator();
 	void setupHookZGEOMObjectConstructor();
-	void setupHookZPlayerConstructor();
+	void setupHookZPlayerDestructor();
 	void hackActorsForAllDead();
 	void fixEnableCheats();
 	void setupD3DDeviceCreationHook();

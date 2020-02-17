@@ -436,8 +436,8 @@ public:
 		}
 
 		fprintf(fp, "};");
-
 		fclose(fp);
+		return true;
 	}
 
 	static void swapInstructions(const std::string& process, DWORD first, DWORD second, const DWORD count)

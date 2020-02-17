@@ -21,6 +21,10 @@
 
 #define x86_nop		 0x90
 
+#define x86_ret     0xC3
+#define x86_ret_4   0xC2, 0x04, 0x00
+#define x86_ret_8   0xC2, 0x08, 0x00
+
 #define X86_SAVE_REGION		\
 	__asm pushad			\
 	__asm pushfd

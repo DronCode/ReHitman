@@ -40,11 +40,12 @@ private:
 	void setupDoesPlayerAcceptDamage();
 	void setupHookToNewSessionInstanceCreator();
 	void setupHookZGEOMObjectConstructor();
-	void setupHookZPlayerConstructor();
+	void setupHookZPlayerDestructor();
 	void hackActorsForAllDead();
 	void fixEnableCheats();
 	void setupD3DDeviceCreationHook();
 	void patchFreeBeamHere();
+	void setupLoadAnimationHook();
 public:
 	static ioi::hm3::ZHM3GameData* GetGameDataInstancePtr();
 	static ioi::hm3::ZSysInterfaceWintel* GetSystemInterface();

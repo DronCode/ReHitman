@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <sdk/ZDirect3DDevice.h>
+#include <sdk/ZAnimationInfo.h>
 
 ATOM __stdcall RegisterClassExA_Hooked(WNDCLASSEXA* wndClass);
 
@@ -32,8 +33,10 @@ void __stdcall ZHM3Hitman3_Constructor(DWORD result);
 
 void __stdcall ZGEOM_Ctor_CALLBACK(DWORD ptr);
 
-void __stdcall ZPlayer_Constructor(DWORD instance);
+void __stdcall ZPlayer_Destructor(DWORD instance);
 
 void __stdcall ZDirect3DDevice_OnDeviceReady(ioi::hm3::ZDirect3DDevice* device);
 
 void __stdcall OnZMouseWintelCreated(DWORD device);
+
+void __stdcall ZHM3_OnAnimationLoaded(ioi::hm3::ZAnimationInfo* animationInstance);

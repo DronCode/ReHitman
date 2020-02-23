@@ -73,6 +73,7 @@ void HM3Game::Initialise()
 	patchFreeBeamHere();
 	setupLoadAnimationHook();
 	setupNativeObjectsCreationHooks();
+	setupOnSTDOBJAttachedHook();
 
 	/*
 	
@@ -236,6 +237,26 @@ void HM3Game::setupNativeObjectsCreationHooks()
 			x86_pushfd,
 			x86_push_eax
 		}, {
+			x86_popfd,
+			x86_popad
+		});
+}
+
+void HM3Game::setupOnSTDOBJAttachedHook()
+{
+	//OnDoorCreated
+	HM3Function::moveInstructions<5>(HM3_PROCESS_NAME, HM3Offsets::Global_OnAttachSTDOBJ_OrgEnding, HM3Offsets::Global_OnAttachSTDOBJ_NewEnding);	//Move original ending by 5 bytes next
+	HM3Function::overrideInstruction(HM3_PROCESS_NAME, HM3Offsets::Global_OnAttachSTDOBJ_OrgEnding, { 0x90, 0x90, 0x90, 0x90, 0x90 });				//Use free space as our jump space
+	HM3Function::hookFunction<void(__stdcall*)(DWORD), 5>(
+		HM3_PROCESS_NAME,
+		HM3Offsets::Global_OnAttachSTDOBJ_OrgEnding,
+		(DWORD)ZGlacier_OnSTDOBJAttached,
+		{
+			x86_pushad,
+			x86_pushfd,
+			x86_push_edi
+		},
+		{
 			x86_popfd,
 			x86_popad
 		});

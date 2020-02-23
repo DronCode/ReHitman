@@ -4,24 +4,28 @@
 #include <imgui_impl_dx9.h>
 #include <imgui_impl_win32.h>
 
-#include <ck/HM3Game.h>
-#include <ck/HM3Offsets.h>
+#include <ck/HM3AnimationRegistry.h>
+#include <ck/HM3DoorsRegistry.h>
+#include <ck/HM3ActionFactory.h>
 #include <ck/HM3DebugConsole.h>
 #include <ck/HM3Function.h>
-#include <ck/HM3AnimationRegistry.h>
+#include <ck/HM3Offsets.h>
+#include <ck/HM3Game.h>
 
-#include <sdk/InterfacesProvider.h>
+#include <sdk/actions/ZHitmanActionPickLock.h>
+#include <sdk/ZHM3BriefingControl.h>
 #include <sdk/ZSysInterfaceWintel.h>
+#include <sdk/InterfacesProvider.h>
 #include <sdk/ZSysInputWintel.h>
+#include <sdk/ZEngineDatabase.h>
+#include <sdk/ZHM3CameraClass.h>
+#include <sdk/ZAnimationInfo.h>
+#include <sdk/CTelePortList.h>
 #include <sdk/ZMouseWintel.h>
 #include <sdk/ZGameGlobals.h>
-#include <sdk/ZEngineDatabase.h>
 #include <sdk/ZHM3GameData.h>
-#include <sdk/ZHM3BriefingControl.h>
-#include <sdk/ZHM3CameraClass.h>
 #include <sdk/ZEventBuffer.h>
-#include <sdk/CTelePortList.h>
-#include <sdk/ZAnimationInfo.h>
+#include <sdk/CDoor.h>
 #include <sdk/ZOSD.h>
 
 // Win32 message handler
@@ -273,6 +277,16 @@ namespace ck
 		auto levelControl = gameData->m_LevelControl;
 		auto hitman3 = gameData->m_Hitman3;
 
+		auto printRTTR = [](ioi::hm3::ZGlacierRTTI* rtti) {
+			ImGui::Separator();
+			ImGui::Text("    RTTI      : ");
+			ImGui::Text("        ID        : %d", rtti->TypeID);
+			ImGui::Text("        Name      : %s", rtti->SelfType);
+			ImGui::Text("        Parent    : %s", rtti->Parent);
+			ImGui::Text("        Full name : %s", rtti->ComplexTypeName);
+			ImGui::Separator();
+		};
+
 		if (ImGui::CollapsingHeader("Glacier | Level info"))
 		{
 			if (!levelControl)
@@ -282,24 +296,11 @@ namespace ck
 			}
 			
 			ImGui::Text("Level control : "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", levelControl);
-			ImGui::Separator();
 			ioi::hm3::ZGlacierRTTI* rtti = ioi::hm3::getTypeInfo(levelControl);
-
-			ImGui::Text("    RTTI      : ");
-			ImGui::Text("        ID        : %d", rtti->TypeID);
-			ImGui::Text("        Name      : %s", rtti->SelfType);
-			ImGui::Text("        Parent    : %s", rtti->Parent);
-			ImGui::Text("        Full name : %s", rtti->ComplexTypeName);
-			ImGui::Separator();
+			printRTTR(rtti);
 
 			ImGui::Text("Map           : "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", gameData->m_IngameMap);
-			ImGui::Separator();
-			ImGui::Text("    RTTI      : ");
-			ImGui::Text("        ID        : %d", gameData->m_IngameMap->m_RTTI->TypeID);
-			ImGui::Text("        Name      : %s", gameData->m_IngameMap->m_RTTI->SelfType);
-			ImGui::Text("        Parent    : %s", gameData->m_IngameMap->m_RTTI->Parent);
-			ImGui::Text("        Full name : %s", gameData->m_IngameMap->m_RTTI->ComplexTypeName);
-			ImGui::Separator();
+			printRTTR(gameData->m_IngameMap->m_RTTI);
 			ImGui::Text("    isShowed  : %s", (gameData->m_IngameMap->m_showed ? "Yes" : "No"));
 			if (gameData->m_IngameMap->m_showed)
 			{
@@ -310,6 +311,32 @@ namespace ck
 				else
 					ImGui::Text("    floor     : %s", gameData->m_IngameMap->m_activeMap->m_viewName);
 				ImGui::Text("    renderer  : {%.4f; %.4f; %.4f}", gameData->m_IngameMap->m_iconRenderer->m_position.x, gameData->m_IngameMap->m_iconRenderer->m_position.y, gameData->m_IngameMap->m_iconRenderer->m_position.z);
+			}
+
+			if (ImGui::Button("Test LockPick action"))
+			{
+				const auto& doorsRegistry = HM3DoorsRegistry::getRegistry();
+				const auto& animationsRegistry = HM3AnimationRegistry::getRegistry();
+
+				auto pAction = reinterpret_cast<ioi::hm3::ZHitmanActionPickLock*>(HM3ActionFactory::createActionByType(hitman3, ioi::hm3::ZLnkActionType::HitmanActionPickLock));
+				HM3_ASSERT(pAction != nullptr, "Action Factory must return not null pointer!");
+
+				auto pDoor = doorsRegistry.getDoorByName("D03A_Door_Auditorium_01");
+				HM3_ASSERT(pDoor != nullptr, "DoorRegistry| Unable to find door!");
+
+				pAction->m_door				 = pDoor->m_doorSTD;
+				pAction->m_animPickLockStart = animationsRegistry.getAnimationByName("anim:Hero/Hero#Pick_Lock_Start");
+				pAction->m_animPickLockStop  = animationsRegistry.getAnimationByName("anim:Hero/Hero#Pick_Lock_Stop");
+				pAction->m_animPickLockLoop  = animationsRegistry.getAnimationByName("anim:Hero/Hero#Pick_Lock_Loop");
+
+				HM3_ASSERT(pAction->m_door              != nullptr, "Door:STDOBJ    must be loaded!");
+				HM3_ASSERT(pAction->m_animPickLockStart != nullptr, "PickLock:Start animation must be loaded!");
+				HM3_ASSERT(pAction->m_animPickLockStop  != nullptr, "PickLock:Stop  animation must be loaded!");
+				HM3_ASSERT(pAction->m_animPickLockLoop  != nullptr, "PickLock:Loop  animation must be loaded!");
+
+				HM3_DEBUG("Trying to perform action %s\n", pAction->GetActionName());
+				
+				pAction->Function2();
 			}
 		}
 	}

@@ -234,6 +234,15 @@
     <ClInclude Include="sdk\CIngameMap.h">
       <Filter>sdk</Filter>
     </ClInclude>
+    <ClInclude Include="ck\HM3DoorsRegistry.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\actions\ZHitmanActionPickLock.h">
+      <Filter>sdk\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\CDoor.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">
@@ -304,6 +313,9 @@
       <Filter>sdk</Filter>
     </ClCompile>
     <ClCompile Include="ck\HM3AnimationRegistry.cpp">
+      <Filter>ck</Filter>
+    </ClCompile>
+    <ClCompile Include="ck\HM3DoorsRegistry.cpp">
       <Filter>ck</Filter>
     </ClCompile>
   </ItemGroup>

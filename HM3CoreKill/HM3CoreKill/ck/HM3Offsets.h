@@ -46,6 +46,8 @@ namespace HM3Offsets
 	static const FuncAddr_t ZHM3AnimationManager_Pre_OnLoadAnimation	 = 0x00519B0B;
 	static const FuncAddr_t ZHM3AnimationManager_OnLoadAnimation		 = 0x00519B09;
 	static const FuncAddr_t CMapObject_ConstructorEnding				 = 0x00665E13;
+	static const FuncAddr_t Global_OnAttachSTDOBJ_OrgEnding				 = 0x004E6B16;
+	static const FuncAddr_t Global_OnAttachSTDOBJ_NewEnding				 = Global_OnAttachSTDOBJ_OrgEnding + 0x5;
 
 	static const Index_t	CMapObject_OnProcessMethodIndex				 = 29;
 }

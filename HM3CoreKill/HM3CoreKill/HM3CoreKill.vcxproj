@@ -126,7 +126,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HM3_TRACE_HOOKS;HM3_TRACE_NATIVE_OBJECTS_CREATION_ENABLED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;HM3_TRACE_HOOKS;HM3_TRACE_NATIVE_OBJECTS_CREATION_ENABLED;HM3_TRACE_ANIMATIONS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -188,6 +188,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ck\Features.h" />
+    <ClInclude Include="ck\HM3DoorsRegistry.h" />
     <ClInclude Include="ck\HM3ActionFactory.h" />
     <ClInclude Include="ck\HM3AnimationRegistry.h" />
     <ClInclude Include="ck\HM3CrashHandler.h" />
@@ -204,7 +205,9 @@
     <ClInclude Include="ck\HM3ScopedProtection.h" />
     <ClInclude Include="ck\HM3Types.h" />
     <ClInclude Include="mp\MP.h" />
+    <ClInclude Include="sdk\actions\ZHitmanActionPickLock.h" />
     <ClInclude Include="sdk\actions\ZLnkAction.h" />
+    <ClInclude Include="sdk\CDoor.h" />
     <ClInclude Include="sdk\CIngameMap.h" />
     <ClInclude Include="sdk\CMapObject.h" />
     <ClInclude Include="sdk\CTelePortList.h" />
@@ -264,6 +267,7 @@
     <ClCompile Include="ck\HM3CrashHandler.cpp" />
     <ClCompile Include="ck\HM3DebugConsole.cpp" />
     <ClCompile Include="ck\HM3Direct3D.cpp" />
+    <ClCompile Include="ck\HM3DoorsRegistry.cpp" />
     <ClCompile Include="ck\HM3Game.cpp" />
     <ClCompile Include="ck\HM3Hooks.cpp" />
     <ClCompile Include="ck\HM3InGameTools.cpp" />

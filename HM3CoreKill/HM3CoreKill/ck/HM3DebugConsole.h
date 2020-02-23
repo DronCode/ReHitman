@@ -7,6 +7,8 @@ class HM3DebugConsole
 {
 public:
 	static void init();
+
+	static void showAssertionFailedDialog(const char* func, const char* file, int line, const char* message, const char* condition);
 };
 
 #define HM3_DEBUG(format, ...) fprintf(stdout, format, __VA_ARGS__)
@@ -26,10 +28,10 @@ public:
 		HM3_DEBUG("%.2X ", buffer[bIndex]);			\
 	HM3_DEBUG("\n");
 
-#define HM3_ASSERT(condition, message)	\
-	if (!(condition)) {					\
-		HM3_DEBUG("%s\n", message);		\
-		assert(false);					\
+#define HM3_ASSERT(condition, message)																\
+	if (!(condition)) {																				\
+		HM3_DEBUG("%s\n", message);																	\
+		HM3DebugConsole::showAssertionFailedDialog(__FUNCTION__, __FILE__, __LINE__, message, #condition);	\
 	}
 
 #define HM3_UNUSED(something) (void)something;

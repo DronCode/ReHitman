@@ -47,6 +47,7 @@ private:
 	void patchFreeBeamHere();
 	void setupLoadAnimationHook();
 	void setupNativeObjectsCreationHooks();
+	void setupOnSTDOBJAttachedHook();
 public:
 	static ioi::hm3::ZHM3GameData* GetGameDataInstancePtr();
 	static ioi::hm3::ZSysInterfaceWintel* GetSystemInterface();

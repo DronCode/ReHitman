@@ -7,6 +7,7 @@
 #include <ck/HM3InGameTools.h>
 #include <ck/HM3Offsets.h>
 #include <ck/HM3AnimationRegistry.h>
+#include <ck/HM3DoorsRegistry.h>
 
 #include <sdk/ZMouseWintel.h>
 #include <sdk/ZSysInputWintel.h>
@@ -92,6 +93,7 @@ void __stdcall ZPlayer_Destructor(DWORD instance)
 	
 	// Free session base data
 	ck::HM3AnimationRegistry::getRegistry().reset();
+	ck::HM3DoorsRegistry::getRegistry().reset();
 }
 
 void __stdcall ZDirect3DDevice_OnDeviceReady(ioi::hm3::ZDirect3DDevice* device)
@@ -163,4 +165,27 @@ void __stdcall CMapObject_OnCreate(ioi::hm3::CMapObject* instance)
 		return;
 
 	HM3_TRACE_NATIVE_OBJECT_CREATION(instance);
+}
+
+void __stdcall ZGlacier_OnSTDOBJAttached(DWORD* unknownInstance)
+{
+	if (!unknownInstance)
+		return;
+
+	ioi::hm3::ZGlacierRTTI* runtimeInfo = ioi::hm3::getTypeInfo(unknownInstance);
+	if (!runtimeInfo)
+		return;
+
+	const std::string_view parentType   = runtimeInfo->Parent;
+
+	if (parentType == "ZGEOM")
+	{
+		const std::string_view instanceType = runtimeInfo->SelfType;
+		const bool isTypeBasedOnDoorWord = instanceType.find("Door", 0) != std::string_view::npos;
+		if (isTypeBasedOnDoorWord)
+		{
+			ioi::hm3::CDoor* instance = reinterpret_cast<ioi::hm3::CDoor*>(unknownInstance);
+			ck::HM3DoorsRegistry::getRegistry().registerDoor(instance);
+		}
+	}
 }

@@ -35,7 +35,7 @@ namespace ck
 	void HM3AnimationRegistry::reset()
 	{
 		m_loadedAnimations.clear();
-		HM3_TRACE_UNLOAD_ALL
+		HM3_TRACE_UNLOAD_ALL;
 	}
 
 	ioi::hm3::ZAnimationInfo* HM3AnimationRegistry::loadCustomAnimation(const char* animationPath)
@@ -57,6 +57,15 @@ namespace ck
 
 		registerAnimation(animation);
 		return animation;
+	}
+
+	ioi::hm3::ZAnimationInfo* HM3AnimationRegistry::getAnimationByName(const char* animationName) const
+	{
+		auto foundIter = m_loadedAnimations.find(animationName);
+		if (foundIter == std::end(m_loadedAnimations))
+			return nullptr;
+
+		return foundIter->second;
 	}
 
 	void HM3AnimationRegistry::getLoadedAnimations(std::vector<ioi::hm3::ZAnimationInfo*>& animations) const

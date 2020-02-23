@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <sdk/ZDirect3DDevice.h>
 #include <sdk/ZAnimationInfo.h>
+#include <sdk/CDoor.h>
 #include <sdk/CMapObject.h>
 
 ATOM __stdcall RegisterClassExA_Hooked(WNDCLASSEXA* wndClass);
@@ -43,3 +44,5 @@ void __stdcall OnZMouseWintelCreated(DWORD device);
 void __stdcall ZHM3_OnAnimationLoaded(ioi::hm3::ZAnimationInfo* animationInstance);
 
 void __stdcall CMapObject_OnCreate(ioi::hm3::CMapObject* instance);
+
+void __stdcall ZGlacier_OnSTDOBJAttached(DWORD* unknownInstance);

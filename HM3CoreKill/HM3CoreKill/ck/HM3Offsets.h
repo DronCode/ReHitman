@@ -45,6 +45,9 @@ namespace HM3Offsets
 	static const FuncAddr_t ZHM3CheatMenu_BeamHereFuncPatch				 = 0x0065BC07;
 	static const FuncAddr_t ZHM3AnimationManager_Pre_OnLoadAnimation	 = 0x00519B0B;
 	static const FuncAddr_t ZHM3AnimationManager_OnLoadAnimation		 = 0x00519B09;
+	static const FuncAddr_t CMapObject_ConstructorEnding				 = 0x00665E13;
+
+	static const Index_t	CMapObject_OnProcessMethodIndex				 = 29;
 }
 
 namespace D3D9Offsets

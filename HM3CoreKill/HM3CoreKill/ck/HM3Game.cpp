@@ -72,6 +72,7 @@ void HM3Game::Initialise()
 	setupHookZPlayerDestructor();
 	patchFreeBeamHere();
 	setupLoadAnimationHook();
+	setupNativeObjectsCreationHooks();
 
 	/*
 	
@@ -94,6 +95,7 @@ sub_502A80
 
 		sub_5EFC00 - preload animations into ZHitman3
 	*/
+
 	HM3_DEBUG("----------------< GAME STARTED >----------------\n");
 	m_isHackActive = true;
 }
@@ -219,6 +221,23 @@ void HM3Game::setupLoadAnimationHook()
 			x86_popfd,
 			x86_popad,
 			x86_ret_4
+		});
+}
+
+void HM3Game::setupNativeObjectsCreationHooks()
+{
+	// CMapObject::ctor ending (with runtime infos)
+	HM3Function::hookFunction<void(__stdcall*)(DWORD), 11>(
+		HM3_PROCESS_NAME,
+		HM3Offsets::CMapObject_ConstructorEnding,
+		(DWORD)CMapObject_OnCreate,
+		{
+			x86_pushad,
+			x86_pushfd,
+			x86_push_eax
+		}, {
+			x86_popfd,
+			x86_popad
 		});
 }
 

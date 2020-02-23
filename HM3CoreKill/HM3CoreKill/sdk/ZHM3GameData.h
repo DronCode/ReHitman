@@ -8,6 +8,7 @@
 #include <sdk/ZHM3MenuElements.h>
 #include <sdk/ZHM3LevelControl.h>
 #include <sdk/ZHM3BriefingControl.h>
+#include <sdk/CIngameMap.h>
 
 #define DECLARE_UNKNOWN_TYPE_PTR(name) using name = std::uintptr_t;
 
@@ -21,7 +22,6 @@ namespace hm3 {
 	DECLARE_UNKNOWN_TYPE_PTR(N0000163D);
 	DECLARE_UNKNOWN_TYPE_PTR(ZGui);
 	DECLARE_UNKNOWN_TYPE_PTR(m_Gui);
-	DECLARE_UNKNOWN_TYPE_PTR(CIngameMap);
 	DECLARE_UNKNOWN_TYPE_PTR(CGlobalCom);
 	DECLARE_UNKNOWN_TYPE_PTR(ZHM3WeaponUpgradeControl);
 	DECLARE_UNKNOWN_TYPE_PTR(ZHM3CameraEventCameraClass);

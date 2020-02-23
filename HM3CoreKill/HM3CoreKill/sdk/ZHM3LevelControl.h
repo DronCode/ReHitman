@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <sdk/ZHM3BriefingControl.h>
+#include <sdk/ZGlacierRTTI.h>
 
 namespace ioi { namespace hm3 {
 
@@ -114,7 +115,6 @@ namespace ioi { namespace hm3 {
 		virtual void Function99();
 		virtual void Function100();
 		virtual void Function101();
-
 	};
 
 }}

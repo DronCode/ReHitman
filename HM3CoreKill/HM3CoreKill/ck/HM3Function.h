@@ -104,6 +104,19 @@ class HM3Function
 		return NULL;
 	}
 public:
+	static DWORD getValueFromModule(const std::string& process, DWORD offset)
+	{
+		/// Find function
+		ProcessHandleCacheController::ProcessCacheRow procInfo = ProcessHandleCacheController::getProcessHandle(process);
+		ModuleInfo_t mod = ModuleInfo_t::GetModule(procInfo.pid, process.c_str());
+
+		HANDLE pHandle = procInfo.handle;
+
+		HM3_ASSERT(pHandle != 0, "Unable to find target process!");
+
+		return mod.baseAddr + offset;
+	}
+
 	template <typename Functor> 
 	static DWORD findFunction(const std::string& process, const std::string& pattern, const std::string& mask)
 	{
@@ -352,6 +365,13 @@ public:
 			HM3_DEBUG(" Override function #%.3d of instance 0x%.8X replace member at 0x%.8X by 0x%.8X\n", index, instance, original_func, newAddr);
 		
 		return static_cast<DWORD>(original_func);
+	}
+
+	template <typename _RetType, typename _Class, typename... _Args>
+	static DWORD hookVFTable(_Class* instance, DWORD index, _RetType(__thiscall _Class::* pMember)(_Args...), bool doLog = true)
+	{
+		DWORD newAddr = reinterpret_cast<DWORD>(reinterpret_cast<DWORD*&>(pMember)); //funny C++ trick to get member addr xD | ref https://stackoverflow.com/a/8122891
+		return hookVFTable((DWORD)instance, index, newAddr, doLog);
 	}
 
 	static DWORD hookIAT(const std::string& process, const char* functionName, DWORD to)

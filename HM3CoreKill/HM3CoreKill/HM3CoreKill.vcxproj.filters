@@ -222,6 +222,18 @@
     <ClInclude Include="ck\HM3AnimationRegistry.h">
       <Filter>ck</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\ZGUI.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZGlacierRTTI.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\CMapObject.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\CIngameMap.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">

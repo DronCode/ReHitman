@@ -247,6 +247,18 @@ namespace ck
 					ImGui::EndPopup();
 				}
 			}
+
+			{
+				ImGui::Text("ZGui: "); ImGui::SameLine(0.f, 15.f); 
+				if (!gameData || !gameData->m_Gui)
+					ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
+				else
+					ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", gameData->m_Gui);
+			}
+
+			// sub_6AE2C0 (on level event?)
+			// sub_6ACD90 (on update map)
+			// ev int __thiscall sub_461780(int this, unsigned int *a2)
 		}
 	}
 
@@ -269,21 +281,36 @@ namespace ck
 				return;
 			}
 			
-			ImGui::Text("Level control: "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", levelControl);
+			ImGui::Text("Level control : "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", levelControl);
+			ImGui::Separator();
+			ioi::hm3::ZGlacierRTTI* rtti = ioi::hm3::getTypeInfo(levelControl);
 
-			//Get camera transform
-			//{
-			//	float oldPos[4] = { 0.f, 0.f, 0.f, 0.f };
-			//
-			//	auto cameraClass = ioi::hm3::getCameraClassByIndex(0);
-			//
-			//	DWORD cameraClass_Method0 = HM3Function::getVirtualFunctionAddress((DWORD)cameraClass, 0x254);
-			//	typedef int(__thiscall* Method0_t)(ioi::hm3::ZHM3CameraClass*, float*, DWORD, signed int, DWORD);
-			//	Method0_t Method0 = (Method0_t)cameraClass_Method0;
-			//
-			//	Method0(cameraClass, oldPos, 0, 39, 0);
-			//	ImGui::Text("TEST: "); ImGui::SameLine(0.f, 10.f); ImGui::InputFloat3("", oldPos);
-			//}			
+			ImGui::Text("    RTTI      : ");
+			ImGui::Text("        ID        : %d", rtti->TypeID);
+			ImGui::Text("        Name      : %s", rtti->SelfType);
+			ImGui::Text("        Parent    : %s", rtti->Parent);
+			ImGui::Text("        Full name : %s", rtti->ComplexTypeName);
+			ImGui::Separator();
+
+			ImGui::Text("Map           : "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", gameData->m_IngameMap);
+			ImGui::Separator();
+			ImGui::Text("    RTTI      : ");
+			ImGui::Text("        ID        : %d", gameData->m_IngameMap->m_RTTI->TypeID);
+			ImGui::Text("        Name      : %s", gameData->m_IngameMap->m_RTTI->SelfType);
+			ImGui::Text("        Parent    : %s", gameData->m_IngameMap->m_RTTI->Parent);
+			ImGui::Text("        Full name : %s", gameData->m_IngameMap->m_RTTI->ComplexTypeName);
+			ImGui::Separator();
+			ImGui::Text("    isShowed  : %s", (gameData->m_IngameMap->m_showed ? "Yes" : "No"));
+			if (gameData->m_IngameMap->m_showed)
+			{
+				ImGui::Text("    position  : {%.4f; %.4f}", gameData->m_IngameMap->m_drawPosition.x, gameData->m_IngameMap->m_drawPosition.y);
+				ImGui::Text("    cursor    : {%.4f; %.4f}", gameData->m_IngameMap->m_drawPosition.z, gameData->m_IngameMap->m_drawPosition.w);
+				if (gameData->m_IngameMap->m_activeMap->m_viewId >= 0)
+					ImGui::Text("    floor     : (%.4X) %s", gameData->m_IngameMap->m_activeMap->m_viewId, gameData->m_IngameMap->m_activeMap->m_viewName);
+				else
+					ImGui::Text("    floor     : %s", gameData->m_IngameMap->m_activeMap->m_viewName);
+				ImGui::Text("    renderer  : {%.4f; %.4f; %.4f}", gameData->m_IngameMap->m_iconRenderer->m_position.x, gameData->m_IngameMap->m_iconRenderer->m_position.y, gameData->m_IngameMap->m_iconRenderer->m_position.z);
+			}
 		}
 	}
 

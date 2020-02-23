@@ -15,9 +15,16 @@
 #include <sdk/ZGameGlobals.h>
 #include <sdk/ZHM3GameData.h>
 #include <sdk/ZGameDataFactory.h>
+#include <sdk/ZGlacierRTTI.h>
 
 #include <windowsx.h>
 #include <d3d9.h>
+
+#ifdef HM3_TRACE_NATIVE_OBJECTS_CREATION_ENABLED
+#define HM3_TRACE_NATIVE_OBJECT_CREATION(instance) HM3_DEBUG("[NativeObject<%s>::CTOR {TypeID is %d}|0x%.X] native object constructed\n", instance->m_runtimeTypeInfo->SelfType, instance->m_runtimeTypeInfo->TypeID, instance)
+#else
+#define HM3_TRACE_NATIVE_OBJECT_CREATION(instance)
+#endif
 
 LRESULT WINAPI Glacier_WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -148,4 +155,12 @@ void __stdcall ZHM3_OnAnimationLoaded(ioi::hm3::ZAnimationInfo* animationInstanc
 	{		
 		ck::HM3AnimationRegistry::getRegistry().registerAnimation(animationInstance);
 	}
+}
+
+void __stdcall CMapObject_OnCreate(ioi::hm3::CMapObject* instance)
+{
+	if (!instance)
+		return;
+
+	HM3_TRACE_NATIVE_OBJECT_CREATION(instance);
 }

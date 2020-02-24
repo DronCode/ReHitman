@@ -294,7 +294,22 @@ namespace ck
 				ImGui::Text("No active level");
 				return;
 			}
-			
+
+			{
+				auto component = hitman3->getZIKHAND();
+				HM3_ASSERT(component != nullptr, "Unable to get required component from ZHitman3 class!");
+
+				auto zoneInfo = component->m_currentLevelZone;
+
+				ImGui::Text("Player position { %.4f; %.4f; %.4f } Level Zone: \"%s\"",
+					component->m_position.x,
+					component->m_position.y,
+					component->m_position.z,
+					(zoneInfo ? zoneInfo->entityName : "N/A")
+				);
+
+			}
+
 			ImGui::Text("Level control : "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", levelControl);
 			ioi::hm3::ZGlacierRTTI* rtti = ioi::hm3::getTypeInfo(levelControl);
 			printRTTR(rtti);
@@ -343,6 +358,14 @@ namespace ck
 		ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
 		if (ImGui::Begin("Actors viewer", pOpen))
 		{
+			if (ImGui::Button("Make some fun"))
+			{
+				for (int actorId = 0; actorId < gameData->m_ActorsInPoolCount; actorId++)
+				{
+					gameData->m_ActorsPool[actorId]->m_suitMask = ioi::hm3::ZHM3Actor::SuiteMask::Agent47_WithHeaddress;	//AHAHA
+				}
+			}
+			ImGui::Separator();
 			// left
 			static int selected = 0;
 			ImGui::BeginChild("left pane", ImVec2(150, 0), true);

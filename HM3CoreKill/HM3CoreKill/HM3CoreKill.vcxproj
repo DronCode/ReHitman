@@ -211,6 +211,7 @@
     <ClInclude Include="sdk\CIngameMap.h" />
     <ClInclude Include="sdk\CMapObject.h" />
     <ClInclude Include="sdk\CTelePortList.h" />
+    <ClInclude Include="sdk\FsZip_t.h" />
     <ClInclude Include="sdk\HM3DebugAPI.h" />
     <ClInclude Include="sdk\InterfacesProvider.h" />
     <ClInclude Include="sdk\ResourceCollection.h" />
@@ -237,6 +238,7 @@
     <ClInclude Include="sdk\ZHM3Hitman3.h" />
     <ClInclude Include="sdk\ZHM3LevelControl.h" />
     <ClInclude Include="sdk\ZHM3MenuElements.h" />
+    <ClInclude Include="sdk\ZIKHAND.h" />
     <ClInclude Include="sdk\ZKeyboardWintel.h" />
     <ClInclude Include="sdk\ZMouseWintel.h" />
     <ClInclude Include="sdk\ZOSD.h" />

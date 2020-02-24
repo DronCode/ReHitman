@@ -5,6 +5,7 @@
 #include <sdk/ZBoxPrimitive.h>
 #include <sdk/ZHM3Actor.h>
 #include <sdk/ZHM3Item.h>
+#include <sdk/ZIKHAND.h>
 
 namespace ioi {
 namespace hm3 {
@@ -502,5 +503,6 @@ namespace hm3 {
 
 		/// === custom api ===
 		const NearActorRef& getNearActorByTheirIndex(int32_t index);
+		ZIKHAND* getZIKHAND();
 	}; //Size: 0x1478
 }}

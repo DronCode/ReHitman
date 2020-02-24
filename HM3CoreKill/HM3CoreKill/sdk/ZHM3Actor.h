@@ -30,6 +30,16 @@ namespace hm3 {
 	class ZHM3Actor
 	{
 	public:
+		// === sub types ===
+		enum class SuiteMask : int32_t {
+			Nude					 = 0b0000'0000'0000'0000'0000'0000'0000'0010,	///< Nude view of model (works only if the actor can share their suit, in other case works as Inivisble)
+			Invisible				 = 0b0000'0000'0000'0000'0000'0000'0000'0100,	///< Invisible view of the actor (possible model loading failure, I don't know)
+			OriginalView			 = 0b0000'0000'0000'0000'0000'0000'0000'0101,	///< Just original view of actor
+			Agent47_WithoutHeaddress = 0b0000'0000'0000'0000'0000'0000'0000'0110,	///< Sometimes works if suit have headdress (in other case will work as invisible)
+			Agent47_WithHeaddress	 = 0b0000'0000'0000'0000'0000'0000'0000'0111	///< Works in 99% of situations with actors who can share their suit
+		};
+
+		// === vftable ===
 		virtual void Function0(); //
 		virtual void Function1(); //
 		virtual void Function2(); //
@@ -164,12 +174,19 @@ namespace hm3 {
 		virtual void Function131(); //
 		virtual void Function132(); //
 
-		ActorInfos* ActorInformation; //0x0004
+		// === members ===
+		ActorInfos* ActorInformation;	//0x0004
+		char pad_0008[68]; //0x0008
+		SuiteMask m_suitMask; //0x004C
 	}; //Size: 0x0008
 
 	//"THINKER" code sub_504CB0
 	//REMOVE GUN FROM HAND OF ACTOR - sub_59E160
 	//Called before actor dead sub_59C610 (sometimes)
 	//Combat prepare sub_607000
-
+	//.rdata:007964A0                 dd offset sub_4FC030 [ work with physics ]
+	//.rdata:007963F4                 dd offset sub_4FBFD0 [ is 5'th bit of +C field inited by 1 ] (in some case set +C |= 0x20u), possible toggle something
+	//.rdata:007963F0                 dd offset sub_4E6AC0 [ toggle +2 byte field ]
+	//.rdata:007963E8                 dd offset sub_4E69E0 [ +C | add 0x10 or remove 0x10 to mask ]
+	//.rdata:00796370                 dd offset sub_6322D0 [ some getter of global ptr, could be useful. Values at pointer looks like messages ]
 }}

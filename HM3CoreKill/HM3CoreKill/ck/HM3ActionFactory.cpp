@@ -3,7 +3,7 @@
 #include <sdk/ZGameFunctions.h>
 #include <utils/X86Snippets.h>
 
-ioi::hm3::ZLnkAction* HM3ActionFactory::createActionByType(ioi::hm3::ZHitman3* hitman, ioi::hm3::ZLnkActionType actionType)
+ioi::hm3::ZLnkAction* HM3ActionFactory::createActionByType(ioi::hm3::ZHM3Hitman3* hitman, ioi::hm3::ZLnkActionType actionType)
 {
 	ioi::hm3::ZLnkAction* result = nullptr;
 	

@@ -45,7 +45,7 @@ namespace ck
 		if (!gameData)
 			return nullptr;
 
-		typedef ioi::hm3::ZAnimationInfo* (__thiscall* Glacier_PreloadAnimation_t)(ioi::hm3::ZHitman3*, const char*);
+		typedef ioi::hm3::ZAnimationInfo* (__thiscall* Glacier_PreloadAnimation_t)(ioi::hm3::ZHM3Hitman3*, const char*);
 		Glacier_PreloadAnimation_t preloadAnimation = (Glacier_PreloadAnimation_t)0x00519AE0;
 		
 		auto animation = preloadAnimation(gameData->m_Hitman3, animationPath);

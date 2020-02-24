@@ -2,6 +2,7 @@
 
 #include <sdk/ZHM3Hitman3.h>
 #include <sdk/ZAnimationInfo.h>
+#include <sdk/ZHM3Hitman3.h>
 #include <sdk/ZSTD.h>
 
 namespace ioi { namespace hm3 {
@@ -12,8 +13,8 @@ namespace ioi { namespace hm3 {
 	{
 	public:
 		char pad_0004[8]; //0x0004
-		ioi::hm3::ZHM3Hitman3_t* m_player0; //0x000C [same to m_player]
-		ioi::hm3::ZHM3Hitman3_t* m_player; //0x0010  [prefer to use it instead previous copy]
+		ioi::hm3::ZHM3Hitman3* m_player0; //0x000C [same to m_player]
+		ioi::hm3::ZHM3Hitman3* m_player; //0x0010  [prefer to use it instead previous copy]
 		char pad_0014[4]; //0x0014
 		ioi::hm3::ZAnimationInfo* m_animPickLockLoop; //0x0018
 		ioi::hm3::ZAnimationInfo* m_animPickLockStop; //0x001C

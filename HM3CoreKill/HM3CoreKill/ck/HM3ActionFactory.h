@@ -8,5 +8,5 @@
 class HM3ActionFactory
 {
 public:
-	static ioi::hm3::ZLnkAction* createActionByType(ioi::hm3::ZHitman3* hitman, ioi::hm3::ZLnkActionType actionType);
+	static ioi::hm3::ZLnkAction* createActionByType(ioi::hm3::ZHM3Hitman3* hitman, ioi::hm3::ZLnkActionType actionType);
 };

@@ -280,7 +280,7 @@ void HM3Game::onD3DEndScene(IDirect3DDevice9* device)
 	ck::HM3InGameTools::getInstance().draw();
 }
 
-void HM3Game::OnNewGameSession(ioi::hm3::ZHM3Hitman3_t gameSession)
+void HM3Game::OnNewGameSession(ioi::hm3::ZHM3Hitman3* gameSession)
 {
 	HM3_DEBUG("[HM3Game::OnNewGameSession] New session instance detected at 0x%.8X\n", gameSession);
 }

@@ -17,6 +17,7 @@
 #include <sdk/ZHM3GameData.h>
 #include <sdk/ZGameDataFactory.h>
 #include <sdk/ZGlacierRTTI.h>
+#include <sdk/ZHM3Hitman3.h>
 
 #include <windowsx.h>
 #include <d3d9.h>
@@ -79,7 +80,7 @@ void __stdcall ZHM3Action_OnDropItem(DWORD pThis)
 
 void __stdcall ZHM3Hitman3_Constructor(DWORD result)
 {
-	HM3Game::getInstance().OnNewGameSession((ioi::hm3::ZHM3Hitman3_t)result);
+	HM3Game::getInstance().OnNewGameSession(reinterpret_cast<ioi::hm3::ZHM3Hitman3*>(result));
 }
 
 void __stdcall ZGEOM_Ctor_CALLBACK(DWORD ptr)

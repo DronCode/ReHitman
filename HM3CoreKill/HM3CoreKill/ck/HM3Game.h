@@ -10,9 +10,7 @@
 #include <sdk/ZHM3GameData.h>
 #include <sdk/ZSysInterfaceWintel.h>
 #include <sdk/ZEngineDatabase.h>
-
-typedef void* ZHM3Hitman3_t;	///For now this is unknown type for me (it's too big class)
-
+#include <sdk/ZHM3Hitman3.h>
 class HM3Game
 {
 	HM3Game();
@@ -26,7 +24,7 @@ public:
 	bool IsActive() const;
 
 	// Events
-	void OnNewGameSession(ioi::hm3::ZHM3Hitman3_t gameSession);
+	void OnNewGameSession(ioi::hm3::ZHM3Hitman3* gameSession);
 	void onD3DInitialized(IDirect3DDevice9* device);
 	void onD3DBeginScene(IDirect3DDevice9* device);
 	void onD3DEndScene(IDirect3DDevice9* device);

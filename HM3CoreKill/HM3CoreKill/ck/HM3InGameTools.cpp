@@ -205,7 +205,7 @@ namespace ck
 				if (ImGui::Button("Teleport"))
 				{
 					DWORD methodAddr = HM3Function::getVirtualFunctionAddress((DWORD)hitman3, 0x2A4);
-					typedef int(__thiscall* SetEntityPosition_t)(ioi::hm3::ZHitman3*, float*, float*);
+					typedef int(__thiscall* SetEntityPosition_t)(ioi::hm3::ZHM3Hitman3*, float*, float*);
 					SetEntityPosition_t SetEntityPosition = (SetEntityPosition_t)methodAddr;
 
 					SetEntityPosition(hitman3, actorTransform, newActorPosition);
@@ -311,6 +311,25 @@ namespace ck
 				else
 					ImGui::Text("    floor     : %s", gameData->m_IngameMap->m_activeMap->m_viewName);
 				ImGui::Text("    renderer  : {%.4f; %.4f; %.4f}", gameData->m_IngameMap->m_iconRenderer->m_position.x, gameData->m_IngameMap->m_iconRenderer->m_position.y, gameData->m_IngameMap->m_iconRenderer->m_position.z);
+			}
+
+			{
+				ImGui::Separator();
+				ImGui::Text("Near actors pool [%d] : ", hitman3->m_nearestActorsPoolCapacity);
+				ImGui::Separator();
+				for (int i = hitman3->m_nearestActorsPoolCapacity - 1; i >= 0; i--)
+				{
+					const ioi::hm3::NearActorRef& actorRef = hitman3->getNearActorByTheirIndex(i);
+					
+					ImGui::Text("Distance: %.4f | Actor at %s at { %.4f; %.4f; %.4f }",
+						actorRef.distance,
+						actorRef.actor->ActorInformation->location->entityName,
+						actorRef.actor->ActorInformation->location->position.x,
+						actorRef.actor->ActorInformation->location->position.y,
+						actorRef.actor->ActorInformation->location->position.z
+					);
+				}
+				ImGui::Separator();
 			}
 
 			if (ImGui::Button("Test LockPick action"))

@@ -32,6 +32,8 @@ namespace hm3 {
 	public:
 		// === sub types ===
 		enum class SuiteMask : int32_t {
+			NoActor					 = 0b0000'0000'0000'0000'0000'0000'0000'0000,	///< This is not an actor (M13, wheelchair gui subactor kind)
+			SkinChangerNotSupported	 = 0b0000'0000'0000'0000'0000'0000'0000'0001,	///< This actor does not supports skin changer
 			Nude					 = 0b0000'0000'0000'0000'0000'0000'0000'0010,	///< Nude view of model (works only if the actor can share their suit, in other case works as Inivisble)
 			Invisible				 = 0b0000'0000'0000'0000'0000'0000'0000'0100,	///< Invisible view of the actor (possible model loading failure, I don't know)
 			OriginalView			 = 0b0000'0000'0000'0000'0000'0000'0000'0101,	///< Just original view of actor
@@ -112,7 +114,7 @@ namespace hm3 {
 		virtual void Function69(); //
 		virtual void Function70(); //
 		virtual void Function71(); //
-		virtual void Function72(); //
+		virtual void sendEvent(std::uintptr_t ev, int unk0, int unk1); //
 		virtual void Function73(); //
 		virtual void Function74(); //
 		virtual void Function75(); //

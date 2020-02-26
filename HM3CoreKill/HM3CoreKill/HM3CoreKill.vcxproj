@@ -223,12 +223,14 @@
     <ClInclude Include="sdk\ZEntityLocator.h" />
     <ClInclude Include="sdk\ZEventBuffer.h" />
     <ClInclude Include="sdk\ZGameFunctions.h" />
+    <ClInclude Include="sdk\ZGEOM.h" />
     <ClInclude Include="sdk\ZGeomBuffer.h" />
     <ClInclude Include="sdk\ZGlacierRTTI.h" />
     <ClInclude Include="sdk\ZGUI.h" />
     <ClInclude Include="sdk\ZHM3Actor.h" />
     <ClInclude Include="sdk\ZHM3BriefingControl.h" />
     <ClInclude Include="sdk\ZHM3CameraClass.h" />
+    <ClInclude Include="sdk\ZHM3ClothBundle.h" />
     <ClInclude Include="sdk\ZHM3GameData.h" />
     <ClInclude Include="sdk\MathCommon.h" />
     <ClInclude Include="sdk\ZGameDataFactory.h" />
@@ -236,6 +238,7 @@
     <ClInclude Include="sdk\ZGUIBase.h" />
     <ClInclude Include="sdk\ZHM3Camera.h" />
     <ClInclude Include="sdk\ZHM3Hitman3.h" />
+    <ClInclude Include="sdk\ZHM3HmAs.h" />
     <ClInclude Include="sdk\ZHM3LevelControl.h" />
     <ClInclude Include="sdk\ZHM3MenuElements.h" />
     <ClInclude Include="sdk\ZIKHAND.h" />

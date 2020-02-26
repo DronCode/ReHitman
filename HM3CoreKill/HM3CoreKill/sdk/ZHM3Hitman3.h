@@ -5,6 +5,7 @@
 #include <sdk/ZBoxPrimitive.h>
 #include <sdk/ZHM3Actor.h>
 #include <sdk/ZHM3Item.h>
+#include <sdk/ZHM3HmAs.h>
 #include <sdk/ZIKHAND.h>
 
 namespace ioi {
@@ -94,9 +95,9 @@ namespace hm3 {
 		virtual void Function_0069(); // [0069] +0114 [.rdata at 0x00790FA0]
 		virtual void Function_0070(); // [0070] +0118 [.rdata at 0x00790FA4]
 		virtual void Function_0071(); // [0071] +011C [.rdata at 0x00790FA8]
-		virtual void Function_0072(); // [0072] +0120 [.rdata at 0x00790FAC]
+		virtual void sendEvent(std::uintptr_t evId, int unk1, int unk2); // [0072] +0120 [.rdata at 0x00790FAC]
 		virtual void Function_0073(); // [0073] +0124 [.rdata at 0x00790FB0]
-		virtual void Function_0074(); // [0074] +0128 [.rdata at 0x00790FB4]
+		virtual void sendEventWithSTDOBJ(ZSTDOBJ* stdObj, std::intptr_t ev, int unk0); // [0074] +0128 [.rdata at 0x00790FB4]
 		virtual void Function_0075(); // [0075] +012C [.rdata at 0x00790FB8]
 		virtual void Function_0076(); // [0076] +0130 [.rdata at 0x00790FBC]
 		virtual void Function_0077(); // [0077] +0134 [.rdata at 0x00790FC0]
@@ -444,7 +445,7 @@ namespace hm3 {
 		char pad_03E8[112]; //0x03E8
 		uint32_t m_currentZone; //0x0458
 		char pad_045C[268]; //0x045C
-		uint32_t m_currentAnim; //0x0568
+		ioi::hm3::ZAnimationInfo* m_currentAnim; //0x0568
 		char pad_056C[104]; //0x056C
 		uint32_t m_zMovementAnimation; //0x05D4
 		uint32_t m_zMovementStand; //0x05D8
@@ -491,7 +492,7 @@ namespace hm3 {
 		char pad_0F48[28]; //0x0F48
 		uint32_t m_bloodTrails; //0x0F64
 		char pad_0F68[104]; //0x0F68
-		uint32_t m_HmAs; //0x0FD0
+		ZHM3HmAs* m_HmAs; //0x0FD0
 		char pad_0FD4[256]; //0x0FD4
 		int32_t m_nearestActorsPoolCapacity; //0x10D4
 		uint32_t m_nearestActorsPoolFirstEntity; //0x10D8

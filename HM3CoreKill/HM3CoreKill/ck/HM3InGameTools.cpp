@@ -253,6 +253,14 @@ namespace ck
 			}
 
 			{
+				ImGui::Text("ZHitman3: "); ImGui::SameLine(0.f, 15.f);
+				if (!gameData || !gameData->m_Hitman3)
+					ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
+				else
+					ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", gameData->m_Hitman3);
+			}
+
+			{
 				ImGui::Text("ZGui: "); ImGui::SameLine(0.f, 15.f); 
 				if (!gameData || !gameData->m_Gui)
 					ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
@@ -335,7 +343,7 @@ namespace ck
 				for (int i = hitman3->m_nearestActorsPoolCapacity - 1; i >= 0; i--)
 				{
 					const ioi::hm3::NearActorRef& actorRef = hitman3->getNearActorByTheirIndex(i);
-					
+
 					ImGui::Text("Distance: %.4f | Actor at %s at { %.4f; %.4f; %.4f }",
 						actorRef.distance,
 						actorRef.actor->ActorInformation->location->entityName,
@@ -346,11 +354,28 @@ namespace ck
 				}
 				ImGui::Separator();
 			}
+
+			//{
+			//	if (ImGui::Button("Have some fun!"))
+			//	{
+			//		DWORD F0 = HM3Function::getVirtualFunctionAddress((DWORD)engineDB, +0x78);
+			//		DWORD F1 = HM3Function::getVirtualFunctionAddress((DWORD)hitman3, +0x120);
+			//
+			//		HM3_DEBUG(" F0 at %.8X | F1 at %.8X \n", F0, F1);
+			//
+			//		//004E7770
+			//
+			//		auto eventId = engineDB->getEvent(/*"MSG_GIVEALLITEMS"*/"msg_DisableControls", 0, "hitman3\\gui\\cheatmenu.cpp", 0);
+			//		HM3_DEBUG("Event at 0x%.8X\n", eventId);
+			//		hitman3->sendEvent(eventId, 0, 0);
+			//	}
+			//}
 		}
 	}
 
 	void HM3InGameTools::showDebugActorsWindow(bool* pOpen)
 	{
+		auto sys = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
 		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
 		if (!gameData || !gameData->m_LevelControl)
 			return;
@@ -358,13 +383,6 @@ namespace ck
 		ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
 		if (ImGui::Begin("Actors viewer", pOpen))
 		{
-			if (ImGui::Button("Make some fun"))
-			{
-				for (int actorId = 0; actorId < gameData->m_ActorsInPoolCount; actorId++)
-				{
-					gameData->m_ActorsPool[actorId]->m_suitMask = ioi::hm3::ZHM3Actor::SuiteMask::Agent47_WithHeaddress;	//AHAHA
-				}
-			}
 			ImGui::Separator();
 			// left
 			static int selected = 0;
@@ -402,6 +420,7 @@ namespace ck
 					ImGui::Text("Location pointer at 0x%.8X", currentActor->ActorInformation->location);
 					ImGui::Text("Position:"); ImGui::SameLine(0.f, 4.f); ImGui::InputFloat3("", actorPosition);
 					ImGui::Text("Inventory: 0x%.8X", currentActor->ActorInformation->equipment);
+					drawSuitInfoForActor(currentActor);
 
 					{
 						ImGui::Text("Set animation: "); ImGui::SameLine(0.f, 5.f);
@@ -456,5 +475,49 @@ namespace ck
 			ImGui::EndGroup();
 		}
 		ImGui::End();
+	}
+
+	void HM3InGameTools::drawSuitInfoForActor(ioi::hm3::ZHM3Actor* currentActor)
+	{
+		ImGui::Text("Suit flags: %c%c%c%c (%d)",
+			(static_cast<int>(currentActor->m_suitMask) & 0x08 ? '1' : '0'),
+			(static_cast<int>(currentActor->m_suitMask) & 0x04 ? '1' : '0'),
+			(static_cast<int>(currentActor->m_suitMask) & 0x02 ? '1' : '0'),
+			(static_cast<int>(currentActor->m_suitMask) & 0x01 ? '1' : '0'),
+			static_cast<int>(currentActor->m_suitMask)
+		);
+		ImGui::SameLine(0.f, 5.f);
+		
+		ImVec4 color = ImVec4(1.f, 0.f, 0.f, 1.f);
+		const char* str = "(unknown)";
+
+		using SuiteMask = ioi::hm3::ZHM3Actor::SuiteMask;
+		switch (currentActor->m_suitMask)
+		{
+		case SuiteMask::NoActor:
+			str = "(not actor)";
+			break;
+		case SuiteMask::SkinChangerNotSupported:
+			str = "(static suit)";
+			break;
+		case SuiteMask::Nude:
+			str = "(nude)";
+			color = ImVec4(1.f, 1.f, 0.f, 1.f);
+			break;
+		case SuiteMask::OriginalView:
+			str = "(skin changable)";
+			color = ImVec4(0.f, 1.f, 0.f, 1.f);
+			break;
+		case SuiteMask::Agent47_WithHeaddress:
+			str = "(Agent 47 | With headdress)";
+			color = ImVec4(0.f, 0.f, 1.f, 1.f);
+			break;
+		case SuiteMask::Agent47_WithoutHeaddress:
+			str = "(Agent 47 | Without headdress)";
+			color = ImVec4(0.f, 0.f, 1.f, 1.f);
+			break;
+		}
+
+		ImGui::TextColored(color, "%s", str);
 	}
 }

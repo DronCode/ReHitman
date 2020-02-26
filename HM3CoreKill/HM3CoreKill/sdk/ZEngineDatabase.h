@@ -43,7 +43,7 @@ namespace ioi { namespace hm3 {
 		virtual void Function27();	//+0x6C
 		virtual void Function28();	//+0x70
 		virtual void Function29();	//+0x74
-		virtual void Function30();	//+0x78
+		virtual std::uintptr_t getEvent(const char* eventName, int unk0, const char* allocationSource, signed int eventIndex);	//+0x78 #30
 		virtual void Function31();	//+0x7C
 		virtual void Function32();	//+0x80
 		virtual void Function33();	//+0x84
@@ -100,6 +100,49 @@ namespace ioi { namespace hm3 {
 	class CCOM
 	{
 	public:
+		virtual void Function_0000(); //#0000 +0000 .rdata:00756464
+		virtual void Function_0001(); //#0001 +0004 .rdata:00756468
+		virtual void Function_0002(); //#0002 +0008 .rdata:0075646c
+		virtual void Function_0003(); //#0003 +000c .rdata:00756470
+		virtual void Function_0004(); //#0004 +0010 .rdata:00756474
+		virtual void Function_0005(); //#0005 +0014 .rdata:00756478
+		virtual void Function_0006(); //#0006 +0018 .rdata:0075647c
+		virtual void Function_0007(); //#0007 +001c .rdata:00756480
+		virtual void Function_0008(); //#0008 +0020 .rdata:00756484
+		virtual void Function_0009(); //#0009 +0024 .rdata:00756488
+		virtual void Function_0010(); //#0010 +0028 .rdata:0075648c
+		virtual void Function_0011(); //#0011 +002c .rdata:00756490
+		virtual void Function_0012(); //#0012 +0030 .rdata:00756494
+		virtual void Function_0013(); //#0013 +0034 .rdata:00756498
+		virtual void Function_0014(); //#0014 +0038 .rdata:0075649c
+		virtual void Function_0015(); //#0015 +003c .rdata:007564a0
+		virtual void Function_0016(); //#0016 +0040 .rdata:007564a4
+		virtual void Function_0017(); //#0017 +0044 .rdata:007564a8
+		virtual void Function_0018(); //#0018 +0048 .rdata:007564ac
+		virtual void Function_0019(); //#0019 +004c .rdata:007564b0
+		virtual void Function_0020(); //#0020 +0050 .rdata:007564b4
+		virtual void Function_0021(); //#0021 +0054 .rdata:007564b8
+		virtual void Function_0022(); //#0022 +0058 .rdata:007564bc
+		virtual void Function_0023(); //#0023 +005c .rdata:007564c0
+		virtual void Function_0024(); //#0024 +0060 .rdata:007564c4
+		virtual void Function_0025(); //#0025 +0064 .rdata:007564c8
+		virtual void Function_0026(); //#0026 +0068 .rdata:007564cc
+		virtual void Function_0027(); //#0027 +006c .rdata:007564d0
+		virtual void Function_0028(); //#0028 +0070 .rdata:007564d4
+		virtual void Function_0029(); //#0029 +0074 .rdata:007564d8
+		virtual void Function_0030(); //#0030 +0078 .rdata:007564dc
+		virtual void getVariableValue(const char* varName, std::intptr_t& result); //#0031 +007C .rdata:007564e0
+		virtual void Function_0032(); //#0032 +0080 .rdata:007564e4
+		virtual void Function_0033(); //#0033 +0084 .rdata:007564e8
+		virtual void Function_0034(); //#0034 +0088 .rdata:007564ec
+		virtual void Function_0035(); //#0035 +008c .rdata:007564f0
+		virtual void Function_0036(); //#0036 +0090 .rdata:007564f4
+		virtual void Function_0037(); //#0037 +0094 .rdata:007564f8
+		virtual void Function_0038(); //#0038 +0098 .rdata:007564fc
+		virtual void Function_0039(); //#0039 +009c .rdata:00756500
+		virtual void Function_0040(); //#0040 +00a0 .rdata:00756504
+		virtual void Function_0041(); //#0041 +00a4 .rdata:00756508
+		virtual void Function_0042(); //#0042 +00a8 .rdata:0075650c 
 	};
 
 	CCOM* getCCOMObjectFromEngineDB(ZEngineDatabase* instance);

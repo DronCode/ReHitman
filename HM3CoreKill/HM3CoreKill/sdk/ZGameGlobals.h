@@ -35,7 +35,9 @@ namespace hm3 {
 	static const std::uintptr_t BoneExtendPool	 = 0x009A37B4;	//Based on ZBoneExtendPool 
 	static const std::uintptr_t VertexExtendPool = 0x009A37B8;  //Based on ZVertexExtendPool
 	static const std::uintptr_t ScriptComponent  = 0x008A89CC;  //Based on ZScriptComponent
-	
+	static const std::uintptr_t ItemIdToNameMap  = 0x008031E0;  //Map between item ID and their code name (1'st - id, 2'nd - char*)
+	static const std::uintptr_t ItemNameToIdMap  = 0x008031E4;  //Map between item codename and their id (1'st - name ptr, 2'nd - id)
+
 	static const std::uintptr_t ComponentManager_RuntimeComponentBase = 0x002DB0038;	//Based on ZComponentManager<ZRuntimeComponentBase> : ZComponentManagerBase : ZComponentBase : NotCopyable
 
 	static const std::uintptr_t Direct3DInterface = 0x0090AF08;	//IDirect3D9 device

@@ -114,6 +114,7 @@ DWORD originalMember = 0x0;
 DWORD __stdcall ZMouseWintel_OnUpdate()
 {
 	DWORD result = false;
+	ck::HM3InGameTools& instance = ck::HM3InGameTools::getInstance();
 	ioi::hm3::ZSysInputWintel* input = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInputWintel>(ioi::hm3::WintelInput);
 	ioi::hm3::ZMouseWintel* mouse = input->m_mouseDevice;
 
@@ -124,8 +125,6 @@ DWORD __stdcall ZMouseWintel_OnUpdate()
 	}
 
 	{
-		ck::HM3InGameTools& instance = ck::HM3InGameTools::getInstance();
-
 		instance.setMouseButtonState(0, mouse->m_leftButton);
 		instance.setMouseButtonState(1, mouse->m_rightButton);
 		instance.setMouseWheelState(mouse->m_wheel);

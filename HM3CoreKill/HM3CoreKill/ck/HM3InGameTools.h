@@ -3,6 +3,8 @@
 #include <Windows.h>
 #include <d3d9.h>
 
+namespace ioi { namespace hm3 { class ZHM3Actor; } }
+
 namespace ck
 {
 	class HM3InGameTools
@@ -30,6 +32,7 @@ namespace ck
 		void drawSystemsInfo();
 		void drawLevelInfo();
 		void showDebugActorsWindow(bool* pOpen);
+		void drawSuitInfoForActor(ioi::hm3::ZHM3Actor* currentActor);
 	};
 
 }

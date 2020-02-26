@@ -51,14 +51,14 @@ namespace hm3 {
 		virtual void Function17(); //
 		virtual void Function18(); //
 		virtual void Function19(); //
-		virtual void Function20(); //
-		virtual void Function21(); //
-		virtual void Function22(); //
+		virtual std::uintptr_t* getUnk0(); //#20 [.rdata 007A8B9C]
+		virtual void Function21(); //#21 (set +6A14 | int*)
+		virtual int getMember_6A14(); //#22
 		virtual void Function23(); //
-		virtual void Function24(); //
-		virtual void Function25(); //
-		virtual void Function26(); //
-		virtual void Function27(); //
+		virtual std::uintptr_t getMember_6A1C(); //#24
+		virtual std::uintptr_t getMember_6A18(); //#25
+		virtual std::uintptr_t getMember_6A24(); //#26
+		virtual std::uintptr_t getMember_6A20(); //#27
 		virtual void Function28(); //
 		virtual void Function29(); //
 		virtual void Function30(); //

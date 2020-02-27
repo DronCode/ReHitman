@@ -209,11 +209,13 @@
     <ClInclude Include="sdk\actions\ZLnkAction.h" />
     <ClInclude Include="sdk\CDoor.h" />
     <ClInclude Include="sdk\CIngameMap.h" />
+    <ClInclude Include="sdk\CInventory.h" />
     <ClInclude Include="sdk\CMapObject.h" />
     <ClInclude Include="sdk\CTelePortList.h" />
     <ClInclude Include="sdk\FsZip_t.h" />
     <ClInclude Include="sdk\HM3DebugAPI.h" />
     <ClInclude Include="sdk\InterfacesProvider.h" />
+    <ClInclude Include="sdk\REFTAB32.h" />
     <ClInclude Include="sdk\ResourceCollection.h" />
     <ClInclude Include="sdk\scripting\ZScriptC.h" />
     <ClInclude Include="sdk\ZAnimationInfo.h" />
@@ -239,6 +241,8 @@
     <ClInclude Include="sdk\ZHM3Camera.h" />
     <ClInclude Include="sdk\ZHM3Hitman3.h" />
     <ClInclude Include="sdk\ZHM3HmAs.h" />
+    <ClInclude Include="sdk\ZHM3ItemTemplate.h" />
+    <ClInclude Include="sdk\ZHM3ItemTemplateAmmo.h" />
     <ClInclude Include="sdk\ZHM3LevelControl.h" />
     <ClInclude Include="sdk\ZHM3MenuElements.h" />
     <ClInclude Include="sdk\ZIKHAND.h" />
@@ -281,6 +285,7 @@
     <ClCompile Include="ck\HM3ProcessCache.cpp" />
     <ClCompile Include="DllEntry.cpp" />
     <ClCompile Include="sdk\ZHM3Hitman3.cpp" />
+    <ClCompile Include="sdk\ZHM3Item.cpp" />
     <ClCompile Include="sdk\ZHM3Item.h" />
     <ClCompile Include="sdk\ZEngineDatabase.cpp" />
     <ClCompile Include="sdk\ZHM3CameraClass.cpp" />

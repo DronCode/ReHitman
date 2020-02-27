@@ -25,6 +25,10 @@
 #include <sdk/ZGameGlobals.h>
 #include <sdk/ZHM3GameData.h>
 #include <sdk/ZEventBuffer.h>
+#include <sdk/REFTAB32.h>
+#include <sdk/ZHM3Item.h>
+#include <sdk/ZHM3ItemTemplate.h>
+#include <sdk/ZHM3ItemTemplateAmmo.h>
 #include <sdk/CDoor.h>
 #include <sdk/ZOSD.h>
 
@@ -355,21 +359,33 @@ namespace ck
 				ImGui::Separator();
 			}
 
-			//{
-			//	if (ImGui::Button("Have some fun!"))
-			//	{
-			//		DWORD F0 = HM3Function::getVirtualFunctionAddress((DWORD)engineDB, +0x78);
-			//		DWORD F1 = HM3Function::getVirtualFunctionAddress((DWORD)hitman3, +0x120);
-			//
-			//		HM3_DEBUG(" F0 at %.8X | F1 at %.8X \n", F0, F1);
-			//
-			//		//004E7770
-			//
-			//		auto eventId = engineDB->getEvent(/*"MSG_GIVEALLITEMS"*/"msg_DisableControls", 0, "hitman3\\gui\\cheatmenu.cpp", 0);
-			//		HM3_DEBUG("Event at 0x%.8X\n", eventId);
-			//		hitman3->sendEvent(eventId, 0, 0);
-			//	}
-			//}
+			{
+				ImGui::Separator();
+				ImGui::Text("Player's inventory: ");
+
+				auto inventory = hitman3->m_inventory;
+				ioi::REFTAB32* inventoryREFTAB32 = inventory->getREFTAB32();
+				if (inventoryREFTAB32)
+				{
+					for (int i = 0; i < inventoryREFTAB32->m_itemsCount; i++)
+					{
+						auto itemId = *ioi::get<std::intptr_t>(inventoryREFTAB32, i);
+						auto pItem = ioi::hm3::getItemById(itemId);
+						if (!pItem || !pItem->m_entityLocator)
+						{
+							continue;
+						}
+
+						auto itemTemplate = pItem->getItemTemplate();
+						ImGui::Text("#%.3d %s | Item template (at 0x%.8X) %s | ClassID is 0x%.8X", i, pItem->m_entityLocator->entityName, itemTemplate, (itemTemplate ? itemTemplate->m_entityLocator->entityName : "(N/A)"), pItem->getClassID());
+					}
+				}
+				else
+				{
+					ImGui::SameLine(0.f, 3.f);
+					ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
+				}
+			}
 		}
 	}
 
@@ -420,6 +436,7 @@ namespace ck
 					ImGui::Text("Location pointer at 0x%.8X", currentActor->ActorInformation->location);
 					ImGui::Text("Position:"); ImGui::SameLine(0.f, 4.f); ImGui::InputFloat3("", actorPosition);
 					ImGui::Text("Inventory: 0x%.8X", currentActor->ActorInformation->equipment);
+					
 					drawSuitInfoForActor(currentActor);
 
 					{

@@ -176,7 +176,7 @@ void __stdcall ZGlacier_OnSTDOBJAttached(DWORD* unknownInstance)
 	if (!runtimeInfo)
 		return;
 
-	const std::string_view parentType   = runtimeInfo->Parent;
+	const std::string_view parentType = runtimeInfo->Parent;
 
 	if (parentType == "ZGEOM")
 	{
@@ -186,6 +186,7 @@ void __stdcall ZGlacier_OnSTDOBJAttached(DWORD* unknownInstance)
 		{
 			ioi::hm3::CDoor* instance = reinterpret_cast<ioi::hm3::CDoor*>(unknownInstance);
 			ck::HM3DoorsRegistry::getRegistry().registerDoor(instance);
+			return;
 		}
 	}
 }

@@ -258,6 +258,18 @@
     <ClInclude Include="sdk\ZGEOM.h">
       <Filter>sdk</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\REFTAB32.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\CInventory.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZHM3ItemTemplate.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZHM3ItemTemplateAmmo.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">
@@ -337,6 +349,9 @@
       <Filter>sdk</Filter>
     </ClCompile>
     <ClCompile Include="sdk\ZHM3Hitman3.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\ZHM3Item.cpp">
       <Filter>sdk</Filter>
     </ClCompile>
   </ItemGroup>

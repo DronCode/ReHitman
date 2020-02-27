@@ -3,6 +3,7 @@
 #include <sdk/actions/ZLnkAction.h>
 #include <sdk/ZAnimationInfo.h>
 #include <sdk/ZBoxPrimitive.h>
+#include <sdk/CInventory.h>
 #include <sdk/ZHM3Actor.h>
 #include <sdk/ZHM3Item.h>
 #include <sdk/ZHM3HmAs.h>
@@ -97,7 +98,7 @@ namespace hm3 {
 		virtual void Function_0071(); // [0071] +011C [.rdata at 0x00790FA8]
 		virtual void sendEvent(std::uintptr_t evId, int unk1, int unk2); // [0072] +0120 [.rdata at 0x00790FAC]
 		virtual void Function_0073(); // [0073] +0124 [.rdata at 0x00790FB0]
-		virtual void sendEventWithSTDOBJ(ZSTDOBJ* stdObj, std::intptr_t ev, int unk0); // [0074] +0128 [.rdata at 0x00790FB4]
+		virtual void sendEventWithSTDOBJ(ZSTDOBJ* stdObj, std::intptr_t ev, int* pResult); // [0074] +0128 [.rdata at 0x00790FB4]
 		virtual void Function_0075(); // [0075] +012C [.rdata at 0x00790FB8]
 		virtual void Function_0076(); // [0076] +0130 [.rdata at 0x00790FBC]
 		virtual void Function_0077(); // [0077] +0134 [.rdata at 0x00790FC0]
@@ -480,7 +481,7 @@ namespace hm3 {
 		char pad_07B4[20]; //0x07B4
 		uint32_t m_easeInOut; //0x07C8
 		char pad_07CC[884]; //0x07CC
-		uint32_t m_inventory; //0x0B40
+		CInventory* m_inventory; //0x0B40
 		char pad_0B44[4]; //0x0B44
 		uint32_t m_group; //0x0B48
 		uint32_t m_timeMultEffectControl; //0x0B4C

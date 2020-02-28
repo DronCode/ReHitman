@@ -180,6 +180,13 @@ namespace hm3 {
 		ActorInfos* ActorInformation;	//0x0004
 		char pad_0008[68]; //0x0008
 		SuiteMask m_suitMask; //0x004C
+
+		/**
+			Unmapped: 
+				+2C8 - First IKHAND (different than the already reversed structure of ZHitman3::ZIKHAND)
+				+3A9 - Active item (2'nd hand)
+		
+		**/
 	}; //Size: 0x0008
 
 	//"THINKER" code sub_504CB0

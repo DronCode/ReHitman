@@ -443,8 +443,35 @@ namespace hm3 {
 		uint32_t m_lnkActionQueue; //0x017C
 		char pad_0180[612]; //0x0180
 		uint32_t m_humanBoid0; //0x03E4
-		char pad_03E8[112]; //0x03E8
-		uint32_t m_currentZone; //0x0458
+		
+		int32_t m_pad0; //+3E8
+		int32_t m_pad1; //+3EC
+		int32_t m_pad2; //+3F0
+		int32_t m_pad3; //+3F4
+		Vector3 m_position; //+3F8
+		int32_t m_pad7; //+404
+		int32_t m_pad8; //+408
+		int32_t m_pad9; //+40C
+		int32_t m_pad10; //+410
+		int32_t m_pad11; //+414
+		int32_t m_pad12; //+418
+		int32_t m_pad13; //+41C
+		int32_t m_pad14; //+420
+		int32_t m_pad15; //+424
+		int32_t m_pad16; //+428
+		int32_t m_pad17; //+42C
+		int32_t m_pad18; //+430
+		int32_t m_pad19; //+434
+		int32_t m_pad20; //+438
+		int32_t m_pad21; //+43C
+		int32_t m_pad22; //+440
+		int32_t m_pad23; //+444
+		int32_t m_pad24; //+448
+		int32_t m_pad25; //+44C
+		int32_t m_pad26; //+450
+		int32_t m_pad27; //+454
+
+		ZEntityLocator* m_currentZone; //0x0458
 		char pad_045C[268]; //0x045C
 		ioi::hm3::ZAnimationInfo* m_currentAnim; //0x0568
 		char pad_056C[104]; //0x056C
@@ -505,6 +532,6 @@ namespace hm3 {
 
 		/// === custom api ===
 		const NearActorRef& getNearActorByTheirIndex(int32_t index);
-		ZIKHAND* getZIKHAND();
+		ZIKHAND* getHand(HandType type);
 	}; //Size: 0x1478
 }}

@@ -308,18 +308,40 @@ namespace ck
 			}
 
 			{
-				auto component = hitman3->getZIKHAND();
-				HM3_ASSERT(component != nullptr, "Unable to get required component from ZHitman3 class!");
-
-				auto zoneInfo = component->m_currentLevelZone;
-
 				ImGui::Text("Player position { %.4f; %.4f; %.4f } Level Zone: \"%s\"",
-					component->m_position.x,
-					component->m_position.y,
-					component->m_position.z,
-					(zoneInfo ? zoneInfo->entityName : "N/A")
+					hitman3->m_position.x,
+					hitman3->m_position.y,
+					hitman3->m_position.z,
+					(hitman3->m_currentZone ? hitman3->m_currentZone->entityName : "N/A")
 				);
 
+				ImGui::Separator();
+				ImGui::Text("Hands: ");
+				{
+					auto leftHand = hitman3->getHand(ioi::hm3::HandType::LeftHand);
+					HM3_ASSERT(leftHand != nullptr, "Left hand must be exists!");
+					ImGui::Text("Item at left  hand"); ImGui::SameLine(0.f, 8.f);
+					if (!leftHand->m_hasItem)
+						ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "NO ITEM");
+					else
+					{
+						auto pItem = ioi::hm3::ItemHelpers::getItemById(leftHand->m_itemID);
+						ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "%s (%.4X)", pItem->m_entityLocator->entityName, leftHand->m_itemID);
+					}
+				}
+				{
+					auto rightHand = hitman3->getHand(ioi::hm3::HandType::RightHand);
+					HM3_ASSERT(rightHand != nullptr, "Right hand must be exists!");
+					ImGui::Text("Item at right hand"); ImGui::SameLine(0.f, 8.f);
+					if (!rightHand->m_hasItem)
+						ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "NO ITEM");
+					else
+					{
+						auto pItem = ioi::hm3::ItemHelpers::getItemById(rightHand->m_itemID);
+						ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "%s (%.4X)", pItem->m_entityLocator->entityName, rightHand->m_itemID);
+					}
+				}
+				ImGui::Separator();
 			}
 
 			ImGui::Text("Level control : "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", levelControl);
@@ -370,14 +392,14 @@ namespace ck
 					for (int i = 0; i < inventoryREFTAB32->m_itemsCount; i++)
 					{
 						auto itemId = *ioi::get<std::intptr_t>(inventoryREFTAB32, i);
-						auto pItem = ioi::hm3::getItemById(itemId);
+						auto pItem = ioi::hm3::ItemHelpers::getItemById(itemId);
 						if (!pItem || !pItem->m_entityLocator)
 						{
 							continue;
 						}
 
 						auto itemTemplate = pItem->getItemTemplate();
-						ImGui::Text("#%.3d %s | Item template (at 0x%.8X) %s | ClassID is 0x%.8X", i, pItem->m_entityLocator->entityName, itemTemplate, (itemTemplate ? itemTemplate->m_entityLocator->entityName : "(N/A)"), pItem->getClassID());
+						ImGui::Text("#%.3d %s (%.4X) | Item template (at 0x%.8X) %s | ClassID is 0x%.8X", i, pItem->m_entityLocator->entityName, itemId, itemTemplate, (itemTemplate ? itemTemplate->m_entityLocator->entityName : "(N/A)"), pItem->getClassID());
 					}
 				}
 				else

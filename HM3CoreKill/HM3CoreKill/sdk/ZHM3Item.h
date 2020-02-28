@@ -201,5 +201,7 @@ namespace ioi { namespace hm3 {
 
 	}; //Size: 0x009C
 
-	ZHM3Item* getItemById(std::intptr_t itemID);
+	struct ItemHelpers {
+		static ZHM3Item* getItemById(std::intptr_t itemID);
+	};
 }}

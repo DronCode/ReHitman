@@ -206,6 +206,7 @@
     <ClInclude Include="ck\HM3Types.h" />
     <ClInclude Include="mp\MP.h" />
     <ClInclude Include="sdk\actions\ZHitmanActionPickLock.h" />
+    <ClInclude Include="sdk\actions\ZHM3ActorPunch.h" />
     <ClInclude Include="sdk\actions\ZLnkAction.h" />
     <ClInclude Include="sdk\CDoor.h" />
     <ClInclude Include="sdk\CIngameMap.h" />
@@ -217,6 +218,7 @@
     <ClInclude Include="sdk\REFTAB32.h" />
     <ClInclude Include="sdk\ResourceCollection.h" />
     <ClInclude Include="sdk\scripting\ZScriptC.h" />
+    <ClInclude Include="sdk\ZActionDispatcher.h" />
     <ClInclude Include="sdk\ZAnimationInfo.h" />
     <ClInclude Include="sdk\ZBoxPrimitive.h" />
     <ClInclude Include="sdk\ZDirect3DDevice.h" />
@@ -245,6 +247,7 @@
     <ClInclude Include="sdk\ZHM3ItemTemplateAmmo.h" />
     <ClInclude Include="sdk\ZHM3LevelControl.h" />
     <ClInclude Include="sdk\ZHM3MenuElements.h" />
+    <ClInclude Include="sdk\ZHM3WeaponItem.h" />
     <ClInclude Include="sdk\ZIKHAND.h" />
     <ClInclude Include="sdk\ZKeyboardWintel.h" />
     <ClInclude Include="sdk\ZLNKWHANDS.h" />

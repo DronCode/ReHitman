@@ -273,6 +273,15 @@
     <ClInclude Include="sdk\ZLNKWHANDS.h">
       <Filter>sdk</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\ZActionDispatcher.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\actions\ZHM3ActorPunch.h">
+      <Filter>sdk\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZHM3WeaponItem.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">

@@ -424,6 +424,15 @@ namespace ck
 
 			ImGui::BeginGroup();
 			ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+
+			if (ImGui::Button("Kill all"))
+			{
+				for (int i = 0; i < gameData->m_ActorsInPoolCount; i++)
+				{
+					gameData->m_ActorsPool[i]->kill();
+				}
+			}
+
 			drawActorInfo(currentActor);
 			ImGui::EndChild();
 			ImGui::EndGroup();
@@ -502,6 +511,13 @@ namespace ck
 					{
 						gameData->m_Hitman3->dropCurrentAnimation();
 						gameData->m_Hitman3->setAnimation(currentAnim);
+					}
+				}
+
+				{
+					if (ImGui::Button("Kill actor"))
+					{
+						currentActor->kill();
 					}
 				}
 

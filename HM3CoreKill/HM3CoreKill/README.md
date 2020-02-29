@@ -1,11 +1,11 @@
 HM3CoreKill
 ============
 
-This is the core of our reversal repository. 
+This is the core of our IO-Interactive Glacier Engine Reverse engineered repository. 
 
-Here placed 5 subdirectories:
+The following subdirectories contain:
 
- * ck  - Core Kill, the core of injection and game core exploitation
- * mp  - Future base of multiplayer
- * sdk - Game SDK (classes from the game, that have been reversed and can be used for future development)
- * x86 - Some helpful classes for hooking & replacing any code for x86 CPU arch.
+ * ck  - Core Kill, the core of injection and game logic exploitation.
+ * mp  - Future base for multiplayer development.
+ * sdk - Game SDK (classes from the game, that have been reversed and can be used for future development).
+ * x86 - Some helpful classes for hooking & replacing any code with x86 CPU arch.

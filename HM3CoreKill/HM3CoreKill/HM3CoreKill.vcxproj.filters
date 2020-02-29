@@ -351,5 +351,8 @@
     <ClCompile Include="sdk\ZHM3Item.cpp">
       <Filter>sdk</Filter>
     </ClCompile>
+    <ClCompile Include="sdk\ZHM3Actor.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

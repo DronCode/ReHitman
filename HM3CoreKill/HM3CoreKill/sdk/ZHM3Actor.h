@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <sdk/ZEntityLocator.h>
 #include <sdk/ZAnimationInfo.h>
+#include <sdk/ZIKHAND.h>
 
 namespace ioi {
 namespace hm3 {
@@ -180,6 +181,9 @@ namespace hm3 {
 		ActorInfos* ActorInformation;	//0x0004
 		char pad_0008[68]; //0x0008
 		SuiteMask m_suitMask; //0x004C
+
+		// === custom ===
+		ZIKHAND* getHand(HandType type);
 
 		/**
 			Unmapped: 

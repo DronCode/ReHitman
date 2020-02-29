@@ -3,7 +3,7 @@
 #include <Windows.h>
 #include <d3d9.h>
 
-namespace ioi { namespace hm3 { class ZHM3Actor; } }
+namespace ioi { namespace hm3 { class ZHM3Actor; class ZIKHAND; } }
 
 namespace ck
 {
@@ -35,6 +35,7 @@ namespace ck
 		void showDebugActorsWindow(bool* pOpen);
 		void drawActorInfo(ioi::hm3::ZHM3Actor* currentActor);
 		void drawSuitInfoForActor(ioi::hm3::ZHM3Actor* currentActor);
+		void drawHandInfo(ioi::hm3::ZIKHAND* hand);
 	};
 
 }

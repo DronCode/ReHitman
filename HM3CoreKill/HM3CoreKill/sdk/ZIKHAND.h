@@ -4,7 +4,12 @@
 
 namespace ioi { namespace hm3 {
 	
-	enum class HandType { LeftHand = 32, RightHand = 31 };
+	enum class HandType { 
+		LeftHand	= 32, 
+		RightHand	= 31,
+		RatUnk0		= 20,
+		RatUnk1		= 25 
+	};
 
 	class ZIKHAND
 	{

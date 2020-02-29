@@ -322,28 +322,8 @@ namespace ck
 				ImGui::Separator();
 				ImGui::Text("Hands: ");
 
-				auto printHandInfo = [](ioi::hm3::ZIKHAND* pHand)
-				{
-					HM3_ASSERT(pHand != nullptr, "pHand should be valid pointer!");
-
-					ImGui::Text("Item at %s hand",
-						(pHand->m_handType == ioi::hm3::HandType::LeftHand)  ? "left ":
-						(pHand->m_handType == ioi::hm3::HandType::RightHand) ? "right":
-						"unknown"
-					);
-					
-					ImGui::SameLine(0.f, 8.f);
-					if (!pHand->m_hasItem)
-						ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "NO ITEM");
-					else
-					{
-						ioi::hm3::ZHM3Item* pItem = ioi::hm3::ZHM3Item::findItemByID(pHand->m_itemID);
-						ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "%s (%.4X)", pItem->m_entityLocator->entityName, pHand->m_itemID);
-					}
-				};
-
-				printHandInfo(hitman3->getHand(ioi::hm3::HandType::LeftHand));
-				printHandInfo(hitman3->getHand(ioi::hm3::HandType::RightHand));
+				drawHandInfo(hitman3->getHand(ioi::hm3::HandType::LeftHand));
+				drawHandInfo(hitman3->getHand(ioi::hm3::HandType::RightHand));
 
 				ImGui::Separator();
 			}
@@ -477,6 +457,8 @@ namespace ck
 				ImGui::Text("Inventory: 0x%.8X", currentActor->ActorInformation->equipment);
 
 				drawSuitInfoForActor(currentActor);
+				drawHandInfo(currentActor->getHand(ioi::hm3::HandType::LeftHand));
+				drawHandInfo(currentActor->getHand(ioi::hm3::HandType::RightHand));
 
 				{
 					ImGui::Text("Set animation: "); ImGui::SameLine(0.f, 5.f);
@@ -571,5 +553,33 @@ namespace ck
 		}
 
 		ImGui::TextColored(color, "%s", str);
+	}
+
+	void HM3InGameTools::drawHandInfo(ioi::hm3::ZIKHAND* hand)
+	{
+		HM3_ASSERT(hand != nullptr, "hand should be valid pointer!");
+
+		if (hand->m_handType != ioi::hm3::HandType::LeftHand && hand->m_handType != ioi::hm3::HandType::RightHand)
+		{
+			ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "Hand of type %.4d not acceptable for preview", hand->m_handType);
+			return;
+		}
+
+		ImGui::Text("Item at %s hand",
+			(hand->m_handType == ioi::hm3::HandType::LeftHand) ? "left " :
+			(hand->m_handType == ioi::hm3::HandType::RightHand) ? "right" :
+			"unknown"
+		);
+
+		ImGui::SameLine(0.f, 8.f);
+		if (!hand->m_hasItem)
+		{
+			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "NO ITEM");
+		}
+		else
+		{
+			ioi::hm3::ZHM3Item* pItem = ioi::hm3::ZHM3Item::findItemByID(hand->m_itemID);
+			ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "%s (%.4X)", pItem->m_entityLocator->entityName, hand->m_itemID);
+		}
 	}
 }

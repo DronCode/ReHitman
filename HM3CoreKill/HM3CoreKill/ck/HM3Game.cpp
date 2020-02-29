@@ -10,7 +10,6 @@
 #include <ck/HM3Hooks.h>
 #include <ck/Features.h>
 
-#include <sdk/HM3DebugAPI.h>
 #include <sdk/ZGameGlobals.h>
 #include <sdk/InterfacesProvider.h>
 #include <sdk/ZSTD.h>

@@ -104,19 +104,6 @@ class HM3Function
 		return NULL;
 	}
 public:
-	static DWORD getValueFromModule(const std::string& process, DWORD offset)
-	{
-		/// Find function
-		ProcessHandleCacheController::ProcessCacheRow procInfo = ProcessHandleCacheController::getProcessHandle(process);
-		ModuleInfo_t mod = ModuleInfo_t::GetModule(procInfo.pid, process.c_str());
-
-		HANDLE pHandle = procInfo.handle;
-
-		HM3_ASSERT(pHandle != 0, "Unable to find target process!");
-
-		return mod.baseAddr + offset;
-	}
-
 	template <typename Functor> 
 	static DWORD findFunction(const std::string& process, const std::string& pattern, const std::string& mask)
 	{

@@ -57,9 +57,6 @@
     <ClInclude Include="ck\HM3CrashHandler.h">
       <Filter>ck</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\HM3DebugAPI.h">
-      <Filter>sdk</Filter>
-    </ClInclude>
     <ClInclude Include="ck\HM3ScopedProtection.h">
       <Filter>ck</Filter>
     </ClInclude>
@@ -270,6 +267,9 @@
     <ClInclude Include="sdk\ZHM3ItemTemplateAmmo.h">
       <Filter>sdk</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\ZHM3Item.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">
@@ -344,9 +344,6 @@
     </ClCompile>
     <ClCompile Include="ck\HM3DoorsRegistry.cpp">
       <Filter>ck</Filter>
-    </ClCompile>
-    <ClCompile Include="sdk\ZHM3Item.h">
-      <Filter>sdk</Filter>
     </ClCompile>
     <ClCompile Include="sdk\ZHM3Hitman3.cpp">
       <Filter>sdk</Filter>

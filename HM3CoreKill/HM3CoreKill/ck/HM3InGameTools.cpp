@@ -13,9 +13,11 @@
 #include <ck/HM3Game.h>
 
 #include <sdk/actions/ZHitmanActionPickLock.h>
+#include <sdk/ZHM3ItemTemplateAmmo.h>
 #include <sdk/ZHM3BriefingControl.h>
 #include <sdk/ZSysInterfaceWintel.h>
 #include <sdk/InterfacesProvider.h>
+#include <sdk/ZHM3ItemTemplate.h>
 #include <sdk/ZSysInputWintel.h>
 #include <sdk/ZEngineDatabase.h>
 #include <sdk/ZHM3CameraClass.h>
@@ -25,10 +27,8 @@
 #include <sdk/ZGameGlobals.h>
 #include <sdk/ZHM3GameData.h>
 #include <sdk/ZEventBuffer.h>
-#include <sdk/REFTAB32.h>
 #include <sdk/ZHM3Item.h>
-#include <sdk/ZHM3ItemTemplate.h>
-#include <sdk/ZHM3ItemTemplateAmmo.h>
+#include <sdk/REFTAB32.h>
 #include <sdk/CDoor.h>
 #include <sdk/ZOSD.h>
 
@@ -77,6 +77,7 @@ namespace ck
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
+		drawTopMenuBar();
 		drawDebugMenu();
 
 		ImGui::EndFrame();
@@ -123,30 +124,33 @@ namespace ck
 		io.MouseWheel += static_cast<float>(value) / static_cast<float>(WHEEL_DELTA);
 	}
 
-	void HM3InGameTools::drawDebugMenu()
+	void HM3InGameTools::drawTopMenuBar()
 	{
 		static bool showActorsViewer = false;
 
-		ImGui::Begin("ReHitman | Debugger", nullptr, ImGuiWindowFlags_MenuBar);
-
-		if (ImGui::BeginMenuBar())
+		if (ImGui::BeginMainMenuBar())
 		{
-			if (ImGui::BeginMenu("Level tools"))
+			if (ImGui::BeginMenu("Tools"))
 			{
 				ImGui::MenuItem("Actors viewer", nullptr, &showActorsViewer);
 				ImGui::EndMenu();
 			}
+			ImGui::EndMainMenuBar();
 		}
-		ImGui::EndMenuBar();
+
+
+		if (showActorsViewer) showDebugActorsWindow(&showActorsViewer);
+	}
+
+	void HM3InGameTools::drawDebugMenu()
+	{
+		ImGui::Begin("ReHitman | Debugger", nullptr, ImGuiWindowFlags_MenuBar);
 
 		drawPlayerInfo();
 		drawSystemsInfo();
 		drawLevelInfo();
 
 		ImGui::End();
-
-		if (showActorsViewer)
-			showDebugActorsWindow(&showActorsViewer);
 	}
 
 	void HM3InGameTools::drawPlayerInfo()
@@ -317,30 +321,30 @@ namespace ck
 
 				ImGui::Separator();
 				ImGui::Text("Hands: ");
+
+				auto printHandInfo = [](ioi::hm3::ZIKHAND* pHand)
 				{
-					auto leftHand = hitman3->getHand(ioi::hm3::HandType::LeftHand);
-					HM3_ASSERT(leftHand != nullptr, "Left hand must be exists!");
-					ImGui::Text("Item at left  hand"); ImGui::SameLine(0.f, 8.f);
-					if (!leftHand->m_hasItem)
+					HM3_ASSERT(pHand != nullptr, "pHand should be valid pointer!");
+
+					ImGui::Text("Item at %s hand",
+						(pHand->m_handType == ioi::hm3::HandType::LeftHand)  ? "left ":
+						(pHand->m_handType == ioi::hm3::HandType::RightHand) ? "right":
+						"unknown"
+					);
+					
+					ImGui::SameLine(0.f, 8.f);
+					if (!pHand->m_hasItem)
 						ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "NO ITEM");
 					else
 					{
-						auto pItem = ioi::hm3::ItemHelpers::getItemById(leftHand->m_itemID);
-						ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "%s (%.4X)", pItem->m_entityLocator->entityName, leftHand->m_itemID);
+						ioi::hm3::ZHM3Item* pItem = ioi::hm3::ZHM3Item::findItemByID(pHand->m_itemID);
+						ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "%s (%.4X)", pItem->m_entityLocator->entityName, pHand->m_itemID);
 					}
-				}
-				{
-					auto rightHand = hitman3->getHand(ioi::hm3::HandType::RightHand);
-					HM3_ASSERT(rightHand != nullptr, "Right hand must be exists!");
-					ImGui::Text("Item at right hand"); ImGui::SameLine(0.f, 8.f);
-					if (!rightHand->m_hasItem)
-						ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "NO ITEM");
-					else
-					{
-						auto pItem = ioi::hm3::ItemHelpers::getItemById(rightHand->m_itemID);
-						ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "%s (%.4X)", pItem->m_entityLocator->entityName, rightHand->m_itemID);
-					}
-				}
+				};
+
+				printHandInfo(hitman3->getHand(ioi::hm3::HandType::LeftHand));
+				printHandInfo(hitman3->getHand(ioi::hm3::HandType::RightHand));
+
 				ImGui::Separator();
 			}
 
@@ -366,10 +370,10 @@ namespace ck
 				ImGui::Separator();
 				ImGui::Text("Near actors pool [%d] : ", hitman3->m_nearestActorsPoolCapacity);
 				ImGui::Separator();
+
 				for (int i = hitman3->m_nearestActorsPoolCapacity - 1; i >= 0; i--)
 				{
 					const ioi::hm3::NearActorRef& actorRef = hitman3->getNearActorByTheirIndex(i);
-
 					ImGui::Text("Distance: %.4f | Actor at %s at { %.4f; %.4f; %.4f }",
 						actorRef.distance,
 						actorRef.actor->ActorInformation->location->entityName,
@@ -391,8 +395,8 @@ namespace ck
 				{
 					for (int i = 0; i < inventoryREFTAB32->m_itemsCount; i++)
 					{
-						auto itemId = *ioi::get<std::intptr_t>(inventoryREFTAB32, i);
-						auto pItem = ioi::hm3::ItemHelpers::getItemById(itemId);
+						std::intptr_t itemId = *ioi::get<std::intptr_t>(inventoryREFTAB32, i);
+						ioi::hm3::ZHM3Item* pItem = ioi::hm3::ZHM3Item::findItemByID(itemId);
 						if (!pItem || !pItem->m_entityLocator)
 						{
 							continue;
@@ -440,80 +444,89 @@ namespace ck
 
 			ImGui::BeginGroup();
 			ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
-			ImGui::Text("Actor: %.2d at 0x%.8X", selected + 1, currentActor);
-			ImGui::Separator();
-			if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
-			{
-				if (ImGui::BeginTabItem("General"))
-				{
-					ImGui::Text("Entity name: "); ImGui::SameLine(.0f, 4.f); ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), currentActor->ActorInformation->location->entityName);
-					
-					float actorPosition[4] = {
-						currentActor->ActorInformation->location->position.x,
-						currentActor->ActorInformation->location->position.y,
-						currentActor->ActorInformation->location->position.z,
-						.0f
-					};
-					
-					ImGui::Text("Location pointer at 0x%.8X", currentActor->ActorInformation->location);
-					ImGui::Text("Position:"); ImGui::SameLine(0.f, 4.f); ImGui::InputFloat3("", actorPosition);
-					ImGui::Text("Inventory: 0x%.8X", currentActor->ActorInformation->equipment);
-					
-					drawSuitInfoForActor(currentActor);
-
-					{
-						ImGui::Text("Set animation: "); ImGui::SameLine(0.f, 5.f);
-
-						static std::string item_current = "(None)";            // Here our selection is a single pointer stored outside the object.
-						static ioi::hm3::ZAnimationInfo* currentAnim = nullptr;
-
-						if (ImGui::BeginCombo(" ", item_current.c_str())) // The second parameter is the label previewed before opening the combo.
-						{
-							const ck::HM3AnimationRegistry& registry = ck::HM3AnimationRegistry::getRegistry();
-							std::vector<ioi::hm3::ZAnimationInfo*> animations;
-							registry.getLoadedAnimations(animations);
-
-							for (int i = 0; i < animations.size(); i++)
-							{
-								if (!animations[i])
-									continue;
-
-								bool is_selected = (item_current == animations[i]->m_name);
-								if (ImGui::Selectable(animations[i]->m_name, is_selected))
-								{
-									item_current = animations[i]->m_name;
-									currentAnim = animations[i];
-								}
-
-								if (is_selected)
-									ImGui::SetItemDefaultFocus();
-							}
-
-							ImGui::EndCombo();
-						}
-						ImGui::SameLine(0.f, 5.f);
-						if (currentAnim && ImGui::Button("Apply"))
-						{
-							currentActor->dropAnimation(6, 0);
-							currentActor->setAnimation(currentAnim);
-						}
-
-						ImGui::SameLine(0.f, 5.f);
-						if (currentAnim && ImGui::Button("Apply for player"))
-						{
-							gameData->m_Hitman3->dropCurrentAnimation();
-							gameData->m_Hitman3->setAnimation(currentAnim);
-						}
-					}
-
-					ImGui::EndTabItem();
-				}
-				ImGui::EndTabBar();
-			}
+			drawActorInfo(currentActor);
 			ImGui::EndChild();
 			ImGui::EndGroup();
 		}
 		ImGui::End();
+	}
+
+	void HM3InGameTools::drawActorInfo(ioi::hm3::ZHM3Actor* currentActor)
+	{
+		auto sys = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
+		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
+		HM3_ASSERT(gameData != nullptr, "GameData must be valid here!");
+
+		ImGui::Text("Actor at 0x%.8X", currentActor);
+		ImGui::Separator();
+		if (ImGui::BeginTabBar("##Tabs", ImGuiTabBarFlags_None))
+		{
+			if (ImGui::BeginTabItem("General"))
+			{
+				ImGui::Text("Entity name: "); ImGui::SameLine(.0f, 4.f); ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), currentActor->ActorInformation->location->entityName);
+
+				float actorPosition[4] = {
+					currentActor->ActorInformation->location->position.x,
+					currentActor->ActorInformation->location->position.y,
+					currentActor->ActorInformation->location->position.z,
+					.0f
+				};
+
+				ImGui::Text("Location pointer at 0x%.8X", currentActor->ActorInformation->location);
+				ImGui::Text("Position:"); ImGui::SameLine(0.f, 4.f); ImGui::InputFloat3("", actorPosition);
+				ImGui::Text("Inventory: 0x%.8X", currentActor->ActorInformation->equipment);
+
+				drawSuitInfoForActor(currentActor);
+
+				{
+					ImGui::Text("Set animation: "); ImGui::SameLine(0.f, 5.f);
+
+					static std::string item_current = "(None)";            // Here our selection is a single pointer stored outside the object.
+					static ioi::hm3::ZAnimationInfo* currentAnim = nullptr;
+
+					if (ImGui::BeginCombo(" ", item_current.c_str())) // The second parameter is the label previewed before opening the combo.
+					{
+						const ck::HM3AnimationRegistry& registry = ck::HM3AnimationRegistry::getRegistry();
+						std::vector<ioi::hm3::ZAnimationInfo*> animations;
+						registry.getLoadedAnimations(animations);
+
+						for (int i = 0; i < animations.size(); i++)
+						{
+							if (!animations[i])
+								continue;
+
+							bool is_selected = (item_current == animations[i]->m_name);
+							if (ImGui::Selectable(animations[i]->m_name, is_selected))
+							{
+								item_current = animations[i]->m_name;
+								currentAnim = animations[i];
+							}
+
+							if (is_selected)
+								ImGui::SetItemDefaultFocus();
+						}
+
+						ImGui::EndCombo();
+					}
+					ImGui::SameLine(0.f, 5.f);
+					if (currentAnim && ImGui::Button("Apply"))
+					{
+						currentActor->dropAnimation(6, 0);
+						currentActor->setAnimation(currentAnim);
+					}
+
+					ImGui::SameLine(0.f, 5.f);
+					if (currentAnim && ImGui::Button("Apply for player"))
+					{
+						gameData->m_Hitman3->dropCurrentAnimation();
+						gameData->m_Hitman3->setAnimation(currentAnim);
+					}
+				}
+
+				ImGui::EndTabItem();
+			}
+			ImGui::EndTabBar();
+		}
 	}
 
 	void HM3InGameTools::drawSuitInfoForActor(ioi::hm3::ZHM3Actor* currentActor)

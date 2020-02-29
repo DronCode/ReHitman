@@ -199,9 +199,7 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0174(signed int amount); //#0174 +02b8 .rdata:007982d4 (unknown setter)
 		virtual void Function_0175(); //#0175 +02bc .rdata:007982d8
 
+		// === custom ===
+		static ZHM3Item* findItemByID(int itemID);
 	}; //Size: 0x009C
-
-	struct ItemHelpers {
-		static ZHM3Item* getItemById(std::intptr_t itemID);
-	};
 }}

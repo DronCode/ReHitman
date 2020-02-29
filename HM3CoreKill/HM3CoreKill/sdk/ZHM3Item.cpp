@@ -3,10 +3,10 @@
 
 namespace ioi {	namespace hm3 {
 
-	ZHM3Item* ItemHelpers::getItemById(std::intptr_t itemID)
+	ZHM3Item* ZHM3Item::findItemByID(int itemID)
 	{
 		typedef ZHM3Item* (__cdecl* GetItemInfoByID_t)(std::intptr_t);
-		static GetItemInfoByID_t GetItemInfoByID = (GetItemInfoByID_t)GetItemInfoFunc;
+		GetItemInfoByID_t GetItemInfoByID = (GetItemInfoByID_t)GetItemInfoFunc;
 		return GetItemInfoByID(itemID);
 	}
 

@@ -27,11 +27,13 @@ namespace ck
 		void setMouseWheelState(int value);
 
 	private:
+		void drawTopMenuBar();
 		void drawDebugMenu();
 		void drawPlayerInfo();
 		void drawSystemsInfo();
 		void drawLevelInfo();
 		void showDebugActorsWindow(bool* pOpen);
+		void drawActorInfo(ioi::hm3::ZHM3Actor* currentActor);
 		void drawSuitInfoForActor(ioi::hm3::ZHM3Actor* currentActor);
 	};
 

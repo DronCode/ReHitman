@@ -215,6 +215,7 @@
     <ClInclude Include="sdk\CTelePortList.h" />
     <ClInclude Include="sdk\FsZip_t.h" />
     <ClInclude Include="sdk\InterfacesProvider.h" />
+    <ClInclude Include="sdk\internal\ZLoaderSequenceScriptHeader.h" />
     <ClInclude Include="sdk\REFTAB32.h" />
     <ClInclude Include="sdk\ResourceCollection.h" />
     <ClInclude Include="sdk\scripting\ZScriptC.h" />
@@ -294,6 +295,7 @@
     <ClCompile Include="sdk\ZHM3CameraClass.cpp" />
     <ClCompile Include="sdk\ZHM3Item.cpp" />
     <ClCompile Include="sdk\ZLNKWHANDS.cpp" />
+    <ClCompile Include="sdk\ZSysMem.cpp" />
     <ClCompile Include="third_party\ImGUI\examples\imgui_impl_dx9.cpp" />
     <ClCompile Include="third_party\ImGUI\examples\imgui_impl_win32.cpp" />
     <ClCompile Include="third_party\ImGUI\imgui.cpp" />

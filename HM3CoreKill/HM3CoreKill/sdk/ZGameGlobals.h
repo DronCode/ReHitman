@@ -46,4 +46,7 @@ namespace hm3 {
 
 	static const std::uintptr_t GetItemInfoFunc = 0x004E5BE0; //Get item info by
 
+	static const std::uintptr_t GlacierMallocFunc = 0x00446720;	//Glacier's malloc
+	static const std::uintptr_t GlacierFreeFunc	  = 0x004466D0;	//Glacier's free
+
 }}

@@ -46,6 +46,7 @@ private:
 	void setupLoadAnimationHook();
 	void setupNativeObjectsCreationHooks();
 	void setupOnSTDOBJAttachedHook();
+	void setupFsZipHook();
 public:
 	static ioi::hm3::ZHM3GameData* GetGameDataInstancePtr();
 	static ioi::hm3::ZSysInterfaceWintel* GetSystemInterface();

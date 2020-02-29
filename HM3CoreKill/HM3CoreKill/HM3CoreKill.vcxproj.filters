@@ -25,6 +25,9 @@
     <Filter Include="third_party\ImGUI">
       <UniqueIdentifier>{511e04c8-c4e2-4298-91e9-44c1d3e1d269}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sdk\internal">
+      <UniqueIdentifier>{c5004be6-3580-4a72-8222-c6798b82ab75}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ck\HM3DebugConsole.h">
@@ -282,6 +285,9 @@
     <ClInclude Include="sdk\ZHM3WeaponItem.h">
       <Filter>sdk</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\internal\ZLoaderSequenceScriptHeader.h">
+      <Filter>sdk\internal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">
@@ -367,6 +373,9 @@
       <Filter>sdk</Filter>
     </ClCompile>
     <ClCompile Include="sdk\ZLNKWHANDS.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\ZSysMem.cpp">
       <Filter>sdk</Filter>
     </ClCompile>
   </ItemGroup>

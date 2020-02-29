@@ -521,4 +521,5 @@ namespace hm3 {
 	//.rdata:007963E8                 dd offset sub_4E69E0 [ +C | add 0x10 or remove 0x10 to mask ]
 	//.rdata:00796370                 dd offset sub_6322D0 [ some getter of global ptr, could be useful. Values at pointer looks like messages ]
 	// 0051B4F9 - write item id into ZIKHAND when actor wants to use their gun
+	// .text:0063E286 (killed here)
 }}

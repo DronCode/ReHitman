@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <sdk/ZGeomBuffer.h>
+#include <sdk/ResourceCollection.h>
 
 namespace ioi { namespace hm3 {
 
@@ -12,6 +13,13 @@ namespace ioi { namespace hm3 {
 	public:
 		char pad_0004[12]; //0x0004
 		ZGeomBuffer* m_geomBuffer; //0x0010
+		char pad_0014[124]; //0x0014
+		uint32_t m_room; //0x0090
+		char pad_0094[4]; //0x0094
+		ResourceCollection* m_resourceCollection; //0x0098
+		char pad_009C[56]; //0x009C
+		char* m_currentGMS; //0x00D4
+		char pad_00D8[104]; //0x00D8
 
 		virtual void Function0();	//+0x0
 		virtual void Function1();	//+0x4

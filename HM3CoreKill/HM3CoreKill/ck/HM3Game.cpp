@@ -73,6 +73,7 @@ void HM3Game::Initialise()
 	setupLoadAnimationHook();
 	setupNativeObjectsCreationHooks();
 	setupOnSTDOBJAttachedHook();
+	setupFsZipHook();
 
 	/*
 	
@@ -254,6 +255,23 @@ void HM3Game::setupOnSTDOBJAttachedHook()
 			x86_pushad,
 			x86_pushfd,
 			x86_push_edi
+		},
+		{
+			x86_popfd,
+			x86_popad
+		});
+}
+
+void HM3Game::setupFsZipHook()
+{
+	HM3Function::hookFunction<void(__stdcall*)(DWORD), 10>(
+		HM3_PROCESS_NAME,
+		HM3Offsets::FsZip_Constructor,
+		(DWORD)FsZip_Constructed,
+		{
+			x86_pushad,
+			x86_pushfd,
+			x86_push_eax
 		},
 		{
 			x86_popfd,

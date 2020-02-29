@@ -392,6 +392,16 @@ namespace ck
 					ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
 				}
 			}
+
+			{
+				if (ImGui::Button("TEST FS"))
+				{
+					auto fs = ioi::hm3::getGlacierInterface<std::uintptr_t>(ioi::hm3::FileSystem);
+					auto pf = HM3Function::getVirtualFunctionAddress((DWORD)fs, +0x84);
+
+					HM3_DEBUG("FS 0x%.8X | PF 0x%.8X\n", fs, pf);
+				}
+			}
 		}
 	}
 

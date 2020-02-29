@@ -5,6 +5,7 @@
 #include <sdk/ZAnimationInfo.h>
 #include <sdk/CDoor.h>
 #include <sdk/CMapObject.h>
+#include <sdk/FsZip_t.h>
 
 ATOM __stdcall RegisterClassExA_Hooked(WNDCLASSEXA* wndClass);
 
@@ -46,3 +47,5 @@ void __stdcall ZHM3_OnAnimationLoaded(ioi::hm3::ZAnimationInfo* animationInstanc
 void __stdcall CMapObject_OnCreate(ioi::hm3::CMapObject* instance);
 
 void __stdcall ZGlacier_OnSTDOBJAttached(DWORD* unknownInstance);
+
+void __stdcall FsZip_Constructed(ioi::hm3::FsZip_t* instance);

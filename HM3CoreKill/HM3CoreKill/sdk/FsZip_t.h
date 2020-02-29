@@ -11,7 +11,7 @@ namespace ioi { namespace hm3 {
 		virtual int getFileSize(const char* fileName); // [0004] +0010 [.rdata at 0x0075693C]
 		virtual void Function_0005(const char* supFileName); // [0005] +0014 [.rdata at 0x00756940]
 		virtual void Function_0006(); // [0006] +0018 [.rdata at 0x00756944]
-		virtual void Function_0007(const char* fileName, int* unk0, int unk1 = 0, int unk2 = 0); // [0007] +001C [.rdata at 0x00756948]
+		virtual void Function_0007(const char* fileName, char* dst, int unk1 = 0, int unk2 = 0); // [0007] +001C [.rdata at 0x00756948]
 		virtual void Function_0008(); // [0008] +0020 [.rdata at 0x0075694C]
 		virtual void Function_0009(); // [0009] +0024 [.rdata at 0x00756950]
 		virtual void Function_0010(); // [0010] +0028 [.rdata at 0x00756954]

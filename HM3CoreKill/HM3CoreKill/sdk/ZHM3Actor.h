@@ -187,8 +187,7 @@ namespace hm3 {
 
 		/**
 			Unmapped: 
-				+2C8 - First IKHAND (different than the already reversed structure of ZHitman3::ZIKHAND)
-				+3A9 - Active item (2'nd hand)
+				+900 - Actor type
 		
 		**/
 	}; //Size: 0x0008
@@ -202,4 +201,5 @@ namespace hm3 {
 	//.rdata:007963F0                 dd offset sub_4E6AC0 [ toggle +2 byte field ]
 	//.rdata:007963E8                 dd offset sub_4E69E0 [ +C | add 0x10 or remove 0x10 to mask ]
 	//.rdata:00796370                 dd offset sub_6322D0 [ some getter of global ptr, could be useful. Values at pointer looks like messages ]
+	// 0051B4F9 - write item id into ZIKHAND when actor wants to use their gun
 }}

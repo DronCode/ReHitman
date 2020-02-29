@@ -247,6 +247,7 @@
     <ClInclude Include="sdk\ZHM3MenuElements.h" />
     <ClInclude Include="sdk\ZIKHAND.h" />
     <ClInclude Include="sdk\ZKeyboardWintel.h" />
+    <ClInclude Include="sdk\ZLNKWHANDS.h" />
     <ClInclude Include="sdk\ZMouseWintel.h" />
     <ClInclude Include="sdk\ZOSD.h" />
     <ClInclude Include="sdk\ZRenderWintelD3D.h" />
@@ -289,6 +290,7 @@
     <ClCompile Include="sdk\ZEngineDatabase.cpp" />
     <ClCompile Include="sdk\ZHM3CameraClass.cpp" />
     <ClCompile Include="sdk\ZHM3Item.cpp" />
+    <ClCompile Include="sdk\ZLNKWHANDS.cpp" />
     <ClCompile Include="third_party\ImGUI\examples\imgui_impl_dx9.cpp" />
     <ClCompile Include="third_party\ImGUI\examples\imgui_impl_win32.cpp" />
     <ClCompile Include="third_party\ImGUI\imgui.cpp" />

@@ -3,6 +3,11 @@
 #include <cstdint>
 
 namespace ioi { namespace hm3 {
+
+	class ZHM3Actor;
+	class ZHM3Item;
+	class ZHM3ItemTemplate;
+	class ZLNKWHANDS;
 	
 	enum class HandType { 
 		LeftHand	= 32, 
@@ -21,16 +26,13 @@ namespace ioi { namespace hm3 {
 		HandType m_handType; //0x0068
 		char pad_006C[20]; //0x006C
 
-		virtual void Function0();
-		virtual void Function1();
-		virtual void Function2();
-		virtual void Function3();
-		virtual void Function4();
-		virtual void Function5();
-		virtual void Function6();
-		virtual void Function7();
-		virtual void Function8();
-		virtual void Function9();
+		virtual void Function0(); //#0 +0x00 .rdata:00774BEC
+		virtual void changeItemInHand(ZLNKWHANDS* actor, int unk1, int _action, int newItemID); //#1 +0x04 .rdata:00774BF0
+		virtual void Function2(); //#2 +0x08 .rdata:00774BF4
+		virtual ZHM3Item* getItem(); //#3 +0x0C .rdata:00774BF8
+		virtual ZHM3ItemTemplate* getItemTemplate(); //#4 +0x10 .rdata:00774BFC
+		virtual int resetHands(); //#5 +0x14 .rdata:00774C00
+		virtual int takeItem(int _hitman3, int _item, int _item2, float _unk0, int unk1, int _z0, int _z1, int _z2); //#6 +0x18 .rdata:00774C04
 	}; //Size: 0x0080
 
 } }

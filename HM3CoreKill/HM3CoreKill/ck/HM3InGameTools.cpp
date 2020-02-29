@@ -572,13 +572,15 @@ namespace ck
 		);
 
 		ImGui::SameLine(0.f, 8.f);
-		if (!hand->m_hasItem)
+
+		ioi::hm3::ZHM3Item* pItem = hand->getItem();
+
+		if (!pItem)
 		{
 			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "NO ITEM");
 		}
 		else
 		{
-			ioi::hm3::ZHM3Item* pItem = ioi::hm3::ZHM3Item::findItemByID(hand->m_itemID);
 			ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "%s (%.4X)", pItem->m_entityLocator->entityName, hand->m_itemID);
 		}
 	}

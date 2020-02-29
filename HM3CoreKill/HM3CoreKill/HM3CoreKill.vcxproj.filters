@@ -270,6 +270,9 @@
     <ClInclude Include="sdk\ZHM3Item.h">
       <Filter>sdk</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\ZLNKWHANDS.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">
@@ -352,6 +355,9 @@
       <Filter>sdk</Filter>
     </ClCompile>
     <ClCompile Include="sdk\ZHM3Actor.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\ZLNKWHANDS.cpp">
       <Filter>sdk</Filter>
     </ClCompile>
   </ItemGroup>

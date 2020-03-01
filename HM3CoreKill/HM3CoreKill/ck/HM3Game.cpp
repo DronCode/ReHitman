@@ -277,6 +277,22 @@ void HM3Game::setupFsZipHook()
 			x86_popfd,
 			x86_popad
 		});
+
+	/*
+		Maybe later but now now!
+		HM3Function::hookFunction<void(__stdcall*)(DWORD), 6>(
+		HM3_PROCESS_NAME, 
+		HM3Offsets::FsZip_Destructor,
+		(DWORD)FsZip_Destructor, 
+		{
+			x86_pushad,
+			x86_pushfd,
+			x86_push_ecx
+		}, 
+		{
+			x86_popfd,
+			x86_popad
+		});*/
 }
 
 void HM3Game::onD3DInitialized(IDirect3DDevice9* device)

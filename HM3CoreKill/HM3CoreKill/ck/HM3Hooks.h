@@ -49,3 +49,5 @@ void __stdcall CMapObject_OnCreate(ioi::hm3::CMapObject* instance);
 void __stdcall ZGlacier_OnSTDOBJAttached(DWORD* unknownInstance);
 
 void __stdcall FsZip_Constructed(ioi::hm3::FsZip_t* instance);
+
+void __stdcall FsZip_Destructor(ioi::hm3::FsZip_t* instance);

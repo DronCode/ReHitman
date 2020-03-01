@@ -293,7 +293,7 @@ namespace ck
 		auto levelControl = gameData->m_LevelControl;
 		auto hitman3 = gameData->m_Hitman3;
 
-		auto printRTTR = [](ioi::hm3::ZGlacierRTTI* rtti) {
+		auto printRTTI = [](ioi::hm3::ZGlacierRTTI* rtti) {
 			ImGui::Separator();
 			ImGui::Text("    RTTI      : ");
 			ImGui::Text("        ID        : %d", rtti->TypeID);
@@ -330,10 +330,10 @@ namespace ck
 
 			ImGui::Text("Level control : "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", levelControl);
 			ioi::hm3::ZGlacierRTTI* rtti = ioi::hm3::getTypeInfo(levelControl);
-			printRTTR(rtti);
+			printRTTI(rtti);
 
 			ImGui::Text("Map           : "); ImGui::SameLine(0.f, 10.f); ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", gameData->m_IngameMap);
-			printRTTR(gameData->m_IngameMap->m_RTTI);
+			printRTTI(gameData->m_IngameMap->m_RTTI);
 			ImGui::Text("    isShowed  : %s", (gameData->m_IngameMap->m_showed ? "Yes" : "No"));
 			if (gameData->m_IngameMap->m_showed)
 			{

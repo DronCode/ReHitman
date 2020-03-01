@@ -195,6 +195,22 @@ void __stdcall ZGlacier_OnSTDOBJAttached(DWORD* unknownInstance)
 void __stdcall FsZip_Constructed(ioi::hm3::FsZip_t* instance)
 {
 	ck::HM3FreeFileSystemLocatorProxy* proxy = reinterpret_cast<ck::HM3FreeFileSystemLocatorProxy*>(instance);
+
+	//proxy->m_missionZipFilePath = nullptr;
+	//proxy->m_zipFilePath		= nullptr;
+
 	HM3_DEBUG("FsZip_t created at 0x%.8X | Hook read() method\n", instance);
 	HM3Function::hookVFTable(proxy, HM3Offsets::FsZip_ReadMethodIndex, &ck::HM3FreeFileSystemLocatorProxy::readFileProvider, false);
+}
+
+void __stdcall FsZip_Destructor(ioi::hm3::FsZip_t* instance)
+{
+	ck::HM3FreeFileSystemLocatorProxy* proxy = reinterpret_cast<ck::HM3FreeFileSystemLocatorProxy*>(instance);
+
+	proxy->m_missionZipFilePath = nullptr;
+	proxy->m_zipFilePath		= nullptr;
+
+	// Just recover vftable here!
+	HM3_DEBUG("FsZip_t restore vftable for at 0x%.8X\n", proxy);
+	HM3Function::hookVFTable(reinterpret_cast<DWORD>(proxy), HM3Offsets::FsZip_ReadMethodIndex, HM3Offsets::FsZip_ReadMethodFunc, false); //restore back!
 }

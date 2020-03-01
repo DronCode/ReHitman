@@ -8,6 +8,7 @@
 #include <ck/HM3Offsets.h>
 #include <ck/HM3AnimationRegistry.h>
 #include <ck/HM3DoorsRegistry.h>
+#include <ck/HM3FreeFileSystemLocatorProxy.h>
 
 #include <sdk/ZMouseWintel.h>
 #include <sdk/ZSysInputWintel.h>
@@ -191,52 +192,9 @@ void __stdcall ZGlacier_OnSTDOBJAttached(DWORD* unknownInstance)
 	}
 }
 
-struct FsZip_Hooked
-{
-	int readHooked(const char* name, void* dest, int unk0, int unk1)
-	{
-		typedef int(__thiscall* FsZip_read_t)(void*, const char*, void*, int, int);
-
-		const int LevelIdOffset = 7;
-		const int LevelIdLength = 3;
-
-		char levelID[LevelIdLength + 1] = { 0 };
-		memcpy((void*)&levelID, name + LevelIdOffset, LevelIdLength);
-
-		std::string_view path(name);
-
-		/// TODO: Fix this dirty code!
-
-		if (name && name[0] != '*' && path.find("Scenes\\") == 0)
-		{
-			char uBuff[512];
-			snprintf(uBuff, 512, "Scenes/UnCompressed/%s/%s", levelID, name);
-
-			FILE* fp = fopen(uBuff, "rb");
-			if (fp)
-			{
-				HM3_DEBUG("[0x%.8X] FsZip::readContents| read from raw FS file %s\n", this, uBuff);
-				int rc = fread(dest, 1, unk0, fp);
-				fclose(fp);
-				return rc;
-			}
-			else {
-				HM3_DEBUG("[0x%.8x] FsZip::readContents|WARN| failed to read file %s from FS (the request will be rerouted back to FsZip component)\n", this, uBuff);
-			}
-		}
-
-		// original code
-		FsZip_read_t original = (FsZip_read_t)HM3Offsets::FsZip_ReadMethodFunc;
-		int result = original((void*)this, name, dest, unk0, unk1);
-		HM3_DEBUG("[0x%.8X] FsZip::readContents| read from ZIP FS file %s result put at 0x%.8X [%d;%d] => %d\n", this, name, dest, unk0, unk1, result);
-		return result;
-	}
-};
-
 void __stdcall FsZip_Constructed(ioi::hm3::FsZip_t* instance)
 {
-	FsZip_Hooked* pInstance = reinterpret_cast<FsZip_Hooked*>(instance);
-
+	ck::HM3FreeFileSystemLocatorProxy* proxy = reinterpret_cast<ck::HM3FreeFileSystemLocatorProxy*>(instance);
 	HM3_DEBUG("FsZip_t created at 0x%.8X | Hook read() method\n", instance);
-	HM3Function::hookVFTable(pInstance, HM3Offsets::FsZip_ReadMethodIndex, &FsZip_Hooked::readHooked, false);
+	HM3Function::hookVFTable(proxy, HM3Offsets::FsZip_ReadMethodIndex, &ck::HM3FreeFileSystemLocatorProxy::readFileProvider, false);
 }

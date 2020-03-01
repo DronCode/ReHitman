@@ -194,6 +194,7 @@
     <ClInclude Include="ck\HM3CrashHandler.h" />
     <ClInclude Include="ck\HM3DebugConsole.h" />
     <ClInclude Include="ck\HM3Direct3D.h" />
+    <ClInclude Include="ck\HM3FreeFileSystemLocatorProxy.h" />
     <ClInclude Include="ck\HM3Function.h" />
     <ClInclude Include="ck\HM3Game.h" />
     <ClInclude Include="ck\HM3Hooks.h" />
@@ -282,6 +283,7 @@
     <ClCompile Include="ck\HM3DebugConsole.cpp" />
     <ClCompile Include="ck\HM3Direct3D.cpp" />
     <ClCompile Include="ck\HM3DoorsRegistry.cpp" />
+    <ClCompile Include="ck\HM3FreeFileSystemLocatorProxy.cpp" />
     <ClCompile Include="ck\HM3Game.cpp" />
     <ClCompile Include="ck\HM3Hooks.cpp" />
     <ClCompile Include="ck\HM3InGameTools.cpp" />

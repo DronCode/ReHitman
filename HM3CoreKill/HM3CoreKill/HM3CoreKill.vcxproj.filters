@@ -288,6 +288,9 @@
     <ClInclude Include="sdk\internal\ZLoaderSequenceScriptHeader.h">
       <Filter>sdk\internal</Filter>
     </ClInclude>
+    <ClInclude Include="ck\HM3FreeFileSystemLocatorProxy.h">
+      <Filter>ck</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">
@@ -377,6 +380,9 @@
     </ClCompile>
     <ClCompile Include="sdk\ZSysMem.cpp">
       <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="ck\HM3FreeFileSystemLocatorProxy.cpp">
+      <Filter>ck</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

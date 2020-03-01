@@ -94,10 +94,15 @@ namespace ck
 	{
 		bool result = ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam);
 
-		if (msg == WM_KEYUP && static_cast<uint32_t>(wParam) == VK_F3)
+		if (msg == WM_KEYUP)
 		{
-			toggleVisibility();
+			if (static_cast<uint32_t>(wParam) == VK_F3)
+				toggleVisibility();
+
+			if (static_cast<uint32_t>(wParam) == VK_F4)
+				toggleInputState();
 		}
+		
 
 		return result;
 	}
@@ -122,6 +127,41 @@ namespace ck
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		io.MouseWheel += static_cast<float>(value) / static_cast<float>(WHEEL_DELTA);
+	}
+
+	void HM3InGameTools::toggleInputState()
+	{
+		auto sysInterface = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
+		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
+		if (!gameData || !sysInterface)
+			return;
+
+		auto hitman3 = gameData->m_Hitman3;
+		auto engineDB = sysInterface->m_engineDataBase;
+		if (!hitman3 || !engineDB)
+			return;
+
+		m_inGameInputIsActive = !m_inGameInputIsActive;
+
+		std::uintptr_t ev = 0x0;
+
+		if (m_inGameInputIsActive)
+			ev = engineDB->getEvent("MSG_ENABLECONTROLS", 0, __FILE__, 0);
+		else
+			ev = engineDB->getEvent("MSG_DISABLECONTROLS", 0, __FILE__, 0);
+
+		if (ev == 0x0)
+		{
+			m_inGameInputIsActive = !m_inGameInputIsActive; //reset state back, event not found
+			return;
+		}
+
+		hitman3->sendEvent(ev, 0, 0);
+	}
+
+	void HM3InGameTools::resetInputState()
+	{
+		m_inGameInputIsActive = true;
 	}
 
 	void HM3InGameTools::drawTopMenuBar()

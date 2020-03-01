@@ -316,6 +316,7 @@ void HM3Game::onD3DEndScene(IDirect3DDevice9* device)
 void HM3Game::OnNewGameSession(ioi::hm3::ZHM3Hitman3* gameSession)
 {
 	HM3_DEBUG("[HM3Game::OnNewGameSession] New session instance detected at 0x%.8X\n", gameSession);
+	ck::HM3InGameTools::getInstance().resetInputState();
 }
 
 const HM3Player::Ptr& HM3Game::GetPlayer() const { return m_currentPlayer; }

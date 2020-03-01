@@ -10,6 +10,7 @@ namespace ck
 	class HM3InGameTools
 	{
 		bool m_isVisible = false;
+		bool m_inGameInputIsActive = true;
 		IDirect3DDevice9* m_device = nullptr;
 		
 		void pollEventsFromGlacier();
@@ -25,6 +26,12 @@ namespace ck
 		bool isVisible() const;
 		void setMouseButtonState(int button, bool state);
 		void setMouseWheelState(int value);
+
+	protected:
+		void toggleInputState();
+
+	public:
+		void resetInputState();
 
 	private:
 		void drawTopMenuBar();

@@ -49,7 +49,7 @@ namespace ioi { namespace hm3 {
 		char pad_0004[32];							//0x0004
 		std::uintptr_t m_objectToLookup;						//0x0024
 		char pad_0028[4];							//0x0028
-		ioi::hm3::ZGlacierRTTI* m_runtimeTypeInfo;  //0x002C
+		ioi::hm3::ZGlacierRTTI* m_RTTI;  //0x002C
 		char pad_0030[16];							//0x0030
 	};
 

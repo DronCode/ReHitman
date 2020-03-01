@@ -189,6 +189,7 @@
   <ItemGroup>
     <ClInclude Include="ck\Features.h" />
     <ClInclude Include="ck\HM3ActionFactory.h" />
+    <ClInclude Include="ck\HM3AnimationRegistry.h" />
     <ClInclude Include="ck\HM3CrashHandler.h" />
     <ClInclude Include="ck\HM3DebugConsole.h" />
     <ClInclude Include="ck\HM3Direct3D.h" />
@@ -209,6 +210,7 @@
     <ClInclude Include="sdk\InterfacesProvider.h" />
     <ClInclude Include="sdk\ResourceCollection.h" />
     <ClInclude Include="sdk\scripting\ZScriptC.h" />
+    <ClInclude Include="sdk\ZAnimationInfo.h" />
     <ClInclude Include="sdk\ZBoxPrimitive.h" />
     <ClInclude Include="sdk\ZDirect3DDevice.h" />
     <ClInclude Include="sdk\ZEngineDatabase.h" />
@@ -254,6 +256,7 @@
   <ItemGroup>
     <ClCompile Include="ck\Features.cpp" />
     <ClCompile Include="ck\HM3ActionFactory.cpp" />
+    <ClCompile Include="ck\HM3AnimationRegistry.cpp" />
     <ClCompile Include="ck\HM3CrashHandler.cpp" />
     <ClCompile Include="ck\HM3DebugConsole.cpp" />
     <ClCompile Include="ck\HM3Direct3D.cpp" />

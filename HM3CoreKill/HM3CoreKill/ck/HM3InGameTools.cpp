@@ -8,6 +8,7 @@
 #include <ck/HM3Offsets.h>
 #include <ck/HM3DebugConsole.h>
 #include <ck/HM3Function.h>
+#include <ck/HM3AnimationRegistry.h>
 
 #include <sdk/InterfacesProvider.h>
 #include <sdk/ZSysInterfaceWintel.h>
@@ -20,6 +21,7 @@
 #include <sdk/ZHM3CameraClass.h>
 #include <sdk/ZEventBuffer.h>
 #include <sdk/CTelePortList.h>
+#include <sdk/ZAnimationInfo.h>
 #include <sdk/ZOSD.h>
 
 // Win32 message handler
@@ -329,6 +331,44 @@ namespace ck
 					
 					ImGui::Text("Location pointer at 0x%.8X", currentActor->ActorInformation->location);
 					ImGui::Text("Position:"); ImGui::SameLine(0.f, 4.f); ImGui::InputFloat3("", actorPosition); 
+
+					{
+						ImGui::Text("Set animation: "); ImGui::SameLine(0.f, 5.f);
+
+						static std::string item_current = "(None)";            // Here our selection is a single pointer stored outside the object.
+						static ioi::hm3::ZAnimationInfo* currentAnim = nullptr;
+
+						if (ImGui::BeginCombo(" ", item_current.c_str())) // The second parameter is the label previewed before opening the combo.
+						{
+							const ck::HM3AnimationRegistry& registry = ck::HM3AnimationRegistry::getRegistry();
+							std::vector<ioi::hm3::ZAnimationInfo*> animations;
+							registry.getLoadedAnimations(animations);
+
+							for (int i = 0; i < animations.size(); i++)
+							{
+								if (!animations[i])
+									continue;
+
+								bool is_selected = (item_current == animations[i]->m_name);
+								if (ImGui::Selectable(animations[i]->m_name, is_selected))
+								{
+									item_current = animations[i]->m_name;
+									currentAnim = animations[i];
+								}
+
+								if (is_selected)
+									ImGui::SetItemDefaultFocus();
+							}
+
+							ImGui::EndCombo();
+						}
+						ImGui::SameLine(0.f, 5.f);
+						if (currentAnim && ImGui::Button("Apply"))
+						{
+							currentActor->dropAnimation(6, 0);
+							currentActor->setAnimation(currentAnim);
+						}
+					}
 
 					ImGui::EndTabItem();
 				}

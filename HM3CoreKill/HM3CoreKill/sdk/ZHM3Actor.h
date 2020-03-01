@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <sdk/ZEntityLocator.h>
+#include <sdk/ZAnimationInfo.h>
 
 namespace ioi {
 namespace hm3 {
@@ -118,7 +119,7 @@ namespace hm3 {
 		virtual void Function86(); //
 		virtual void Function87(); //
 		virtual void Function88(); //
-		virtual void Function89(); //
+		virtual void dropAnimation(int, int); //#89
 		virtual void Function90(); //
 		virtual void Function91(); //
 		virtual void Function92(); //
@@ -155,7 +156,7 @@ namespace hm3 {
 		virtual void Function123(); //
 		virtual void Function124(); //
 		virtual void Function125(); //
-		virtual void Function126(); //
+		virtual void setAnimation(ioi::hm3::ZAnimationInfo* animation, int unknown0 = 1); //#126 (sub_516960)
 		virtual void Function127(); //
 		virtual void Function128(); //
 		virtual void Function129(); //

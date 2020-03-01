@@ -216,6 +216,12 @@
     <ClInclude Include="sdk\ZHM3CameraClass.h">
       <Filter>sdk</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\ZAnimationInfo.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3AnimationRegistry.h">
+      <Filter>ck</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">
@@ -284,6 +290,9 @@
     </ClCompile>
     <ClCompile Include="sdk\ZHM3CameraClass.cpp">
       <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="ck\HM3AnimationRegistry.cpp">
+      <Filter>ck</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

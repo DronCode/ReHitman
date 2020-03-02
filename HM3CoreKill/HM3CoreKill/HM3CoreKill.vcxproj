@@ -97,7 +97,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.dll</TargetExt>
-    <IncludePath>third_party/ImGUI/examples;third_party/ImGUI;third_party;utils/zydis/include;.;$(IncludePath)</IncludePath>
+    <IncludePath>third_party/ImGUI/examples;third_party/ImGUI;third_party/fmt/include;third_party;utils/zydis/include;.;$(IncludePath)</IncludePath>
     <LibraryPath>utils/zydis/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CK_DebugGame|Win32'">

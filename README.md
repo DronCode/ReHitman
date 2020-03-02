@@ -4,7 +4,7 @@ ReHitman
 [![Build status](https://ci.appveyor.com/api/projects/status/roum4p326855okuy/branch/master?svg=true)](https://ci.appveyor.com/project/DronCode/rehitman/branch/master)
 
 <p align="center">
-	<img width="460" height="400" src="GitHub/logo.png">
+	<img width="400" height="400" src="GitHub/logo.png">
 </p>
 
 What is ReHitman?

@@ -102,7 +102,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CK_DebugGame|Win32'">
     <TargetExt>.dll</TargetExt>
-    <IncludePath>third_party/ImGUI/examples;third_party/ImGUI;third_party;utils/zydis/include;.;$(IncludePath)</IncludePath>
+    <IncludePath>third_party/fmt/include;third_party/ImGUI/examples;third_party/ImGUI;third_party;utils/zydis/include;.;$(IncludePath)</IncludePath>
     <LibraryPath>utils/zydis/lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(ReHitmanGameFolder)</OutDir>
   </PropertyGroup>
@@ -265,6 +265,18 @@
     <ClInclude Include="sdk\ZSysInputWintel.h" />
     <ClInclude Include="sdk\ZSysInterfaceWintel.h" />
     <ClInclude Include="sdk\ZSysMem.h" />
+    <ClInclude Include="third_party\fmt\include\fmt\chrono.h" />
+    <ClInclude Include="third_party\fmt\include\fmt\color.h" />
+    <ClInclude Include="third_party\fmt\include\fmt\compile.h" />
+    <ClInclude Include="third_party\fmt\include\fmt\core.h" />
+    <ClInclude Include="third_party\fmt\include\fmt\format-inl.h" />
+    <ClInclude Include="third_party\fmt\include\fmt\format.h" />
+    <ClInclude Include="third_party\fmt\include\fmt\locale.h" />
+    <ClInclude Include="third_party\fmt\include\fmt\os.h" />
+    <ClInclude Include="third_party\fmt\include\fmt\ostream.h" />
+    <ClInclude Include="third_party\fmt\include\fmt\posix.h" />
+    <ClInclude Include="third_party\fmt\include\fmt\printf.h" />
+    <ClInclude Include="third_party\fmt\include\fmt\ranges.h" />
     <ClInclude Include="third_party\ImGUI\examples\imgui_impl_dx9.h" />
     <ClInclude Include="third_party\ImGUI\examples\imgui_impl_win32.h" />
     <ClInclude Include="third_party\ImGUI\imconfig.h" />
@@ -302,6 +314,8 @@
     <ClCompile Include="sdk\ZHM3Item.cpp" />
     <ClCompile Include="sdk\ZLNKWHANDS.cpp" />
     <ClCompile Include="sdk\ZSysMem.cpp" />
+    <ClCompile Include="third_party\fmt\src\format.cc" />
+    <ClCompile Include="third_party\fmt\src\os.cc" />
     <ClCompile Include="third_party\ImGUI\examples\imgui_impl_dx9.cpp" />
     <ClCompile Include="third_party\ImGUI\examples\imgui_impl_win32.cpp" />
     <ClCompile Include="third_party\ImGUI\imgui.cpp" />

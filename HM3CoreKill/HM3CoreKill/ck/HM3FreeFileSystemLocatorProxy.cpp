@@ -8,6 +8,7 @@
 #include <sdk/FsZip_t.h>
 
 #include <filesystem>
+#include <fmt/format.h>
 
 namespace fs = std::filesystem;
 
@@ -43,131 +44,39 @@ namespace ck {
 
 	int HM3FreeFileSystemLocatorProxy::readFileProvider(const char* name, void* dest, int fileSize, int unk1)
 	{
-		// --- copy pack info before pthis not corrupted ---
-		int zipPackagePathLength = 0;
-		const int zipPackagePathBuffLength = 512;
-		char zipPackagePath[zipPackagePathBuffLength] = { 0 };
-
-		if (this->m_zipFilePath && reinterpret_cast<DWORD>(this->m_zipFilePath) > 0xFFFFF)
-		{
-			zipPackagePathLength = strlen(this->m_zipFilePath);
-			memcpy(zipPackagePath, this->m_zipFilePath, zipPackagePathLength);
-		}
-		else
-		{
-			zipPackagePathLength = strlen(this->m_missionZipFilePath);
-			memcpy(zipPackagePath, this->m_missionZipFilePath, zipPackagePathLength);
-		}
-
-		// --- continue ---
 		auto sys = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
 
 		// --- detect scene ---
-		const int sceneIdBufferSize = 32;
-		char sceneIdBuffer[sceneIdBufferSize] = { 0 };
+		std::string fileName = name;
+		std::string zipPackageFileName = fs::path(this->m_missionZipFilePath).stem().string();
+		std::string sceneName = fs::path(sys->m_currentScene).stem().string();
 
-		int missionNameLength = 0;
-		int missionNameStartsAt = 0;
-		int fullLength = strlen(sys->m_currentScene);
-		int currentDividerId = 0;
-
-		for (int i = 0; i < fullLength; i++)
+		if (fileName[0] == '*')
 		{
-			if (sys->m_currentScene[i] == '\\' || sys->m_currentScene[i] == '/') //thx windows for this
-			{
-				++currentDividerId;
-				if (currentDividerId > 1)
-					break;
-			}
-			else if (sys->m_currentScene[i] == '.')
-			{
-				break;
-			}
-			else
-			{
-				if (currentDividerId == 1)
-				{
-					if (missionNameLength == 0)
-						missionNameStartsAt = i;
-
-					++missionNameLength;
-					HM3_ASSERT(missionNameLength < sceneIdBufferSize, "MEMORY CORRUPTION: We trying to write more data than we have a free space!");
-				}
-			}
-		}
-		memcpy((void*)sceneIdBuffer, sys->m_currentScene + missionNameStartsAt, missionNameLength);
-		// --- detect pack ---
-		const int packageNameLength = 32;
-		char packageName[packageNameLength] = { 0 };
-
-		int zipPackageEndPtr = zipPackagePathLength - 1;
-		int zipPackageStartPtr = -1;
-		for (int i = zipPackagePathLength - 1; i >= 0; i--)
-		{
-			if (zipPackagePath[i] == '\\' || zipPackagePath[i] == '/')
-			{
-				break;
-			}
-			zipPackageStartPtr = i;
+			fileName = findFileInFolderRecursively(
+				fmt::format("UnpackedScenes\\{}\\{}", sceneName, zipPackageFileName),
+				fileName.substr(1, fileName.length())
+			);
 		}
 
-		if (zipPackageStartPtr != -1 && zipPackageEndPtr - zipPackageStartPtr < packageNameLength) //In some cases we have corrupted environment. In that case best solution is use ZIP FS.
+		std::string path = fmt::format("UnpackedScenes\\{}\\{}\\{}", sceneName, zipPackageFileName, fileName);
+		
+		FILE* fp = fopen(path.c_str(), "rb");
+		if (fp)
 		{
-			memcpy((void*)&packageName, zipPackagePath + zipPackageStartPtr, zipPackageEndPtr - zipPackageStartPtr - 3);
-			// --- detect various file ---
-			std::string fileName(name);
-			bool fileNameResolved = false;
-
-			if (fileName[0] == '*')
+			if (fileSize == 0)
 			{
-				// Oh shit, IOI, I really hate you!
-				// Here we need to find file by passed mask!
-				const int maskedPathLength = 512;
-				char maskedPath[maskedPathLength] = { 0 };
-
-
-				//snprintf(maskedPath, maskedPathLength, "%s\\UnpackedScenes\\%s\\%s\\%s", currentPath, sceneIdBuffer, packageName, fileName);
-				snprintf(maskedPath, maskedPathLength, "UnpackedScenes\\%s\\%s", sceneIdBuffer, packageName);
-
-				std::string foundFile = findFileInFolderRecursively(maskedPath, fileName.c_str() + 1);
-				if (!foundFile.empty())
-				{
-					fileName = foundFile;
-					fileNameResolved = true;
-				}
-
-			}
-			// --- detect full path to pure fs ---
-			std::string finalFilePath;
-
-			if (!fileNameResolved)
-			{
-				const int fullPathBufferSize = 512;
-				char fullPathBuffer[fullPathBufferSize];
-				snprintf(fullPathBuffer, fullPathBufferSize, "UnpackedScenes\\%s\\%s\\%s", sceneIdBuffer, packageName, fileName.c_str());
-				finalFilePath = fullPathBuffer;
-			}
-			else {
-				finalFilePath = fileName;
+				// The game engine doesn't know the actual size of file and pass zero to us
+				// We must explore how much bytes will be used by file in memory space.
+				fseek(fp, 0L, SEEK_END);	//move to end
+				fileSize = ftell(fp); //save the endpoint
+				rewind(fp); //move to start of file
 			}
 
-			FILE* fileHandle = fopen(finalFilePath.c_str(), "rb");
-			if (fileHandle)
-			{
-				if (fileSize == 0)
-				{
-					// The game engine doesn't know the actual size of file and pass zero to us
-					// We must explore how much bytes will be used by file in memory space.
-					fseek(fileHandle, 0L, SEEK_END);	//move to end
-					fileSize = ftell(fileHandle); //save the endpoint
-					rewind(fileHandle); //move to start of file
-				}
-
-				const int readyBytes = fread(dest, 1, fileSize, fileHandle);
-				fclose(fileHandle);
-				HM3_DEBUG("[0x%.8X] FsZip::readContents| read file from raw fs %s (ready bytes %d)\n", reinterpret_cast<int>(this), finalFilePath.c_str(), readyBytes);
-				return readyBytes;
-			}
+			const int readyBytes = fread(dest, 1, fileSize, fp);
+			fclose(fp);
+			HM3_DEBUG("[0x%.8X] FsZip::readContents| read file from raw fs %s (ready bytes %d)\n", reinterpret_cast<int>(this), path.c_str(), readyBytes);
+			return readyBytes;
 		}
 
 		// original code

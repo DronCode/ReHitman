@@ -31,6 +31,15 @@
     <Filter Include="sdk\render">
       <UniqueIdentifier>{5779f6a9-04a5-4806-960c-3ce52300846c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="third_party\fmt">
+      <UniqueIdentifier>{e5f8d816-68eb-47e1-a746-dc35bac9ae3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\fmt\include">
+      <UniqueIdentifier>{ea790aac-5675-4b19-8961-56f463efcb54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\fmt\src">
+      <UniqueIdentifier>{bf47c2cc-0bbd-4b03-a241-0332615a92bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ck\HM3DebugConsole.h">
@@ -306,6 +315,42 @@
     <ClInclude Include="sdk\render\ZPrimControlWintel.h">
       <Filter>sdk\render</Filter>
     </ClInclude>
+    <ClInclude Include="third_party\fmt\include\fmt\chrono.h">
+      <Filter>third_party\fmt\include</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\fmt\include\fmt\color.h">
+      <Filter>third_party\fmt\include</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\fmt\include\fmt\compile.h">
+      <Filter>third_party\fmt\include</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\fmt\include\fmt\core.h">
+      <Filter>third_party\fmt\include</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\fmt\include\fmt\format.h">
+      <Filter>third_party\fmt\include</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\fmt\include\fmt\format-inl.h">
+      <Filter>third_party\fmt\include</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\fmt\include\fmt\locale.h">
+      <Filter>third_party\fmt\include</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\fmt\include\fmt\os.h">
+      <Filter>third_party\fmt\include</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\fmt\include\fmt\ostream.h">
+      <Filter>third_party\fmt\include</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\fmt\include\fmt\posix.h">
+      <Filter>third_party\fmt\include</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\fmt\include\fmt\printf.h">
+      <Filter>third_party\fmt\include</Filter>
+    </ClInclude>
+    <ClInclude Include="third_party\fmt\include\fmt\ranges.h">
+      <Filter>third_party\fmt\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">
@@ -398,6 +443,12 @@
     </ClCompile>
     <ClCompile Include="ck\HM3FreeFileSystemLocatorProxy.cpp">
       <Filter>ck</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\fmt\src\os.cc">
+      <Filter>third_party\fmt\src</Filter>
+    </ClCompile>
+    <ClCompile Include="third_party\fmt\src\format.cc">
+      <Filter>third_party\fmt\src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

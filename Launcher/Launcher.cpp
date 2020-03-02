@@ -12,7 +12,8 @@
 #define TARGET_DLL_NAME				"HM3CoreKill.dll"
 #define TARGET_EXE_NAME				"HitmanBloodMoney.exe"
 
-#define CK_AWAIT_TIME 1000 ///Time in ms for CoreKill init process (TODO: Rewrite to IPC in future)
+///Time in milliseconds for CoreKill initialize process (TODO: Rewrite to IPC in future)
+#define CK_AWAIT_TIME 1000
 
 bool SpawnProcess(const char* processName, const char* basePath, HANDLE& processHandle, DWORD& processId, HANDLE& processMainThread)
 {

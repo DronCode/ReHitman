@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <vector>
 #include <string>
+#include <string_view>
 #include <map>
 
 #define TARGET_DLL_NAME				"HM3CoreKill.dll"

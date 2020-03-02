@@ -1,7 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <sdk/ZSTD.h>
 #include <sdk/ZHM3BriefingControl.h>
+#include <sdk/ZGlacierRTTI.h>
 
 namespace ioi { namespace hm3 {
 
@@ -84,9 +86,9 @@ namespace ioi { namespace hm3 {
 		virtual void Function69();
 		virtual void Function70();
 		virtual void Function71();
-		virtual void Function72();
+		virtual void sendEvent(std::uintptr_t evId, int unk1, int unk2);
 		virtual void Function73();
-		virtual void Function74();
+		virtual void sendEventWithSTDOBJ(ZSTDOBJ* stdObj, std::intptr_t ev, int* pResult);
 		virtual void Function75();
 		virtual void Function76();
 		virtual void Function77();
@@ -114,7 +116,6 @@ namespace ioi { namespace hm3 {
 		virtual void Function99();
 		virtual void Function100();
 		virtual void Function101();
-
 	};
 
 }}

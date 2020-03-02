@@ -10,7 +10,6 @@
 #include <ck/HM3Hooks.h>
 #include <ck/Features.h>
 
-#include <sdk/HM3DebugAPI.h>
 #include <sdk/ZGameGlobals.h>
 #include <sdk/InterfacesProvider.h>
 #include <sdk/ZSTD.h>
@@ -72,6 +71,9 @@ void HM3Game::Initialise()
 	setupHookZPlayerDestructor();
 	patchFreeBeamHere();
 	setupLoadAnimationHook();
+	setupNativeObjectsCreationHooks();
+	setupOnSTDOBJAttachedHook();
+	setupFsZipHook();
 
 	/*
 	
@@ -94,6 +96,7 @@ sub_502A80
 
 		sub_5EFC00 - preload animations into ZHitman3
 	*/
+
 	HM3_DEBUG("----------------< GAME STARTED >----------------\n");
 	m_isHackActive = true;
 }
@@ -222,6 +225,76 @@ void HM3Game::setupLoadAnimationHook()
 		});
 }
 
+void HM3Game::setupNativeObjectsCreationHooks()
+{
+	// CMapObject::ctor ending (with runtime infos)
+	HM3Function::hookFunction<void(__stdcall*)(DWORD), 11>(
+		HM3_PROCESS_NAME,
+		HM3Offsets::CMapObject_ConstructorEnding,
+		(DWORD)CMapObject_OnCreate,
+		{
+			x86_pushad,
+			x86_pushfd,
+			x86_push_eax
+		}, {
+			x86_popfd,
+			x86_popad
+		});
+}
+
+void HM3Game::setupOnSTDOBJAttachedHook()
+{
+	//OnDoorCreated
+	HM3Function::moveInstructions<5>(HM3_PROCESS_NAME, HM3Offsets::Global_OnAttachSTDOBJ_OrgEnding, HM3Offsets::Global_OnAttachSTDOBJ_NewEnding);	//Move original ending by 5 bytes next
+	HM3Function::overrideInstruction(HM3_PROCESS_NAME, HM3Offsets::Global_OnAttachSTDOBJ_OrgEnding, { 0x90, 0x90, 0x90, 0x90, 0x90 });				//Use free space as our jump space
+	HM3Function::hookFunction<void(__stdcall*)(DWORD), 5>(
+		HM3_PROCESS_NAME,
+		HM3Offsets::Global_OnAttachSTDOBJ_OrgEnding,
+		(DWORD)ZGlacier_OnSTDOBJAttached,
+		{
+			x86_pushad,
+			x86_pushfd,
+			x86_push_edi
+		},
+		{
+			x86_popfd,
+			x86_popad
+		});
+}
+
+void HM3Game::setupFsZipHook()
+{
+	HM3Function::hookFunction<void(__stdcall*)(DWORD), 10>(
+		HM3_PROCESS_NAME,
+		HM3Offsets::FsZip_Constructor,
+		(DWORD)FsZip_Constructed,
+		{
+			x86_pushad,
+			x86_pushfd,
+			x86_push_eax
+		},
+		{
+			x86_popfd,
+			x86_popad
+		});
+
+	/*
+		Maybe later but now now!
+		HM3Function::hookFunction<void(__stdcall*)(DWORD), 6>(
+		HM3_PROCESS_NAME, 
+		HM3Offsets::FsZip_Destructor,
+		(DWORD)FsZip_Destructor, 
+		{
+			x86_pushad,
+			x86_pushfd,
+			x86_push_ecx
+		}, 
+		{
+			x86_popfd,
+			x86_popad
+		});*/
+}
+
 void HM3Game::onD3DInitialized(IDirect3DDevice9* device)
 {
 	const auto renderer = GetSystemInterface()->m_renderer;
@@ -240,9 +313,10 @@ void HM3Game::onD3DEndScene(IDirect3DDevice9* device)
 	ck::HM3InGameTools::getInstance().draw();
 }
 
-void HM3Game::OnNewGameSession(ioi::hm3::ZHM3Hitman3_t gameSession)
+void HM3Game::OnNewGameSession(ioi::hm3::ZHM3Hitman3* gameSession)
 {
 	HM3_DEBUG("[HM3Game::OnNewGameSession] New session instance detected at 0x%.8X\n", gameSession);
+	ck::HM3InGameTools::getInstance().resetInputState();
 }
 
 const HM3Player::Ptr& HM3Game::GetPlayer() const { return m_currentPlayer; }

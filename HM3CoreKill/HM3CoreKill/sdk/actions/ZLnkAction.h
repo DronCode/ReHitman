@@ -2,65 +2,6 @@
 
 namespace ioi {
 namespace hm3 {
-	/***
-		ONLY FOR sub_5F4F30
-
-		USAGE #1 BY HM3LevelControlM04 (sub_6BC560)
-		.text:005F672D loc_5F672D:                             ; CODE XREF: sub_5F6720+A↑j
-		.text:005F672D                 push    10000039h
-		.text:005F6732                 mov     ecx, esi
-		.text:005F6734                 call    sub_5F4F30 <
-		.text:005F6739                 test    eax, eax
-		.text:005F673B                 jnz     short loc_5F673E
-		.text:005F673D                 int     3               ; Trap to Debugger
-
-		USAGE #2 BY HM3LevelControlM08 (sub_6C2610) 
-		.text:005F9817 loc_5F9817:                             ; CODE XREF: sub_5F97F0+19↑j
-		.text:005F9817                 push    10000042h
-		.text:005F981C                 mov     ecx, esi
-		.text:005F981E                 call    sub_5F4F30 <
-		.text:005F9823                 test    eax, eax
-		.text:005F9825                 jnz     short loc_5F9828
-		.text:005F9827                 int     3               ; Trap to Debugger
-
-		USAGE #3 BY sub_601DE0, SOURCES: sub_604D00 (ZHitman3), sub_6718A0 (ZGui)
-		.text:00601E04 loc_601E04:                             ; CODE XREF: sub_601DE0+21↑j
-		.text:00601E04                 push    10000033h
-		.text:00601E09                 mov     ecx, esi
-		.text:00601E0B                 call    sub_5F4F30 <
-		.text:00601E10                 mov     ecx, [esi+0D64h]
-		.text:00601E16                 mov     [eax+14h], ecx
-		.text:00601E19                 mov     [eax+10h], edi
-		.text:00601E1C                 mov     edx, [esi]
-		.text:00601E1E                 push    eax
-		.text:00601E1F                 mov     ecx, esi
-		.text:00601E21                 call    dword ptr [edx+37Ch]
-		.text:00601E27                 pop     edi
-		.text:00601E28                 pop     esi
-		.text:00601E29                 retn    4
-
-		USAGE #4 BY sub_601E30, SOURCE: sub_6BC560 (HM3LevelControlM04)
-		.text:00601E53                 push    0
-		.text:00601E55                 mov     ecx, esi
-		.text:00601E57                 call    sub_601320
-		.text:00601E5C                 push    10000035h
-		.text:00601E61                 mov     ecx, esi
-		.text:00601E63                 call    sub_5F4F30 <
-		.text:00601E68                 test    eax, eax
-		.text:00601E6A                 jnz     short loc_601E6D
-		.text:00601E6C                 int     3               ; Trap to Debugger
-
-		USAGE #5 BY sub_601EA0, SOURCE sub_6ABDB0 ($GLOBALSCOPE, OR GLOBAL ITEM)
-		.text:00601EF1 loc_601EF1:                             ; CODE XREF: sub_601EA0+4E↑j
-		.text:00601EF1                 push    10000036h
-		.text:00601EF6                 mov     ecx, esi
-		.text:00601EF8                 call    sub_5F4F30 <
-		.text:00601EFD                 test    eax, eax
-		.text:00601EFF                 jnz     short loc_601F02
-		.text:00601F01                 int     3               ; Trap to Debugger
-
-		USAGE #6 BY sub_5F4F30 (ZHitman3) <SOURCE>
-	***/
 	enum class ZLnkActionType
 	{
 		/// Hitman actions
@@ -145,10 +86,10 @@ namespace hm3 {
 		/***
 		 * @brief Constructor
 		 **/
-		virtual ZLnkAction* Function_0(bool isFirstInstance);	/// sub_51FFB0
-		virtual int Function_1();								/// sub_6FDBF0
+		virtual void Function_0();	/// sub_51FFB0
+		virtual void Function_1();								/// sub_6FDBF0
 		virtual bool ApplyAction();								/// sub_69D5C0
-		virtual bool Function_3();								/// sub_580400
+		virtual int Function_3();								/// sub_580400
 		virtual bool Function_4();								/// sub_580400
 		virtual void Function_5(void*);							/// jpeg_mem_term
 		virtual void Function_6();								/// nullsub_4
@@ -158,7 +99,7 @@ namespace hm3 {
 		virtual void* Function_10();							/// sub_6F7FC0
 		virtual bool Function_11(int, int);						/// sub_7113E0
 		virtual bool Function_12();								/// sub_69D5C0
-		virtual int Function_13(int, int);						/// sub_50E400
+		virtual int setup(int, int);						/// sub_50E400
 	};
 	/*
 HITMAN BLOOD MONEY ACTIONS LIST (TODO)

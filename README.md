@@ -1,9 +1,8 @@
-ReHitman
-===============
+<p align="center">
+	<img width="400" height="400" src="GitHub/logo.png">
+</p>
 
 [![Build status](https://ci.appveyor.com/api/projects/status/roum4p326855okuy/branch/master?svg=true)](https://ci.appveyor.com/project/DronCode/rehitman/branch/master)
-
-![Debug Console_Preview](GitHub/index_preview.png)
 
 What is ReHitman?
 ---------------
@@ -68,7 +67,6 @@ Current Project Goals.
  - [x] Implement ImGUI backend over Glacier renderer wrapper (ZWintelRendererD3D)
  - [x] Reverse the input API (mouse, keyboard)
  - [ ] Reverse the GUI API
- - [ ] Implement a custom widget with logic on CoreKill.dll side
  - [ ] Reverse the scene format
  - [ ] Create a toolset for Hitman Blood Money
 

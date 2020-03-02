@@ -8,12 +8,13 @@
 #include <sdk/ZHM3MenuElements.h>
 #include <sdk/ZHM3LevelControl.h>
 #include <sdk/ZHM3BriefingControl.h>
+#include <sdk/CIngameMap.h>
+#include <sdk/ZHM3Hitman3.h>
 
 #define DECLARE_UNKNOWN_TYPE_PTR(name) using name = std::uintptr_t;
 
 namespace ioi {
 namespace hm3 {
-	DECLARE_UNKNOWN_TYPE_PTR(ZHitman3);
 	DECLARE_UNKNOWN_TYPE_PTR(N00001B3F);
 	DECLARE_UNKNOWN_TYPE_PTR(N000033C1);
 	DECLARE_UNKNOWN_TYPE_PTR(REFTAB);
@@ -21,7 +22,6 @@ namespace hm3 {
 	DECLARE_UNKNOWN_TYPE_PTR(N0000163D);
 	DECLARE_UNKNOWN_TYPE_PTR(ZGui);
 	DECLARE_UNKNOWN_TYPE_PTR(m_Gui);
-	DECLARE_UNKNOWN_TYPE_PTR(CIngameMap);
 	DECLARE_UNKNOWN_TYPE_PTR(CGlobalCom);
 	DECLARE_UNKNOWN_TYPE_PTR(ZHM3WeaponUpgradeControl);
 	DECLARE_UNKNOWN_TYPE_PTR(ZHM3CameraEventCameraClass);
@@ -51,14 +51,14 @@ namespace hm3 {
 		virtual void Function17(); //
 		virtual void Function18(); //
 		virtual void Function19(); //
-		virtual void Function20(); //
-		virtual void Function21(); //
-		virtual void Function22(); //
+		virtual std::uintptr_t* getUnk0(); //#20 [.rdata 007A8B9C]
+		virtual void Function21(); //#21 (set +6A14 | int*)
+		virtual int getMember_6A14(); //#22
 		virtual void Function23(); //
-		virtual void Function24(); //
-		virtual void Function25(); //
-		virtual void Function26(); //
-		virtual void Function27(); //
+		virtual std::uintptr_t getMember_6A1C(); //#24
+		virtual std::uintptr_t getMember_6A18(); //#25
+		virtual std::uintptr_t getMember_6A24(); //#26
+		virtual std::uintptr_t getMember_6A20(); //#27
 		virtual void Function28(); //
 		virtual void Function29(); //
 		virtual void Function30(); //
@@ -76,7 +76,7 @@ namespace hm3 {
 		char pad_0x0810[0x208]; //0x0810
 		REFTAB* m_REFTAB00; //0x0A18
 		ZHM3MenuElements* m_MenuElements; //0x0A1C 
-		ZHitman3* m_Hitman3; //0x0A20 (also in A40 located similar instance, it doesn't matter what I will use, but few instructions trying to talk with +A40)
+		ZHM3Hitman3* m_Hitman3; //0x0A20 (also in A40 located similar instance, it doesn't matter what I will use, but few instructions trying to talk with +A40)
 		char pad_0x0A24[0xC]; //0x0A24
 		ZHM3GameStats* m_GameStats; //0x0A30 
 		char pad_0x0A34[0xC]; //0x0A34

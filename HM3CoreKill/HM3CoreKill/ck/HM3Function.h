@@ -354,6 +354,13 @@ public:
 		return static_cast<DWORD>(original_func);
 	}
 
+	template <typename _RetType, typename _Class, typename... _Args>
+	static DWORD hookVFTable(_Class* instance, DWORD index, _RetType(__thiscall _Class::* pMember)(_Args...), bool doLog = true)
+	{
+		DWORD newAddr = reinterpret_cast<DWORD>(reinterpret_cast<DWORD*&>(pMember)); //funny C++ trick to get member addr xD | ref https://stackoverflow.com/a/8122891
+		return hookVFTable((DWORD)instance, index, newAddr, doLog);
+	}
+
 	static DWORD hookIAT(const std::string& process, const char* functionName, DWORD to)
 	{
 		ProcessHandleCacheController::ProcessCacheRow cacheRow = ProcessHandleCacheController::getProcessHandle(process);

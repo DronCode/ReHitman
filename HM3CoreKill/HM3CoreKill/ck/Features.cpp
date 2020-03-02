@@ -10,6 +10,35 @@
 
 namespace ck {
 	/*
+	if (ImGui::Button("Test LockPick action"))
+			{
+				const auto& doorsRegistry = HM3DoorsRegistry::getRegistry();
+				const auto& animationsRegistry = HM3AnimationRegistry::getRegistry();
+
+				auto pAction = reinterpret_cast<ioi::hm3::ZHitmanActionPickLock*>(HM3ActionFactory::createActionByType(hitman3, ioi::hm3::ZLnkActionType::HitmanActionPickLock));
+				HM3_ASSERT(pAction != nullptr, "Action Factory must return not null pointer!");
+
+				auto pDoor = doorsRegistry.getDoorByName("D03A_Door_Auditorium_01");
+				HM3_ASSERT(pDoor != nullptr, "DoorRegistry| Unable to find door!");
+
+				pAction->m_door				 = pDoor->m_doorSTD;
+				pAction->m_animPickLockStart = animationsRegistry.getAnimationByName("anim:Hero/Hero#Pick_Lock_Start");
+				pAction->m_animPickLockStop  = animationsRegistry.getAnimationByName("anim:Hero/Hero#Pick_Lock_Stop");
+				pAction->m_animPickLockLoop  = animationsRegistry.getAnimationByName("anim:Hero/Hero#Pick_Lock_Loop");
+
+				HM3_ASSERT(pAction->m_door              != nullptr, "Door:STDOBJ    must be loaded!");
+				HM3_ASSERT(pAction->m_animPickLockStart != nullptr, "PickLock:Start animation must be loaded!");
+				HM3_ASSERT(pAction->m_animPickLockStop  != nullptr, "PickLock:Stop  animation must be loaded!");
+				HM3_ASSERT(pAction->m_animPickLockLoop  != nullptr, "PickLock:Loop  animation must be loaded!");
+
+				HM3_DEBUG("Trying to perform action %s\n", pAction->GetActionName());
+				
+				pAction->Function2();
+			}
+	*/
+
+
+	/*
 	void teleportPlayer()
 	{
 		ioi::hm3::ZEngineDatabase* engineDB = HM3Game::GetSystemInterface()->m_engineDataBase;

@@ -3,6 +3,9 @@
 #include <Windows.h>
 #include <sdk/ZDirect3DDevice.h>
 #include <sdk/ZAnimationInfo.h>
+#include <sdk/CDoor.h>
+#include <sdk/CMapObject.h>
+#include <sdk/FsZip_t.h>
 
 ATOM __stdcall RegisterClassExA_Hooked(WNDCLASSEXA* wndClass);
 
@@ -40,3 +43,11 @@ void __stdcall ZDirect3DDevice_OnDeviceReady(ioi::hm3::ZDirect3DDevice* device);
 void __stdcall OnZMouseWintelCreated(DWORD device);
 
 void __stdcall ZHM3_OnAnimationLoaded(ioi::hm3::ZAnimationInfo* animationInstance);
+
+void __stdcall CMapObject_OnCreate(ioi::hm3::CMapObject* instance);
+
+void __stdcall ZGlacier_OnSTDOBJAttached(DWORD* unknownInstance);
+
+void __stdcall FsZip_Constructed(ioi::hm3::FsZip_t* instance);
+
+void __stdcall FsZip_Destructor(ioi::hm3::FsZip_t* instance);

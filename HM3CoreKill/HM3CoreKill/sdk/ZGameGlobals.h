@@ -16,6 +16,7 @@ namespace hm3 {
 	static const std::uintptr_t GameData		 = 0x0082083C;	//Based on ZHM3GameData (see sdk/ZHM3GameData.h for details)
 	static const std::uintptr_t SysInterface	 = 0x00820820;	//Based on ZSysInterface (67 methods, some of them is purecall), has child class ZSysInterfaceWintel
 	static const std::uintptr_t GlobalAllocator  = 0x008208C8;	//Based on ZSysMem
+	static const std::uintptr_t Renderer		 = 0x008ACA30;	//Based on ZRenderWintelD3DDll
 	static const std::uintptr_t NetPlatform		 = 0x00820844;	//Based on ZNetPlatform_Win32_t : ZNetPlatform_t : ZNetAlloc_t
 	static const std::uintptr_t GlobalCOM		 = 0x00820830;	//Based on CGlobalCom : CSharedCom
 	static const std::uintptr_t LobbyRendezvous  = 0x00820848;	//Based on ZLobbyRendezvous : ZLobby : ZNetAlloc_t
@@ -35,11 +36,18 @@ namespace hm3 {
 	static const std::uintptr_t BoneExtendPool	 = 0x009A37B4;	//Based on ZBoneExtendPool 
 	static const std::uintptr_t VertexExtendPool = 0x009A37B8;  //Based on ZVertexExtendPool
 	static const std::uintptr_t ScriptComponent  = 0x008A89CC;  //Based on ZScriptComponent
-	
+	static const std::uintptr_t ItemIdToNameMap  = 0x008031E0;  //Map between item ID and their code name (1'st - id, 2'nd - char*)
+	static const std::uintptr_t ItemNameToIdMap  = 0x008031E4;  //Map between item codename and their id (1'st - name ptr, 2'nd - id)
+
 	static const std::uintptr_t ComponentManager_RuntimeComponentBase = 0x002DB0038;	//Based on ZComponentManager<ZRuntimeComponentBase> : ZComponentManagerBase : ZComponentBase : NotCopyable
 
 	static const std::uintptr_t Direct3DInterface = 0x0090AF08;	//IDirect3D9 device
 	static const std::uintptr_t Direct3DDevice    = 0x0090AF0C;	//Based on ZDirect3DDevice : ID3DXEffectStateManager : IUnknown
 	static const std::uintptr_t DirectInputDevice = 0x008B4BA0; //DirectInput interface pointer
+
+	static const std::uintptr_t GetItemInfoFunc = 0x004E5BE0; //Get item info by
+
+	static const std::uintptr_t GlacierMallocFunc = 0x00446720;	//Glacier's malloc
+	static const std::uintptr_t GlacierFreeFunc	  = 0x004466D0;	//Glacier's free
 
 }}

@@ -1,5 +1,0 @@
-
-Mission fail call graph
-
-      ZPlayer                      ZHitman3                 ZLnkActionQueue         ZLnkActionQueue     ZHitmanActionDropDeadBody   ZHM3LevelControlM05
-sub_528FA0 (at 005290BE) -> sub_5EF760 (at 005EFB4A) -> sub_653D90 (at 00653DA0) -> sub_653D10 (at 	) -> sub_609630 (at 00609655) -> sub_6BE610

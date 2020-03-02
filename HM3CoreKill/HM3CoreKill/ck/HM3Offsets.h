@@ -45,6 +45,15 @@ namespace HM3Offsets
 	static const FuncAddr_t ZHM3CheatMenu_BeamHereFuncPatch				 = 0x0065BC07;
 	static const FuncAddr_t ZHM3AnimationManager_Pre_OnLoadAnimation	 = 0x00519B0B;
 	static const FuncAddr_t ZHM3AnimationManager_OnLoadAnimation		 = 0x00519B09;
+	static const FuncAddr_t CMapObject_ConstructorEnding				 = 0x00665E13;
+	static const FuncAddr_t Global_OnAttachSTDOBJ_OrgEnding				 = 0x004E6B16;
+	static const FuncAddr_t Global_OnAttachSTDOBJ_NewEnding				 = Global_OnAttachSTDOBJ_OrgEnding + 0x5;
+	static const FuncAddr_t FsZip_Constructor							 = 0x0042D0FC;
+	static const FuncAddr_t FsZip_Destructor							 = 0x0042D137;
+	static const FuncAddr_t FsZip_ReadMethodFunc						 = 0x0042C470;
+
+	static const Index_t	CMapObject_OnProcessMethodIndex				 = 29;
+	static const Index_t	FsZip_ReadMethodIndex = 7;
 }
 
 namespace D3D9Offsets

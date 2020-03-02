@@ -27,6 +27,15 @@ namespace ck
 		void setMouseButtonState(int button, bool state);
 		void setMouseWheelState(int value);
 
+		enum class SceneRenderMode
+		{
+			Normal, 
+			Wireframe, 
+			WireframeWithNormal
+		};
+
+		SceneRenderMode getSceneRenderMode() const;
+
 	protected:
 		void toggleInputState();
 
@@ -43,6 +52,9 @@ namespace ck
 		void drawActorInfo(ioi::hm3::ZHM3Actor* currentActor);
 		void drawSuitInfoForActor(ioi::hm3::ZHM3Actor* currentActor);
 		void drawHandInfo(ioi::hm3::ZIKHAND* hand);
+
+	private:
+		SceneRenderMode m_renderMode = SceneRenderMode::Normal;
 	};
 
 }

@@ -28,6 +28,9 @@
     <Filter Include="sdk\internal">
       <UniqueIdentifier>{c5004be6-3580-4a72-8222-c6798b82ab75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sdk\render">
+      <UniqueIdentifier>{5779f6a9-04a5-4806-960c-3ce52300846c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ck\HM3DebugConsole.h">
@@ -290,6 +293,18 @@
     </ClInclude>
     <ClInclude Include="ck\HM3FreeFileSystemLocatorProxy.h">
       <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\render\ZRenderWintelD3DDll.h">
+      <Filter>sdk\render</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\render\ZTextureManagerD3D.h">
+      <Filter>sdk\render</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\render\ZRenderMaterialBufferD3D.h">
+      <Filter>sdk\render</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\render\ZPrimControlWintel.h">
+      <Filter>sdk\render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -129,6 +129,11 @@ namespace ck
 		io.MouseWheel += static_cast<float>(value) / static_cast<float>(WHEEL_DELTA);
 	}
 
+	HM3InGameTools::SceneRenderMode HM3InGameTools::getSceneRenderMode() const
+	{
+		return m_renderMode;
+	}
+
 	void HM3InGameTools::toggleInputState()
 	{
 		auto sysInterface = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
@@ -314,6 +319,21 @@ namespace ck
 					ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
 				else
 					ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", gameData->m_Gui);
+			}
+
+			{
+				ImGui::Separator();
+				
+				if (ImGui::Button("Switch to 'Normal'"))
+					m_renderMode = SceneRenderMode::Normal;
+				
+				ImGui::SameLine(0.f, 5.f);
+				if (ImGui::Button("Switch to 'Wireframe'"))
+					m_renderMode = SceneRenderMode::Wireframe;
+
+				ImGui::SameLine(0.f, 5.f);
+				if (ImGui::Button("Switch to 'Wireframe' and 'Normal'"))
+					m_renderMode = SceneRenderMode::WireframeWithNormal;
 			}
 
 			// sub_6AE2C0 (on level event?)

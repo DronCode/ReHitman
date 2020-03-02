@@ -218,6 +218,10 @@
     <ClInclude Include="sdk\InterfacesProvider.h" />
     <ClInclude Include="sdk\internal\ZLoaderSequenceScriptHeader.h" />
     <ClInclude Include="sdk\REFTAB32.h" />
+    <ClInclude Include="sdk\render\ZPrimControlWintel.h" />
+    <ClInclude Include="sdk\render\ZRenderMaterialBufferD3D.h" />
+    <ClInclude Include="sdk\render\ZRenderWintelD3DDll.h" />
+    <ClInclude Include="sdk\render\ZTextureManagerD3D.h" />
     <ClInclude Include="sdk\ResourceCollection.h" />
     <ClInclude Include="sdk\scripting\ZScriptC.h" />
     <ClInclude Include="sdk\ZActionDispatcher.h" />

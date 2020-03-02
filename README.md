@@ -68,7 +68,6 @@ Current Project Goals.
  - [x] Implement ImGUI backend over Glacier renderer wrapper (ZWintelRendererD3D)
  - [x] Reverse the input API (mouse, keyboard)
  - [ ] Reverse the GUI API
- - [ ] Implement a custom widget with logic on CoreKill.dll side
  - [ ] Reverse the scene format
  - [ ] Create a toolset for Hitman Blood Money
 

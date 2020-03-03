@@ -49,8 +49,6 @@ This project includes 2 runtimes:
 	- This is the projects core for future development, this will be later useful for multiplayer development.
 		- ck
 			- (CoreKill) Future Multi-player development.
-		- docs
-			- Documentation.
 		- mp
 			- Multiplayer development
 		- sdk

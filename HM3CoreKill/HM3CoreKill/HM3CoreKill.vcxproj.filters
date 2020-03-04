@@ -40,6 +40,9 @@
     <Filter Include="third_party\fmt\src">
       <UniqueIdentifier>{bf47c2cc-0bbd-4b03-a241-0332615a92bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sdk\game">
+      <UniqueIdentifier>{9cb1e333-5440-4513-a797-729fa006b26a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ck\HM3DebugConsole.h">
@@ -350,6 +353,15 @@
     </ClInclude>
     <ClInclude Include="third_party\fmt\include\fmt\ranges.h">
       <Filter>third_party\fmt\include</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\render\ZLoader_Sequence_Wintel_D3D.h">
+      <Filter>sdk\render</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\game\ZM13PosController.h">
+      <Filter>sdk\game</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZLinkedListNodeBase.h">
+      <Filter>sdk</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

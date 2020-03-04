@@ -214,3 +214,11 @@ void __stdcall FsZip_Destructor(ioi::hm3::FsZip_t* instance)
 	HM3_DEBUG("FsZip_t restore vftable for at 0x%.8X\n", proxy);
 	HM3Function::hookVFTable(reinterpret_cast<DWORD>(proxy), HM3Offsets::FsZip_ReadMethodIndex, HM3Offsets::FsZip_ReadMethodFunc, false); //restore back!
 }
+
+void __stdcall ZM13PosController_Constructor(ioi::hm3::ZM13PosController* instance)
+{
+	if (!instance)
+		return;
+
+	HM3_DEBUG("[ZM13PosController] created at 0x%.8X\n", instance);
+}

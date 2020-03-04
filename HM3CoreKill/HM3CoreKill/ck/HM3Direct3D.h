@@ -18,6 +18,7 @@ namespace ck
 		CommonCallback onD3DReady;
 		CommonCallback onBeginScene;
 		CommonCallback onEndScene;
+		CommonCallback onDeviceLost;
 	};
 
 }

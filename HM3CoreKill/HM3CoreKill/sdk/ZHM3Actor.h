@@ -32,6 +32,20 @@ namespace hm3 {
 	{
 	public:
 		// === sub types ===
+		enum class ActorStatus : int32_t {
+			// Pure
+			Status_0 = 0,
+			Status_1 = 1,
+			Status_2 = 2,
+			Status_3 = 3,
+			Reset = 0xFF,
+			// User
+			Sleep  = Status_2, ///< Actor will not be dead
+			Normal = Status_1,  ///< Actor will be in normal state
+			StopAI = Status_0, ///< Actor will not follow by scripts, will stay in inactive mode. Also in this mode actor is in god mode
+			ResetAI = Status_3 ///< Actor will be resetted. Any damage, screaming or other stuff will be flushed (not in god mode!)
+		};
+
 		enum class SuiteMask : int32_t {
 			NoActor					 = 0b0000'0000'0000'0000'0000'0000'0000'0000,	///< This is not an actor (M13, wheelchair gui subactor kind)
 			SkinChangerNotSupported	 = 0b0000'0000'0000'0000'0000'0000'0000'0001,	///< This actor does not supports skin changer
@@ -107,7 +121,7 @@ namespace hm3 {
 		virtual void Function_0061(); //#61 +f4 .rdata:00796428
 		virtual void Function_0062(); //#62 +f8 .rdata:0079642c
 		virtual void Function_0063(); //#63 +fc .rdata:00796430
-		virtual void Function_0064(); //#64 +100 .rdata:00796434
+		virtual int getComponent(const char* componentName); //#64 +100 .rdata:00796434
 		virtual void Function_0065(); //#65 +104 .rdata:00796438
 		virtual void Function_0066(); //#66 +108 .rdata:0079643c
 		virtual void Function_0067(); //#67 +10c .rdata:00796440
@@ -391,25 +405,25 @@ namespace hm3 {
 		virtual void Function_0345(); //#345 +564 .rdata:00796898
 		virtual void Function_0346(); //#346 +568 .rdata:0079689c
 		virtual void Function_0347(); //#347 +56c .rdata:007968a0
-		virtual void Function_0348(); //#348 +570 .rdata:007968a4
+		virtual int setStatus(ActorStatus status); //#348 +570 .rdata:007968a4
 		virtual void Function_0349(); //#349 +574 .rdata:007968a8
 		virtual void Function_0350(); //#350 +578 .rdata:007968ac
 		virtual void Function_0351(); //#351 +57c .rdata:007968b0
 		virtual void Function_0352(); //#352 +580 .rdata:007968b4
 		virtual void Function_0353(); //#353 +584 .rdata:007968b8
-		virtual void Function_0354(); //#354 +588 .rdata:007968bc
-		virtual void Function_0355(); //#355 +58c .rdata:007968c0
+		virtual void setPosition__FAKE(float* pThreeFloats); //#354 +588 .rdata:007968bc (it works with coordinates but not world coordinates [-1.0; 1.0])
+		virtual const float* getPosition__FAKE(); //#355 +58c .rdata:007968c0
 		virtual void Function_0356(); //#356 +590 .rdata:007968c4
 		virtual void Function_0357(); //#357 +594 .rdata:007968c8
 		virtual void Function_0358(); //#358 +598 .rdata:007968cc
-		virtual void Function_0359(); //#359 +59c .rdata:007968d0
-		virtual void Function_0360(); //#360 +5a0 .rdata:007968d4
+		virtual bool Function_0359(bool arg); //#359 +59c .rdata:007968d0
+		virtual bool Function_0360(bool arg); //#360 +5a0 .rdata:007968d4
 		virtual void Function_0361(); //#361 +5a4 .rdata:007968d8
 		virtual void Function_0362(); //#362 +5a8 .rdata:007968dc
 		virtual void Function_0363(); //#363 +5ac .rdata:007968e0
 		virtual void Function_0364(); //#364 +5b0 .rdata:007968e4
-		virtual void Function_0365(); //#365 +5b4 .rdata:007968e8
-		virtual void Function_0366(); //#366 +5b8 .rdata:007968ec
+		virtual int Function_0365(bool arg); //#365 +5b4 .rdata:007968e8
+		virtual bool Function_0366(bool); //#366 +5b8 .rdata:007968ec
 		virtual void Function_0367(); //#367 +5bc .rdata:007968f0
 		virtual void Function_0368(); //#368 +5c0 .rdata:007968f4
 		virtual void Function_0369(); //#369 +5c4 .rdata:007968f8
@@ -420,16 +434,16 @@ namespace hm3 {
 		virtual void Function_0374(); //#374 +5d8 .rdata:0079690c
 		virtual void Function_0375(); //#375 +5dc .rdata:00796910
 		virtual void Function_0376(); //#376 +5e0 .rdata:00796914
-		virtual void Function_0377(); //#377 +5e4 .rdata:00796918
+		virtual bool Function_0377(); //#377 +5e4 .rdata:00796918
 		virtual void Function_0378(); //#378 +5e8 .rdata:0079691c
 		virtual void Function_0379(); //#379 +5ec .rdata:00796920
 		virtual void kill(); //#380 +5f0 .rdata:00796924
 		virtual void Function_0381(); //#381 +5f4 .rdata:00796928
-		virtual void Function_0382(); //#382 +5f8 .rdata:0079692c
-		virtual void Function_0383(); //#383 +5fc .rdata:00796930
-		virtual void Function_0384(); //#384 +600 .rdata:00796934
+		virtual int Function_0382(); //#382 +5f8 .rdata:0079692c
+		virtual int sedate(); //#383 +5fc .rdata:00796930 (possible not but actor not dies here)
+		virtual int Function_0384(); //#384 +600 .rdata:00796934
 		virtual void Function_0385(); //#385 +604 .rdata:00796938
-		virtual void Function_0386(); //#386 +608 .rdata:0079693c
+		virtual int Function_0386(); //#386 +608 .rdata:0079693c
 		virtual void Function_0387(); //#387 +60c .rdata:00796940
 		virtual void Function_0388(); //#388 +610 .rdata:00796944
 		virtual void Function_0389(); //#389 +614 .rdata:00796948
@@ -438,7 +452,7 @@ namespace hm3 {
 		virtual void Function_0392(); //#392 +620 .rdata:00796954
 		virtual void Function_0393(); //#393 +624 .rdata:00796958
 		virtual void Function_0394(); //#394 +628 .rdata:0079695c
-		virtual void Function_0395(); //#395 +62c .rdata:00796960
+		virtual void Function_0395(); //#395 +62c .rdata:00796960 (sync suspicious level with ZOSD)
 		virtual void Function_0396(); //#396 +630 .rdata:00796964
 		virtual void Function_0397(); //#397 +634 .rdata:00796968
 		virtual void Function_0398(); //#398 +638 .rdata:0079696c
@@ -461,7 +475,7 @@ namespace hm3 {
 		virtual void Function_0415(); //#415 +67c .rdata:007969b0
 		virtual void Function_0416(); //#416 +680 .rdata:007969b4
 		virtual void Function_0417(); //#417 +684 .rdata:007969b8
-		virtual void Function_0418(); //#418 +688 .rdata:007969bc
+		virtual void Function_0418(); //#418 +688 .rdata:007969bc (knife thrower check, maybe item hooking here)
 		virtual void Function_0419(); //#419 +68c .rdata:007969c0
 		virtual void Function_0420(); //#420 +690 .rdata:007969c4
 		virtual void Function_0421(); //#421 +694 .rdata:007969c8
@@ -487,10 +501,10 @@ namespace hm3 {
 		virtual void Function_0441(); //#441 +6e4 .rdata:00796a18
 		virtual void Function_0442(); //#442 +6e8 .rdata:00796a1c
 		virtual void Function_0443(); //#443 +6ec .rdata:00796a20
-		virtual void Function_0444(); //#444 +6f0 .rdata:00796a24
+		virtual void Function_0444(); //#444 +6f0 .rdata:00796a24 (loadExtendedAnimations)
 		virtual void Function_0445(); //#445 +6f4 .rdata:00796a28
 		virtual void Function_0446(); //#446 +6f8 .rdata:00796a2c
-		virtual void Function_0447(); //#447 +6fc .rdata:00796a30
+		virtual void Function_0447(); //#447 +6fc .rdata:00796a30 (actor flags, maybe not used by game)
 		virtual void Function_0448(); //#448 +700 .rdata:00796a34
 
 		// === members ===

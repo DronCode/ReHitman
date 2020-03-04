@@ -215,9 +215,11 @@
     <ClInclude Include="sdk\CMapObject.h" />
     <ClInclude Include="sdk\CTelePortList.h" />
     <ClInclude Include="sdk\FsZip_t.h" />
+    <ClInclude Include="sdk\game\ZM13PosController.h" />
     <ClInclude Include="sdk\InterfacesProvider.h" />
     <ClInclude Include="sdk\internal\ZLoaderSequenceScriptHeader.h" />
     <ClInclude Include="sdk\REFTAB32.h" />
+    <ClInclude Include="sdk\render\ZLoader_Sequence_Wintel_D3D.h" />
     <ClInclude Include="sdk\render\ZPrimControlWintel.h" />
     <ClInclude Include="sdk\render\ZRenderMaterialBufferD3D.h" />
     <ClInclude Include="sdk\render\ZRenderWintelD3DDll.h" />
@@ -256,6 +258,7 @@
     <ClInclude Include="sdk\ZHM3WeaponItem.h" />
     <ClInclude Include="sdk\ZIKHAND.h" />
     <ClInclude Include="sdk\ZKeyboardWintel.h" />
+    <ClInclude Include="sdk\ZLinkedListNodeBase.h" />
     <ClInclude Include="sdk\ZLNKWHANDS.h" />
     <ClInclude Include="sdk\ZMouseWintel.h" />
     <ClInclude Include="sdk\ZOSD.h" />

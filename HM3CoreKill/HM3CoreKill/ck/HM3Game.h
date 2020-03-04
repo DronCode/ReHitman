@@ -28,6 +28,7 @@ public:
 	void onD3DInitialized(IDirect3DDevice9* device);
 	void onD3DBeginScene(IDirect3DDevice9* device);
 	void onD3DEndScene(IDirect3DDevice9* device);
+	void onD3DDeviceLost(IDirect3DDevice9* device);
 
 	// Getters
 	const HM3Player::Ptr& GetPlayer() const;
@@ -47,6 +48,7 @@ private:
 	void setupNativeObjectsCreationHooks();
 	void setupOnSTDOBJAttachedHook();
 	void setupFsZipHook();
+	void setupM13PosControllerHook();
 public:
 	static ioi::hm3::ZHM3GameData* GetGameDataInstancePtr();
 	static ioi::hm3::ZSysInterfaceWintel* GetSystemInterface();

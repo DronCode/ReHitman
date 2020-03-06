@@ -363,6 +363,10 @@
     <ClInclude Include="sdk\ZLinkedListNodeBase.h">
       <Filter>sdk</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\game\ZHM3WeaponsControl.h" />
+    <ClInclude Include="sdk\game\ZHM3MovementGuideToMatPos.h">
+      <Filter>sdk\game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">

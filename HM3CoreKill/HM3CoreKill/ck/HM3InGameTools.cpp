@@ -33,6 +33,8 @@
 #include <sdk/CDoor.h>
 #include <sdk/ZOSD.h>
 
+#include <set>
+
 // Win32 message handler
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -724,6 +726,7 @@ namespace ck
 					}
 
 					auto itemTemplate = pItem->getItemTemplate();
+					ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "[0x%.8X]", pItem); ImGui::SameLine(0.f, 4.f);
 					ImGui::Text("#%.3d %s (%.4X) | Item template (at 0x%.8X) %s | ClassID is 0x%.8X", i, pItem->m_entityLocator->entityName, itemId, itemTemplate, (itemTemplate ? itemTemplate->m_entityLocator->entityName : "(N/A)"), pItem->getClassID());
 				}
 			}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sdk/actions/ZLnkAction.h>
+#include <sdk/game/ZHM3MovementGuideToMatPos.h>
 #include <sdk/ZAnimationInfo.h>
 #include <sdk/ZBoxPrimitive.h>
 #include <sdk/CInventory.h>
@@ -96,7 +97,7 @@ namespace hm3 {
 		virtual void Function_0069(); // [0069] +0114 [.rdata at 0x00790FA0]
 		virtual void Function_0070(); // [0070] +0118 [.rdata at 0x00790FA4]
 		virtual void Function_0071(); // [0071] +011C [.rdata at 0x00790FA8]
-		virtual void sendEvent(std::uintptr_t evId, int unk1, int unk2); // [0072] +0120 [.rdata at 0x00790FAC]
+		virtual void sendEvent(std::uintptr_t evId, int* unk1, int unk2); // [0072] +0120 [.rdata at 0x00790FAC]
 		virtual void Function_0073(); // [0073] +0124 [.rdata at 0x00790FB0]
 		virtual void sendEventWithSTDOBJ(ZSTDOBJ* stdObj, std::intptr_t ev, int* pResult); // [0074] +0128 [.rdata at 0x00790FB4]
 		virtual void Function_0075(); // [0075] +012C [.rdata at 0x00790FB8]
@@ -479,7 +480,7 @@ namespace hm3 {
 		uint32_t m_zMovementStand; //0x05D8
 		uint32_t m_zMovementPrimaryMove; //0x05DC
 		char pad_05E0[4]; //0x05E0
-		uint32_t m_zMovementGuide; //0x05E4
+		ZHM3MovementGuideToMatPos* m_zMovementGuide; //0x05E4
 		char pad_05E8[4]; //0x05E8
 		uint32_t m_zMovementFall; //0x05EC
 		uint32_t m_zMovementGuideToMatPos; //0x05F0

@@ -42,6 +42,14 @@ void __stdcall ShowWindowRequest()
 	ShowWindow(HM3Game::GetSystemInterface()->m_renderer->m_HWND, SW_SHOW);
 }
 
+struct ComponentWatcher
+{
+	void onComponentRequest(const char* componentName)
+	{
+		HM3_DEBUG("[ComponentWatcher::onComponentRequest] request for component %s => 0x%.8X\n", componentName, this);
+	}
+};
+
 void HM3Game::Initialise()
 {
 	if (!checkBuildVersion())
@@ -75,6 +83,26 @@ void HM3Game::Initialise()
 	setupOnSTDOBJAttachedHook();
 	setupFsZipHook();
 	setupM13PosControllerHook();
+
+	/*{
+		DWORD addr = 0x004E704C;
+
+		void(__thiscall ComponentWatcher::* callback)(const char*) = &ComponentWatcher::onComponentRequest;
+
+		HM3Function::hookFunction<void(__stdcall)(const char*), 7>(
+			HM3_PROCESS_NAME, 
+			addr, 
+			(DWORD)(DWORD*&)callback,
+			{ 
+				x86_pushad,
+				x86_pushfd,
+				x86_push_edx
+			}, 
+			{
+				x86_popfd,
+				x86_popad
+			});
+	}*/
 
 	/*
 	

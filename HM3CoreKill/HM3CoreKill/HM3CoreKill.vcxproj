@@ -215,6 +215,8 @@
     <ClInclude Include="sdk\CMapObject.h" />
     <ClInclude Include="sdk\CTelePortList.h" />
     <ClInclude Include="sdk\FsZip_t.h" />
+    <ClInclude Include="sdk\game\ZHM3MovementGuideToMatPos.h" />
+    <ClInclude Include="sdk\game\ZHM3WeaponsControl.h" />
     <ClInclude Include="sdk\game\ZM13PosController.h" />
     <ClInclude Include="sdk\InterfacesProvider.h" />
     <ClInclude Include="sdk\internal\ZLoaderSequenceScriptHeader.h" />

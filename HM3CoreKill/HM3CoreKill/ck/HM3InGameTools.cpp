@@ -529,25 +529,26 @@ namespace ck
 				ImGui::Text("Location pointer at 0x%.8X", currentActor->ActorInformation->location);
 				ImGui::Text("Position:"); ImGui::SameLine(0.f, 4.f); ImGui::InputFloat3("", actorPosition);
 
+				ImGui::Text("Change actor status: "); ImGui::SameLine(0.f, 0.5f);
 				{
 					using Status = ioi::hm3::ZHM3Actor::ActorStatus;
-
 					ImGui::Separator();
 
-					if (ImGui::Button("Set status '0'"))
-						currentActor->setStatus(Status::Status_0);
+					if (ImGui::Button("Stop AI"))
+						currentActor->setStatus(Status::StopAI);
 
-					if (ImGui::Button("Set status '1'"))
-						currentActor->setStatus(Status::Status_1);
+					ImGui::SameLine(0.f, 5.f);
+					if (ImGui::Button("Set normal mode"))
+						currentActor->setStatus(Status::Normal);
 
-					if (ImGui::Button("Set status '2'"))
-						currentActor->setStatus(Status::Status_2);
+					ImGui::SameLine(0.f, 5.f);
+					if (ImGui::Button("Sleep"))
+						currentActor->setStatus(Status::Sleep);
 
-					if (ImGui::Button("Set status '3'"))
-						currentActor->setStatus(Status::Status_3);
+					ImGui::SameLine(0.f, 5.f);
+					if (ImGui::Button("Reset AI"))
+						currentActor->setStatus(Status::ResetAI);
 
-					if (ImGui::Button("Set status 'Reset'"))
-						currentActor->setStatus(Status::Reset);
 				}
 
 				{

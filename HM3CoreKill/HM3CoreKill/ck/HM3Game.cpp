@@ -42,6 +42,14 @@ void __stdcall ShowWindowRequest()
 	ShowWindow(HM3Game::GetSystemInterface()->m_renderer->m_HWND, SW_SHOW);
 }
 
+struct ComponentWatcher
+{
+	void onComponentRequest(const char* componentName)
+	{
+		HM3_DEBUG("[ComponentWatcher::onComponentRequest] request for component %s => 0x%.8X\n", componentName, this);
+	}
+};
+
 void HM3Game::Initialise()
 {
 	if (!checkBuildVersion())
@@ -74,6 +82,27 @@ void HM3Game::Initialise()
 	setupNativeObjectsCreationHooks();
 	setupOnSTDOBJAttachedHook();
 	setupFsZipHook();
+	setupM13PosControllerHook();
+
+	/*{
+		DWORD addr = 0x004E704C;
+
+		void(__thiscall ComponentWatcher::* callback)(const char*) = &ComponentWatcher::onComponentRequest;
+
+		HM3Function::hookFunction<void(__stdcall)(const char*), 7>(
+			HM3_PROCESS_NAME, 
+			addr, 
+			(DWORD)(DWORD*&)callback,
+			{ 
+				x86_pushad,
+				x86_pushfd,
+				x86_push_edx
+			}, 
+			{
+				x86_popfd,
+				x86_popad
+			});
+	}*/
 
 	/*
 	
@@ -195,9 +224,12 @@ void HM3Game::setupD3DDeviceCreationHook()
 			x86_popad
 		});
 
-	ck::HM3Direct3D::getInstance().onD3DReady	= std::bind(&HM3Game::onD3DInitialized, this, std::placeholders::_1);
-	ck::HM3Direct3D::getInstance().onBeginScene	= std::bind(&HM3Game::onD3DBeginScene, this, std::placeholders::_1);
-	ck::HM3Direct3D::getInstance().onEndScene	= std::bind(&HM3Game::onD3DEndScene, this, std::placeholders::_1);
+	auto& direct3D = ck::HM3Direct3D::getInstance();
+
+	direct3D.onD3DReady		= std::bind(&HM3Game::onD3DInitialized, this, std::placeholders::_1);
+	direct3D.onBeginScene	= std::bind(&HM3Game::onD3DBeginScene, this, std::placeholders::_1);
+	direct3D.onEndScene		= std::bind(&HM3Game::onD3DEndScene, this, std::placeholders::_1);
+	direct3D.onDeviceLost	= std::bind(&HM3Game::onD3DDeviceLost, this, std::placeholders::_1);
 }
 
 void HM3Game::patchFreeBeamHere()
@@ -277,22 +309,23 @@ void HM3Game::setupFsZipHook()
 			x86_popfd,
 			x86_popad
 		});
+}
 
-	/*
-		Maybe later but now now!
-		HM3Function::hookFunction<void(__stdcall*)(DWORD), 6>(
-		HM3_PROCESS_NAME, 
-		HM3Offsets::FsZip_Destructor,
-		(DWORD)FsZip_Destructor, 
+void HM3Game::setupM13PosControllerHook()
+{
+	HM3Function::hookFunction<void(__stdcall*)(DWORD), 7>(
+		HM3_PROCESS_NAME,
+		HM3Offsets::ZM13PosController_Constructor,
+		(DWORD)ZM13PosController_Constructor,
 		{
 			x86_pushad,
 			x86_pushfd,
-			x86_push_ecx
-		}, 
-		{
-			x86_popfd,
-			x86_popad
-		});*/
+			x86_push_eax
+		},
+			{
+				x86_popfd,
+				x86_popad
+			});
 }
 
 void HM3Game::onD3DInitialized(IDirect3DDevice9* device)
@@ -311,6 +344,11 @@ void HM3Game::onD3DEndScene(IDirect3DDevice9* device)
 {
 	HM3_UNUSED(device)
 	ck::HM3InGameTools::getInstance().draw();
+}
+
+void HM3Game::onD3DDeviceLost(IDirect3DDevice9* device)
+{
+	ck::HM3InGameTools::getInstance().setRenderDevice(device);
 }
 
 void HM3Game::OnNewGameSession(ioi::hm3::ZHM3Hitman3* gameSession)

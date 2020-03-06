@@ -6,6 +6,7 @@
 #include <sdk/CDoor.h>
 #include <sdk/CMapObject.h>
 #include <sdk/FsZip_t.h>
+#include <sdk/game/ZM13PosController.h>
 
 ATOM __stdcall RegisterClassExA_Hooked(WNDCLASSEXA* wndClass);
 
@@ -51,3 +52,5 @@ void __stdcall ZGlacier_OnSTDOBJAttached(DWORD* unknownInstance);
 void __stdcall FsZip_Constructed(ioi::hm3::FsZip_t* instance);
 
 void __stdcall FsZip_Destructor(ioi::hm3::FsZip_t* instance);
+
+void __stdcall ZM13PosController_Constructor(ioi::hm3::ZM13PosController* instance);

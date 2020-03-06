@@ -3,7 +3,13 @@
 #include <Windows.h>
 #include <d3d9.h>
 
-namespace ioi { namespace hm3 { class ZHM3Actor; class ZIKHAND; } }
+namespace ioi {
+namespace hm3 {
+	class CInventory;
+	class ZHM3Actor;
+	class ZIKHAND; 
+	class ZM13PosController;
+} }
 
 namespace ck
 {
@@ -12,8 +18,6 @@ namespace ck
 		bool m_isVisible = false;
 		bool m_inGameInputIsActive = true;
 		IDirect3DDevice9* m_device = nullptr;
-		
-		void pollEventsFromGlacier();
 
 	public:
 		static HM3InGameTools& getInstance();
@@ -26,6 +30,7 @@ namespace ck
 		bool isVisible() const;
 		void setMouseButtonState(int button, bool state);
 		void setMouseWheelState(int value);
+		void setRenderDevice(IDirect3DDevice9* dxDevice);
 
 		enum class SceneRenderMode
 		{
@@ -52,6 +57,7 @@ namespace ck
 		void drawActorInfo(ioi::hm3::ZHM3Actor* currentActor);
 		void drawSuitInfoForActor(ioi::hm3::ZHM3Actor* currentActor);
 		void drawHandInfo(ioi::hm3::ZIKHAND* hand);
+		void drawInventory(ioi::hm3::CInventory* inventory);
 
 	private:
 		SceneRenderMode m_renderMode = SceneRenderMode::Normal;

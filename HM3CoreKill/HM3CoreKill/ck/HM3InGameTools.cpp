@@ -13,6 +13,7 @@
 #include <ck/HM3Game.h>
 
 #include <sdk/actions/ZHitmanActionPickLock.h>
+#include <sdk/game/ZM13PosController.h>
 #include <sdk/ZHM3ItemTemplateAmmo.h>
 #include <sdk/ZHM3BriefingControl.h>
 #include <sdk/ZSysInterfaceWintel.h>
@@ -31,6 +32,8 @@
 #include <sdk/REFTAB32.h>
 #include <sdk/CDoor.h>
 #include <sdk/ZOSD.h>
+
+#include <set>
 
 // Win32 message handler
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -127,6 +130,13 @@ namespace ck
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		io.MouseWheel += static_cast<float>(value) / static_cast<float>(WHEEL_DELTA);
+	}
+
+	void HM3InGameTools::setRenderDevice(IDirect3DDevice9* dxDevice)
+	{
+		ImGui_ImplDX9_InvalidateDeviceObjects();
+		m_device = dxDevice;
+		ImGui_ImplDX9_CreateDeviceObjects();
 	}
 
 	HM3InGameTools::SceneRenderMode HM3InGameTools::getSceneRenderMode() const
@@ -262,6 +272,23 @@ namespace ck
 					SetEntityPosition_t SetEntityPosition = (SetEntityPosition_t)methodAddr;
 
 					SetEntityPosition(hitman3, actorTransform, newActorPosition);
+				}
+			}
+
+			{ //Notifications test
+				if (ImGui::Button("Show test notification"))
+				{
+					auto osd = gameData->m_OSD;
+					if (osd)
+					{
+						typedef int(__thiscall* UB660EE0_t)(ioi::hm3::ZOSD*, const char*, bool);
+						
+						UB660EE0_t showNotification = (UB660EE0_t)0x00660EE0;
+
+						showNotification(osd, "Test notification", true);
+
+						//4391B0
+					}
 				}
 			}
 		}
@@ -428,39 +455,7 @@ namespace ck
 			{
 				ImGui::Separator();
 				ImGui::Text("Player's inventory: ");
-
-				auto inventory = hitman3->m_inventory;
-				ioi::REFTAB32* inventoryREFTAB32 = inventory->getREFTAB32();
-				if (inventoryREFTAB32)
-				{
-					for (int i = 0; i < inventoryREFTAB32->m_itemsCount; i++)
-					{
-						std::intptr_t itemId = *ioi::get<std::intptr_t>(inventoryREFTAB32, i);
-						ioi::hm3::ZHM3Item* pItem = ioi::hm3::ZHM3Item::findItemByID(itemId);
-						if (!pItem || !pItem->m_entityLocator)
-						{
-							continue;
-						}
-
-						auto itemTemplate = pItem->getItemTemplate();
-						ImGui::Text("#%.3d %s (%.4X) | Item template (at 0x%.8X) %s | ClassID is 0x%.8X", i, pItem->m_entityLocator->entityName, itemId, itemTemplate, (itemTemplate ? itemTemplate->m_entityLocator->entityName : "(N/A)"), pItem->getClassID());
-					}
-				}
-				else
-				{
-					ImGui::SameLine(0.f, 3.f);
-					ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
-				}
-			}
-
-			{
-				if (ImGui::Button("TEST FS"))
-				{
-					auto fs = ioi::hm3::getGlacierInterface<std::uintptr_t>(ioi::hm3::FileSystem);
-					auto pf = HM3Function::getVirtualFunctionAddress((DWORD)fs, +0x84);
-
-					HM3_DEBUG("FS 0x%.8X | PF 0x%.8X\n", fs, pf);
-				}
+				drawInventory(hitman3->m_inventory);
 			}
 		}
 	}
@@ -533,8 +528,45 @@ namespace ck
 
 				ImGui::Text("Location pointer at 0x%.8X", currentActor->ActorInformation->location);
 				ImGui::Text("Position:"); ImGui::SameLine(0.f, 4.f); ImGui::InputFloat3("", actorPosition);
-				ImGui::Text("Inventory: 0x%.8X", currentActor->ActorInformation->equipment);
 
+				ImGui::Text("Change actor status: "); ImGui::SameLine(0.f, 0.5f);
+				{
+					using Status = ioi::hm3::ZHM3Actor::ActorStatus;
+					ImGui::Separator();
+
+					if (ImGui::Button("Stop AI"))
+						currentActor->setStatus(Status::StopAI);
+
+					ImGui::SameLine(0.f, 5.f);
+					if (ImGui::Button("Set normal mode"))
+						currentActor->setStatus(Status::Normal);
+
+					ImGui::SameLine(0.f, 5.f);
+					if (ImGui::Button("Sleep"))
+						currentActor->setStatus(Status::Sleep);
+
+					ImGui::SameLine(0.f, 5.f);
+					if (ImGui::Button("Reset AI"))
+						currentActor->setStatus(Status::ResetAI);
+
+				}
+
+				{
+					ImGui::Separator();
+					ImGui::Text("Inventory: ");
+					auto inventory = reinterpret_cast<ioi::hm3::CInventory*>(currentActor->getComponent("Inventory"));
+					if (inventory)
+					{
+						drawInventory(inventory);
+					}
+					else
+					{
+						ImGui::SameLine(0.f, 5.f);
+						ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
+					}
+				}
+
+				ImGui::Separator();
 				drawSuitInfoForActor(currentActor);
 				drawHandInfo(currentActor->getHand(ioi::hm3::HandType::LeftHand));
 				drawHandInfo(currentActor->getHand(ioi::hm3::HandType::RightHand));
@@ -569,18 +601,22 @@ namespace ck
 
 						ImGui::EndCombo();
 					}
-					ImGui::SameLine(0.f, 5.f);
-					if (currentAnim && ImGui::Button("Apply"))
-					{
-						currentActor->dropAnimation(6, 0);
-						currentActor->setAnimation(currentAnim);
-					}
 
-					ImGui::SameLine(0.f, 5.f);
-					if (currentAnim && ImGui::Button("Apply for player"))
+					if (currentAnim)
 					{
-						gameData->m_Hitman3->dropCurrentAnimation();
-						gameData->m_Hitman3->setAnimation(currentAnim);
+						ImGui::SameLine(0.f, 5.f);
+						if (ImGui::Button("Apply"))
+						{
+							currentActor->dropAnimation(6, 0);
+							currentActor->setAnimation(currentAnim);
+						}
+
+						ImGui::SameLine(0.f, 5.f);
+						if (ImGui::Button("Apply for player"))
+						{
+							gameData->m_Hitman3->dropCurrentAnimation();
+							gameData->m_Hitman3->setAnimation(currentAnim);
+						}
 					}
 				}
 
@@ -668,6 +704,38 @@ namespace ck
 		else
 		{
 			ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "%s (%.4X)", pItem->m_entityLocator->entityName, hand->m_itemID);
+		}
+	}
+
+	void HM3InGameTools::drawInventory(ioi::hm3::CInventory* inventory)
+	{
+		ioi::REFTAB32* inventoryREFTAB32 = inventory->getREFTAB32();
+		if (inventoryREFTAB32)
+		{
+			if (inventoryREFTAB32->m_itemsCount == 0)
+			{
+				ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), " (Empty) ");
+			}
+			else {
+				for (int i = 0; i < inventoryREFTAB32->m_itemsCount; i++)
+				{
+					std::intptr_t itemId = *ioi::get<std::intptr_t>(inventoryREFTAB32, i);
+					ioi::hm3::ZHM3Item* pItem = ioi::hm3::ZHM3Item::findItemByID(itemId);
+					if (!pItem || !pItem->m_entityLocator)
+					{
+						continue;
+					}
+
+					auto itemTemplate = pItem->getItemTemplate();
+					ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "[0x%.8X]", pItem); ImGui::SameLine(0.f, 4.f);
+					ImGui::Text("#%.3d %s (%.4X) | Item template (at 0x%.8X) %s | ClassID is 0x%.8X", i, pItem->m_entityLocator->entityName, itemId, itemTemplate, (itemTemplate ? itemTemplate->m_entityLocator->entityName : "(N/A)"), pItem->getClassID());
+				}
+			}
+		}
+		else
+		{
+			ImGui::SameLine(0.f, 3.f);
+			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
 		}
 	}
 }

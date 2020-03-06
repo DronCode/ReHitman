@@ -86,7 +86,7 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0061(); //#0061 +00f4 .rdata:00798110
 		virtual void Function_0062(); //#0062 +00f8 .rdata:00798114
 		virtual void Function_0063(); //#0063 +00fc .rdata:00798118
-		virtual int Function_0064(const char*); //#0064 +0100 .rdata:0079811c
+		virtual int getComponent(const char*); //#0064 +0100 .rdata:0079811c
 		virtual void Function_0065(); //#0065 +0104 .rdata:00798120
 		virtual void Function_0066(); //#0066 +0108 .rdata:00798124
 		virtual void Function_0067(); //#0067 +010c .rdata:00798128

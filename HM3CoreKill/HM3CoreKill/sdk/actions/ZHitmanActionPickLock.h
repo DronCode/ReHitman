@@ -24,16 +24,25 @@ namespace ioi { namespace hm3 {
 		int16_t m_unkOffset_x32; //0x0032
 		char pad_0034[20]; //0x0034
 
-		virtual void Function0();
-		virtual void Function1();
-		virtual void Function2();///PERFORM ACTION
-		virtual void Function3();
-		virtual bool Function4();
-		virtual void Function5();
-		virtual void Function6();
-		virtual void Function7();
-		virtual const char* GetActionName(); ///#8
-		virtual void Function9();
+		// === vftable ===
+		virtual void Function_0000(); //#0 +0 .rdata:0079183c
+		virtual void Function_0001(); //#1 +4 .rdata:00791840
+		virtual void perform(); //#2 +8 .rdata:00791844
+		virtual void Function_0003(); //#3 +c .rdata:00791848
+		virtual void Function_0004(); //#4 +10 .rdata:0079184c
+		virtual void Function_0005(); //#5 +14 .rdata:00791850
+		virtual void Function_0006(); //#6 +18 .rdata:00791854
+		virtual void Function_0007(); //#7 +1c .rdata:00791858
+		virtual const char* getName(); //#8 +20 .rdata:0079185c
+		virtual void Function_0009(); //#9 +24 .rdata:00791860
+		virtual void Function_0010(); //#10 +28 .rdata:00791864
+		virtual void Function_0011(); //#11 +2c .rdata:00791868
+		virtual void Function_0012(); //#12 +30 .rdata:0079186c
+		virtual void Function_0013(); //#13 +34 .rdata:00791870
+		virtual void Function_0014(); //#14 +38 .rdata:00791874
+		virtual void Function_0015(); //#15 +3c .rdata:00791878
+		virtual void Function_0016(); //#16 +40 .rdata:0079187c
+		virtual void Function_0017(); //#17 +44 .rdata:00791880
 	}; //Size: 0x0048
 
 }}

@@ -23,15 +23,18 @@
 #include <sdk/ZEngineDatabase.h>
 #include <sdk/ZHM3CameraClass.h>
 #include <sdk/ZAnimationInfo.h>
+#include <sdk/ZPathFollower.h>
 #include <sdk/CTelePortList.h>
 #include <sdk/ZMouseWintel.h>
 #include <sdk/ZGameGlobals.h>
 #include <sdk/ZHM3GameData.h>
 #include <sdk/ZEventBuffer.h>
 #include <sdk/ZHM3Item.h>
+#include <sdk/ZHM3HmAs.h>
 #include <sdk/REFTAB32.h>
 #include <sdk/CDoor.h>
 #include <sdk/ZOSD.h>
+#include <sdk/ZSTD.h>
 
 #include <set>
 
@@ -457,6 +460,29 @@ namespace ck
 				ImGui::Text("Player's inventory: ");
 				drawInventory(hitman3->m_inventory);
 			}
+
+			{
+				ImGui::Separator();
+				if (ImGui::Button("Teleport podium to out of room"))
+				{
+					auto ccom = ioi::hm3::getCCOMObjectFromEngineDB(engineDB);
+					if (!ccom)
+						return;
+
+					std::uintptr_t table = 0;
+
+					ccom->getSTDOBJEntityIdByName("M13Table", &table);
+
+					if (!table)
+						return;
+
+					auto tableSTD = ioi::hm3::getSTDOBJById(table);
+					if (!tableSTD)
+						return;
+
+					tableSTD->m_entityLocation->position.x = -2600.f;
+				}
+			}
 		}
 	}
 
@@ -529,6 +555,50 @@ namespace ck
 				ImGui::Text("Location pointer at 0x%.8X", currentActor->ActorInformation->location);
 				ImGui::Text("Position:"); ImGui::SameLine(0.f, 4.f); ImGui::InputFloat3("", actorPosition);
 
+				{
+					if (auto boid = currentActor->m_boid; boid)
+					{
+						using BoidState = ioi::hm3::BoidState;
+
+						ImGui::Separator();
+						ImGui::Text("Human boid info (0x%.8X)", currentActor->m_boid);
+						ImGui::Spacing();
+						ImGui::Text("Boid locations : {%.4f; %.4f; %.4f} | {%.4f; %.4f; %.4f}", boid->m_pos.x, boid->m_pos.y, boid->m_pos.z, boid->m_newPos.x, boid->m_newPos.y, boid->m_newPos.z);
+						ImGui::Text("Movement speed : %.4f", boid->m_speed); 
+						
+						ImGui::Text("Boid state     : "); ImGui::SameLine(0.f, 0.f);
+						switch (boid->m_boidState)
+						{
+						case BoidState::Moving:
+							ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "MOVE TO POINT");
+							break;
+						case BoidState::Staying:
+							ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "STAY AT POSITION");
+							break;
+						case BoidState::ParentActorDestroyed:
+							ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "ACTOR DEAD");
+							break;
+						case BoidState::Sitting:
+							ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "SITTING");
+							break;
+						default:
+							ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "UNKNOWN STATE (%d)", boid->m_boidState);
+							break;
+						}
+
+						if (ImGui::Button("Teleport test"))
+						{
+							float newPosition[] = { 344.f, -267.f, 238.f };
+							boid->setPosition(newPosition);
+						}
+					}
+					else
+					{
+						ImGui::SameLine(0.f, 0.5f);
+						ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "NOT AVAILABLE");
+					}
+				}
+
 				ImGui::Text("Change actor status: "); ImGui::SameLine(0.f, 0.5f);
 				{
 					using Status = ioi::hm3::ZHM3Actor::ActorStatus;
@@ -563,6 +633,40 @@ namespace ck
 					{
 						ImGui::SameLine(0.f, 5.f);
 						ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
+					}
+				}
+
+				{
+					ioi::hm3::ZPathFollower* pathFollowerComponent = reinterpret_cast<ioi::hm3::ZPathFollower*>(currentActor->getComponent("PathFollower"));
+					
+					if (pathFollowerComponent)
+					{
+						ImGui::Separator();
+						ImGui::Text("Path follower (0x%.8X | %s):", pathFollowerComponent, (pathFollowerComponent ? pathFollowerComponent->getTypeName() : "Unknown"));
+
+						int totalPaths = pathFollowerComponent->m_reftab.getCapacity();
+						ImGui::Text("Path nodes count : %.4d", totalPaths);
+
+						for (int i = 0; i < totalPaths; i++)
+						{
+							ioi::ZLIST* pointsList = reinterpret_cast<ioi::ZLIST*>(ioi::hm3::getSTDOBJById(pathFollowerComponent->m_reftab.at(i))); // we know that path can contains only ZLIST as internal data representation
+							if (pointsList)
+							{
+								int pathPointsCount = pointsList->m_reftab->getCapacity();
+								ImGui::Text("[%.4d] Path at 0x%.8X (%d points)", i, pointsList, pathPointsCount);
+								for (int pointIndex = 0; pointIndex < pathPointsCount; pointIndex++)
+								{
+									auto entity = ioi::hm3::getSTDOBJById(pointsList->m_reftab->at(pointIndex));
+									auto locator = entity->m_entityLocation;
+									
+									ImGui::Text("    [%.4d] Point %s (#%.4d) at {%.4f; %.4f; %.4f}", i, locator->entityName, pointIndex, locator->position.x, locator->position.y, locator->position.z);
+								}
+							}
+							else
+							{
+								ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "[%.4d] BAD POINTS LIST", i);
+							}
+						}
 					}
 				}
 

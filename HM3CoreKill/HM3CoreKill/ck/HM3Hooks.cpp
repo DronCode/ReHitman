@@ -222,3 +222,11 @@ void __stdcall ZM13PosController_Constructor(ioi::hm3::ZM13PosController* instan
 
 	HM3_DEBUG("[ZM13PosController] created at 0x%.8X\n", instance);
 }
+
+void __stdcall ZCar_Constructor(ioi::hm3::ZCar* instance)
+{
+	if (!instance)
+		return;
+
+	HM3_DEBUG("[ZCar] constructed at 0x%.8X\n", instance);
+}

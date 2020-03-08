@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <sdk/ZHumanBoid.h>
 #include <sdk/ZEntityLocator.h>
 #include <sdk/ZAnimationInfo.h>
 #include <sdk/ZIKHAND.h>
@@ -511,6 +512,14 @@ namespace hm3 {
 		ActorInfos* ActorInformation;	//0x0004
 		char pad_0008[68]; //0x0008
 		SuiteMask m_suitMask; //0x004C
+		char pad_0050[932]; //0x0050
+		ZHumanBoid* m_boid; //0x03F4
+		char pad_03F8[1288]; //0x03F8
+		int32_t m_onMapType; //0x0900
+		char pad_0904[452]; //0x0904
+		uint32_t m_currentZROOM; //0x0AC8
+		char pad_0ACC[148]; //0x0ACC
+
 
 		// === custom ===
 		ZIKHAND* getHand(HandType type);

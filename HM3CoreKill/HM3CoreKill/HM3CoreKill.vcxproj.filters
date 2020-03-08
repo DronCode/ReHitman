@@ -367,6 +367,15 @@
     <ClInclude Include="sdk\game\ZHM3MovementGuideToMatPos.h">
       <Filter>sdk\game</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\ZCar.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZHumanBoid.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZPathFollower.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">

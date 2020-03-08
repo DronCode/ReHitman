@@ -83,6 +83,7 @@ void HM3Game::Initialise()
 	setupOnSTDOBJAttachedHook();
 	setupFsZipHook();
 	setupM13PosControllerHook();
+	setupZCarConstructorHook();
 
 	/*{
 		DWORD addr = 0x004E704C;
@@ -322,10 +323,27 @@ void HM3Game::setupM13PosControllerHook()
 			x86_pushfd,
 			x86_push_eax
 		},
-			{
-				x86_popfd,
-				x86_popad
-			});
+		{
+			x86_popfd,
+			x86_popad
+		});
+}
+
+void HM3Game::setupZCarConstructorHook()
+{
+	HM3Function::hookFunction<void(__stdcall*)(DWORD), 7>(
+		HM3_PROCESS_NAME, 
+		HM3Offsets::ZCar_Constructor,
+		(DWORD)ZCar_Constructor, 
+		{
+			x86_pushad,
+			x86_pushfd,
+			x86_push_eax
+		},
+		{
+			x86_popfd,
+			x86_popad
+		});
 }
 
 void HM3Game::onD3DInitialized(IDirect3DDevice9* device)

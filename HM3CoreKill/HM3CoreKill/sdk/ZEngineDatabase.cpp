@@ -20,4 +20,21 @@ namespace ioi { namespace hm3 {
 		return result;
 	}
 
+	ZSTDOBJ* getSTDOBJById(std::uintptr_t objectId)
+	{
+		using sub4E5BE0_t = ZSTDOBJ * (__cdecl*)(std::uintptr_t);
+		sub4E5BE0_t sub4E5BE0 = (sub4E5BE0_t)0x004E5BE0;
+		return sub4E5BE0(objectId);
+	}
+
+	REFTAB32* getEntitiesListFromCCOM(CCOM* instance)
+	{
+		REFTAB32* result = nullptr;
+		__asm {
+			mov ecx, instance
+			lea eax, [ecx + 0x4008]
+			mov result, eax
+		}
+		return result;
+	}
 }}

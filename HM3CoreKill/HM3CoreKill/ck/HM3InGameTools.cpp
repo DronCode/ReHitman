@@ -4,6 +4,7 @@
 #include <imgui_impl_dx9.h>
 #include <imgui_impl_win32.h>
 
+#include <ck/HM3CutSequencesRegistry.h>
 #include <ck/HM3AnimationRegistry.h>
 #include <ck/HM3DoorsRegistry.h>
 #include <ck/HM3ActionFactory.h>
@@ -185,12 +186,14 @@ namespace ck
 	void HM3InGameTools::drawTopMenuBar()
 	{
 		static bool showActorsViewer = false;
+		static bool showInventoryEditor = false;
 
 		if (ImGui::BeginMainMenuBar())
 		{
 			if (ImGui::BeginMenu("Tools"))
 			{
 				ImGui::MenuItem("Actors viewer", nullptr, &showActorsViewer);
+				ImGui::MenuItem("Inventory editor", nullptr, &showInventoryEditor);
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();
@@ -198,6 +201,7 @@ namespace ck
 
 
 		if (showActorsViewer) showDebugActorsWindow(&showActorsViewer);
+		if (showInventoryEditor) showInventoryEditorWindow(&showInventoryEditor);
 	}
 
 	void HM3InGameTools::drawDebugMenu()
@@ -463,24 +467,30 @@ namespace ck
 
 			{
 				ImGui::Separator();
-				if (ImGui::Button("Teleport podium to out of room"))
+
+				std::string_view levelControlName = gameData->m_LevelControl->getTypeName();
+
+				if (auto foundIt = levelControlName.find("M13") != std::string_view::npos)
 				{
-					auto ccom = ioi::hm3::getCCOMObjectFromEngineDB(engineDB);
-					if (!ccom)
-						return;
+					if (ImGui::Button("Teleport podium to out of room"))
+					{
+						auto ccom = ioi::hm3::getCCOMObjectFromEngineDB(engineDB);
+						if (!ccom)
+							return;
 
-					std::uintptr_t table = 0;
+						std::uintptr_t table = 0;
 
-					ccom->getSTDOBJEntityIdByName("M13Table", &table);
+						ccom->getSTDOBJEntityIdByName("M13Table", &table);
 
-					if (!table)
-						return;
+						if (!table)
+							return;
 
-					auto tableSTD = ioi::hm3::getSTDOBJById(table);
-					if (!tableSTD)
-						return;
+						auto tableSTD = ioi::hm3::getSTDOBJById(table);
+						if (!tableSTD)
+							return;
 
-					tableSTD->m_entityLocation->position.x = -2600.f;
+						tableSTD->m_entityLocation->position.x = -2600.f;
+					}
 				}
 			}
 		}
@@ -527,6 +537,28 @@ namespace ck
 			drawActorInfo(currentActor);
 			ImGui::EndChild();
 			ImGui::EndGroup();
+		}
+		ImGui::End();
+	}
+
+	void HM3InGameTools::showInventoryEditorWindow(bool* pOpen)
+	{
+		auto sys = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
+		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
+		if (!gameData || !gameData->m_LevelControl)
+			return;
+
+		ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
+		if (ImGui::Begin("Inventory editor", pOpen))
+		{
+			ImGui::Text("Actor : "); ImGui::SameLine(0.f, 5.f);
+
+			std::vector<ioi::hm3::ZHM3Actor*> actors;
+			actors.reserve(gameData->m_ActorsInPoolCount);
+			for (int i = 0; i < gameData->m_ActorsInPoolCount; i++)
+			{
+				actors.push_back(gameData->m_ActorsPool[i]);
+			}
 		}
 		ImGui::End();
 	}
@@ -586,10 +618,14 @@ namespace ck
 							break;
 						}
 
-						if (ImGui::Button("Teleport test"))
+						static float newBoidPosition[] = { 0.f, 0.f, 0.f, 0.f };
+
+						ImGui::Text("Teleport boid to "); ImGui::SameLine(0.f, 5.f);
+						ImGui::InputFloat3(" ", newBoidPosition); ImGui::SameLine(0.f, 5.f);
+
+						if (ImGui::Button("Teleport"))
 						{
-							float newPosition[] = { 344.f, -267.f, 238.f };
-							boid->setPosition(newPosition);
+							boid->setPosition(newBoidPosition);
 						}
 					}
 					else
@@ -654,6 +690,18 @@ namespace ck
 							{
 								int pathPointsCount = pointsList->m_reftab->getCapacity();
 								ImGui::Text("[%.4d] Path at 0x%.8X (%d points)", i, pointsList, pathPointsCount);
+								/*ImGui::SameLine(0.f, 5.f);
+								if (ImGui::Button("Follow"))
+								{
+									using FollowPath_t = int(__thiscall*)(ioi::hm3::ZPathFollower*, int);
+									FollowPath_t FollowPath = (FollowPath_t)0x00654380;
+									FollowPath(pathFollowerComponent, i);
+									
+									currentActor->m_boid->setFloat_8(100.f);
+									currentActor->m_boid->m_boidState = ioi::hm3::BoidState::Moving;
+									pathFollowerComponent->Function_0014();
+								}*/
+
 								for (int pointIndex = 0; pointIndex < pathPointsCount; pointIndex++)
 								{
 									auto entity = ioi::hm3::getSTDOBJById(pointsList->m_reftab->at(pointIndex));
@@ -661,6 +709,7 @@ namespace ck
 									
 									ImGui::Text("    [%.4d] Point %s (#%.4d) at {%.4f; %.4f; %.4f}", i, locator->entityName, pointIndex, locator->position.x, locator->position.y, locator->position.z);
 								}
+								
 							}
 							else
 							{

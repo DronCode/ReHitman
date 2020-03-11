@@ -8,6 +8,7 @@
 #include <ck/HM3Offsets.h>
 #include <ck/HM3AnimationRegistry.h>
 #include <ck/HM3DoorsRegistry.h>
+#include <ck/HM3CutSequencesRegistry.h>
 #include <ck/HM3FreeFileSystemLocatorProxy.h>
 
 #include <sdk/ZMouseWintel.h>
@@ -96,6 +97,7 @@ void __stdcall ZPlayer_Destructor(DWORD instance)
 	// Free session base data
 	ck::HM3AnimationRegistry::getRegistry().reset();
 	ck::HM3DoorsRegistry::getRegistry().reset();
+	ck::HM3CutSequencesRegistry::getRegistry().reset();
 }
 
 void __stdcall ZDirect3DDevice_OnDeviceReady(ioi::hm3::ZDirect3DDevice* device)
@@ -229,4 +231,14 @@ void __stdcall ZCar_Constructor(ioi::hm3::ZCar* instance)
 		return;
 
 	HM3_DEBUG("[ZCar] constructed at 0x%.8X\n", instance);
+}
+
+void __stdcall CutSequence_Constructor(ioi::hm3::CCutSequence* instance)
+{
+	if (!instance)
+		return;
+
+	HM3_DEBUG("CutSequence| at 0x%.8X\n", instance);
+
+	ck::HM3CutSequencesRegistry::getRegistry().registerCutSequence(instance);
 }

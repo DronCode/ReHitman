@@ -188,6 +188,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ck\Features.h" />
+    <ClInclude Include="ck\HM3CutSequencesRegistry.h" />
     <ClInclude Include="ck\HM3DoorsRegistry.h" />
     <ClInclude Include="ck\HM3ActionFactory.h" />
     <ClInclude Include="ck\HM3AnimationRegistry.h" />
@@ -209,6 +210,7 @@
     <ClInclude Include="sdk\actions\ZHitmanActionPickLock.h" />
     <ClInclude Include="sdk\actions\ZHM3ActorPunch.h" />
     <ClInclude Include="sdk\actions\ZLnkAction.h" />
+    <ClInclude Include="sdk\CCutSequence.h" />
     <ClInclude Include="sdk\CDoor.h" />
     <ClInclude Include="sdk\CIngameMap.h" />
     <ClInclude Include="sdk\CInventory.h" />
@@ -304,6 +306,7 @@
     <ClCompile Include="ck\HM3ActionFactory.cpp" />
     <ClCompile Include="ck\HM3AnimationRegistry.cpp" />
     <ClCompile Include="ck\HM3CrashHandler.cpp" />
+    <ClCompile Include="ck\HM3CutSequencesRegistry.cpp" />
     <ClCompile Include="ck\HM3DebugConsole.cpp" />
     <ClCompile Include="ck\HM3Direct3D.cpp" />
     <ClCompile Include="ck\HM3DoorsRegistry.cpp" />

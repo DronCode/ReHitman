@@ -8,6 +8,7 @@
 #include <sdk/FsZip_t.h>
 #include <sdk/ZCar.h>
 #include <sdk/game/ZM13PosController.h>
+#include <sdk/CCutSequence.h>
 
 ATOM __stdcall RegisterClassExA_Hooked(WNDCLASSEXA* wndClass);
 
@@ -57,3 +58,5 @@ void __stdcall FsZip_Destructor(ioi::hm3::FsZip_t* instance);
 void __stdcall ZM13PosController_Constructor(ioi::hm3::ZM13PosController* instance);
 
 void __stdcall ZCar_Constructor(ioi::hm3::ZCar* instance);
+
+void __stdcall CutSequence_Constructor(ioi::hm3::CCutSequence* instance);

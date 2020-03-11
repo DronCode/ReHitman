@@ -376,6 +376,12 @@
     <ClInclude Include="sdk\ZPathFollower.h">
       <Filter>sdk</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\CCutSequence.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3CutSequencesRegistry.h">
+      <Filter>ck</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">
@@ -474,6 +480,9 @@
     </ClCompile>
     <ClCompile Include="third_party\fmt\src\format.cc">
       <Filter>third_party\fmt\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ck\HM3CutSequencesRegistry.cpp">
+      <Filter>ck</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -43,7 +43,7 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0011(); //#11 +2c .rdata:0079da28
 		virtual void Function_0012(); //#12 +30 .rdata:0079da2c
 		virtual void Function_0013(); //#13 +34 .rdata:0079da30
-		virtual void Function_0014(); //#14 +38 .rdata:0079da34
+		virtual ZLIST* Function_0014(); //#14 +38 .rdata:0079da34
 		virtual void Function_0015(); //#15 +3c .rdata:0079da38
 		virtual void Function_0016(); //#16 +40 .rdata:0079da3c
 		virtual void Function_0017(); //#17 +44 .rdata:0079da40

@@ -84,26 +84,8 @@ void HM3Game::Initialise()
 	setupFsZipHook();
 	setupM13PosControllerHook();
 	setupZCarConstructorHook();
-
-	/*{
-		DWORD addr = 0x004E704C;
-
-		void(__thiscall ComponentWatcher::* callback)(const char*) = &ComponentWatcher::onComponentRequest;
-
-		HM3Function::hookFunction<void(__stdcall)(const char*), 7>(
-			HM3_PROCESS_NAME, 
-			addr, 
-			(DWORD)(DWORD*&)callback,
-			{ 
-				x86_pushad,
-				x86_pushfd,
-				x86_push_edx
-			}, 
-			{
-				x86_popfd,
-				x86_popad
-			});
-	}*/
+	setupCutSequenceConstructorHook();
+	//setupGetComponentHook();
 
 	/*
 	
@@ -339,6 +321,42 @@ void HM3Game::setupZCarConstructorHook()
 			x86_pushad,
 			x86_pushfd,
 			x86_push_eax
+		},
+		{
+			x86_popfd,
+			x86_popad
+		});
+}
+
+void HM3Game::setupCutSequenceConstructorHook()
+{
+	HM3Function::hookFunction<void(__stdcall*)(DWORD), 7>(
+		HM3_PROCESS_NAME,
+		HM3Offsets::CCutSequence_Constructor,
+		(DWORD)CutSequence_Constructor,
+		{
+			x86_pushad,
+			x86_pushfd,
+			x86_push_eax
+		},
+		{
+			x86_popfd,
+			x86_popad
+		});
+}
+
+void HM3Game::setupGetComponentHook()
+{
+	void(__thiscall ComponentWatcher:: * callback)(const char*) = &ComponentWatcher::onComponentRequest;
+
+	HM3Function::hookFunction<void(__stdcall)(const char*), 7>(
+		HM3_PROCESS_NAME,
+		HM3Offsets::GetComponent_Func,
+		(DWORD)(DWORD*&)callback,
+		{
+			x86_pushad,
+			x86_pushfd,
+			x86_push_edx
 		},
 		{
 			x86_popfd,

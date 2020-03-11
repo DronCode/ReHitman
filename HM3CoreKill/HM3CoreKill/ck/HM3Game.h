@@ -50,6 +50,8 @@ private:
 	void setupFsZipHook();
 	void setupM13PosControllerHook();
 	void setupZCarConstructorHook();
+	void setupCutSequenceConstructorHook();
+	void setupGetComponentHook();
 public:
 	static ioi::hm3::ZHM3GameData* GetGameDataInstancePtr();
 	static ioi::hm3::ZSysInterfaceWintel* GetSystemInterface();

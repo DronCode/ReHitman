@@ -53,6 +53,8 @@ namespace HM3Offsets
 	static const FuncAddr_t FsZip_ReadMethodFunc						 = 0x0042C470;
 	static const FuncAddr_t ZM13PosController_Constructor				 = 0x005D7195;
 	static const FuncAddr_t ZCar_Constructor							 = 0x005949E3;
+	static const FuncAddr_t CCutSequence_Constructor					 = 0x00531A14;
+	static const FuncAddr_t GetComponent_Func							 = 0x004E704C;
 
 	static const Index_t	CMapObject_OnProcessMethodIndex				 = 29;
 	static const Index_t	FsZip_ReadMethodIndex = 7;

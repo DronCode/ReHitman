@@ -54,6 +54,7 @@ namespace ck
 		void drawSystemsInfo();
 		void drawLevelInfo();
 		void showDebugActorsWindow(bool* pOpen);
+		void showInventoryEditorWindow(bool* pOpen);
 		void drawActorInfo(ioi::hm3::ZHM3Actor* currentActor);
 		void drawSuitInfoForActor(ioi::hm3::ZHM3Actor* currentActor);
 		void drawHandInfo(ioi::hm3::ZIKHAND* hand);

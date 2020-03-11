@@ -73,7 +73,7 @@ namespace ioi
 	class ZLIST
 	{
 	public:
-		hm3::ZGlacierRTTI* m_RTTI; //0x0004
+		int32_t m_unk0; //possible user data or something else +0x0004
 		char pad_0008[4]; //0x0008
 		int32_t __MEMCHECK__; //0x000C
 		REFTAB* m_reftab; //0x0010

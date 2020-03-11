@@ -32,7 +32,10 @@ namespace ioi { namespace hm3 {
 		REFTAB32* result = nullptr;
 		__asm {
 			mov ecx, instance
+			test ecx, ecx
+			jz __getEntitiesListFromCCOM__end
 			lea eax, [ecx + 0x4008]
+		__getEntitiesListFromCCOM__end:
 			mov result, eax
 		}
 		return result;

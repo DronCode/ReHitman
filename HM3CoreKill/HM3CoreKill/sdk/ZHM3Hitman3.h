@@ -89,7 +89,7 @@ namespace hm3 {
 		virtual void Function_0061(); // [0061] +00F4 [.rdata at 0x00790F80]
 		virtual void Function_0062(); // [0062] +00F8 [.rdata at 0x00790F84]
 		virtual void Function_0063(); // [0063] +00FC [.rdata at 0x00790F88]
-		virtual void Function_0064(); // [0064] +0100 [.rdata at 0x00790F8C]
+		virtual int  getComponent(const char* componentName); // [0064] +0100 [.rdata at 0x00790F8C]
 		virtual void Function_0065(); // [0065] +0104 [.rdata at 0x00790F90]
 		virtual void Function_0066(); // [0066] +0108 [.rdata at 0x00790F94]
 		virtual void Function_0067(); // [0067] +010C [.rdata at 0x00790F98]

@@ -29,7 +29,7 @@ namespace ioi { namespace hm3 {
 		BoidState m_boidState; //0x0004
 		float m_speed; //0x0008
 		char pad_000C[4]; //0x000C
-		ZHM3Actor* m_actor; //0x0010
+		ZHM3Actor* m_actor; //0x0010 [self object, for player ZHitman3, for actor ZHM3Actor]
 		char pad_0014[8]; //0x0014
 		Vector3 m_pos; //0x001C
 		Vector3 m_newPos; //0x0028

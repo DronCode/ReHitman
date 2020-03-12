@@ -548,16 +548,99 @@ namespace ck
 		if (!gameData || !gameData->m_LevelControl)
 			return;
 
-		ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
+		auto hitman3 = gameData->m_Hitman3;
+		auto engineDB = sys->m_engineDataBase;
+
+		ImGui::SetNextWindowSize(ImVec2(750, 400), ImGuiCond_FirstUseEver);
 		if (ImGui::Begin("Inventory editor", pOpen))
 		{
-			ImGui::Text("Actor : "); ImGui::SameLine(0.f, 5.f);
-
-			std::vector<ioi::hm3::ZHM3Actor*> actors;
-			actors.reserve(gameData->m_ActorsInPoolCount);
+			ImGui::Separator();
+			// left
+			static int selected = 0;
+			ImGui::BeginChild("left pane", ImVec2(150, 0), true);
 			for (int i = 0; i < gameData->m_ActorsInPoolCount; i++)
 			{
-				actors.push_back(gameData->m_ActorsPool[i]);
+				char label[128];
+				sprintf(label, "Actor #%.2d", i + 1);
+				if (ImGui::Selectable(label, selected == i))
+					selected = i;
+			}
+			ImGui::EndChild();
+			ImGui::SameLine();
+
+			// right
+			if (selected >= 0)
+			{
+				ioi::hm3::ZHM3Actor* currentActor = gameData->m_ActorsPool[selected];
+
+				ImGui::BeginGroup();
+				ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+
+				ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "INVENTORY:");
+				ImGui::Separator();
+
+				auto inventory = reinterpret_cast<ioi::hm3::CInventory*>(currentActor->getComponent("Inventory"));
+				if (inventory)
+				{
+					ioi::REFTAB32* inventoryREFTAB32 = inventory->getREFTAB32();
+
+					if (inventoryREFTAB32)
+					{
+						if (inventoryREFTAB32->m_itemsCount == 0)
+						{
+							ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), " (Empty) ");
+						}
+						else {
+							for (int i = 0; i < inventoryREFTAB32->m_itemsCount; i++)
+							{
+								std::intptr_t itemId = *ioi::get<std::intptr_t>(inventoryREFTAB32, i);
+								ioi::hm3::ZHM3Item* pItem = ioi::hm3::ZHM3Item::findItemByID(itemId);
+								if (!pItem || !pItem->m_entityLocator)
+								{
+									continue;
+								}
+
+								auto itemTemplate = pItem->getItemTemplate();
+								ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "[0x%.8X]", pItem); ImGui::SameLine(0.f, 4.f);
+								ImGui::Text("#%.3d %s (%.4X)", i, pItem->m_entityLocator->entityName, itemId);
+
+								auto lHand = currentActor->getHand(ioi::hm3::HandType::LeftHand);
+								auto rHand = currentActor->getHand(ioi::hm3::HandType::RightHand);
+
+								ImGui::SameLine(0.f, 5.f);
+								if (ImGui::Button("TAKE"))
+								{
+									auto addItemEv = engineDB->getEvent("MSG_ADDITEMTOINVENTORY", 0, __FILE__, 0);
+									auto removeItemEv = engineDB->getEvent("MSG_REMOVEITEMFROMINVENTORY", 0, __FILE__, 0);
+
+									currentActor->sendEvent(removeItemEv, itemId, 0);
+									hitman3->sendEvent(addItemEv, reinterpret_cast<int*>(itemId), 0);
+								}
+
+								ImGui::SameLine(0.f, 5.f);
+								if (ImGui::Button("REMOVE"))
+								{
+									auto removeItemEv = engineDB->getEvent("MSG_REMOVEITEMFROMINVENTORY", 0, __FILE__, 0);
+
+									currentActor->sendEvent(removeItemEv, itemId, 0);
+								}
+							}
+						}
+					}
+					else
+					{
+						ImGui::SameLine(0.f, 3.f);
+						ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
+					}
+				}
+				else {
+					ImGui::SameLine(0.f, 3.f);
+					ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
+				}
+				
+
+				ImGui::EndChild();
+				ImGui::EndGroup();
 			}
 		}
 		ImGui::End();
@@ -862,7 +945,12 @@ namespace ck
 
 	void HM3InGameTools::drawInventory(ioi::hm3::CInventory* inventory)
 	{
+		auto sys = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
+		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
+		HM3_ASSERT(gameData != nullptr, "GameData must be valid here!");
+
 		ioi::REFTAB32* inventoryREFTAB32 = inventory->getREFTAB32();
+		
 		if (inventoryREFTAB32)
 		{
 			if (inventoryREFTAB32->m_itemsCount == 0)

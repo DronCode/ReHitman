@@ -5,10 +5,12 @@
 #include <sdk/ZAnimationInfo.h>
 #include <sdk/ZBoxPrimitive.h>
 #include <sdk/CInventory.h>
+#include <sdk/ZHumanBoid.h>
 #include <sdk/ZHM3Actor.h>
 #include <sdk/ZHM3Item.h>
 #include <sdk/ZHM3HmAs.h>
 #include <sdk/ZIKHAND.h>
+
 
 namespace ioi {
 namespace hm3 {
@@ -443,8 +445,7 @@ namespace hm3 {
 		char pad_0004[376]; //0x0004
 		uint32_t m_lnkActionQueue; //0x017C
 		char pad_0180[612]; //0x0180
-		uint32_t m_humanBoid0; //0x03E4
-		
+		ZHumanBoid* m_humanBoid0; //0x03E4
 		int32_t m_pad0; //+3E8
 		int32_t m_pad1; //+3EC
 		int32_t m_pad2; //+3F0

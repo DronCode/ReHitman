@@ -5,6 +5,7 @@
 #include <sdk/ZHM3Camera.h>
 #include <sdk/ZHM3Actor.h>
 #include <sdk/ZOSD.h>
+#include <sdk/ZGUI.h>
 #include <sdk/ZHM3MenuElements.h>
 #include <sdk/ZHM3LevelControl.h>
 #include <sdk/ZHM3BriefingControl.h>
@@ -20,7 +21,6 @@ namespace hm3 {
 	DECLARE_UNKNOWN_TYPE_PTR(REFTAB);
 	DECLARE_UNKNOWN_TYPE_PTR(ZHM3GameStats);
 	DECLARE_UNKNOWN_TYPE_PTR(N0000163D);
-	DECLARE_UNKNOWN_TYPE_PTR(ZGui);
 	DECLARE_UNKNOWN_TYPE_PTR(CGlobalCom);
 	DECLARE_UNKNOWN_TYPE_PTR(ZHM3WeaponUpgradeControl);
 	DECLARE_UNKNOWN_TYPE_PTR(ZHM3CameraEventCameraClass);
@@ -83,7 +83,7 @@ namespace hm3 {
 		char pad_0x0A44[0x4]; //0x0A44
 		ZHM3LevelControl* m_LevelControl; //0x0A48 
 		ZOSD* m_OSD; //0x0A4C 
-		ZGui* m_Gui; //0x0A50 
+		ZGUI* m_Gui; //0x0A50 
 		CIngameMap* m_IngameMap; //0x0A54 
 		char pad_0x0A58[0x4]; //0x0A58
 		CGlobalCom* m_GlobCom; //0x0A5C 

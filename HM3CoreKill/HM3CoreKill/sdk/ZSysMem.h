@@ -14,4 +14,5 @@ Vftable	 Methods	Flags	Type	Hierarchy
 		static void deallocate(void* _ptr);
 	};
 
+	//_DWORD *__thiscall sub_4EED50(void *this, const char *entityName, int entityLocator) <- Allocate ZLIST
 }}

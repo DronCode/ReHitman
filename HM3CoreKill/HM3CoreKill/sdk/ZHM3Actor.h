@@ -319,7 +319,7 @@ namespace hm3 {
 		virtual void Function_0258(); //#258 +408 .rdata:0079673c
 		virtual void Function_0259(); //#259 +40c .rdata:00796740
 		virtual void Function_0260(); //#260 +410 .rdata:00796744
-		virtual void Function_0261(); //#261 +414 .rdata:00796748
+		virtual const char* Function_0261(); //#261 +414 .rdata:00796748
 		virtual void Function_0262(); //#262 +418 .rdata:0079674c
 		virtual void Function_0263(); //#263 +41c .rdata:00796750
 		virtual void Function_0264(); //#264 +420 .rdata:00796754

@@ -493,6 +493,16 @@ namespace ck
 					}
 				}
 			}
+
+			{
+				ImGui::Separator();
+				if (ImGui::Button("Show ingame menu"))
+				{
+					typedef int(__thiscall* showUIMenu_t)(ioi::hm3::ZXMLGUISystem*, const char*, int);
+					showUIMenu_t showUIMenu = (showUIMenu_t)0x00568260;
+					showUIMenu(gameData->m_MenuElements->m_XMLGUISystem, "IngameMenu", 1);
+				}
+			}
 		}
 	}
 

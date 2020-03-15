@@ -2,12 +2,16 @@
 
 #include <cstdint>
 #include <sdk/MathCommon.h>
+#include <sdk/ZGlacierRTTI.h>
+#include <sdk/ZHM3CameraClass.h>
+#include <sdk/ZLinkedListNodeBase.h>
 
 namespace ioi {
 namespace hm3 {
-	class ZHM3Camera
+	class ZHM3Camera : public ZLinkedListNodeBase
 	{
 	public:
+		/// === vftable ===
 		virtual void Function_0000(); //#0 +0 .rdata:0078d99c
 		virtual void Function_0001(); //#1 +4 .rdata:0078d9a0
 		virtual void Function_0002(); //#2 +8 .rdata:0078d9a4
@@ -58,21 +62,25 @@ namespace hm3 {
 		virtual void Function_0047(); //#47 +bc .rdata:0078da58
 		virtual void Function_0048(); //#48 +c0 .rdata:0078da5c
 
-		// sub_4E4300 - recalculate camera factor
-
-		char pad_0x0004[0x30];		//0x0004
-		Vector2 m_CameraSpaceSize;	//0x0034 
-		float m_ZCamOffset;			//0x003C 
-		float m_camZoom;			//0x0040 
-		float N00001B61;			//0x0044 
-		__int32 N00001B62;			//0x0048 
-		float N00001B6D;			//0x004C 
-		float m_fogDist;			//0x0050 (default 30000.0)
-		char pad_0x0054[0x50];		//0x0054
-		float N00001B83;			//0x00A4 
-		char pad_0x00A8[0x10];		//0x00A8
-		float N00001B88;			//0x00B8 
-		char pad_0x00BC[0x10];		//0x00BC
+		/// === members ===
+		
+		char pad_0014[16];					//0x0014
+		ZHM3CameraClass* m_cameraClass;		//0x0024
+		char pad_0028[4];					//0x0028
+		ZGlacierRTTI* m_RTTI;				//0x002C
+		char pad_0030[4];					//0x0030
+		Vector2 m_CameraSpaceSize;			//0x0034
+		float m_ZCamOffset;					//0x003C 
+		float m_camZoom;					//0x0040 
+		float N00001B61;					//0x0044 
+		__int32 N00001B62;					//0x0048 
+		float N00001B6D;					//0x004C 
+		float m_fogDist;					//0x0050 (default 30000.0)
+		char pad_0x0054[0x50];				//0x0054
+		float N00001B83;					//0x00A4 
+		char pad_0x00A8[0x10];				//0x00A8
+		float N00001B88;					//0x00B8 
+		char pad_0x00BC[0x10];				//0x00BC
 	}; //Size=0x009C
 
 

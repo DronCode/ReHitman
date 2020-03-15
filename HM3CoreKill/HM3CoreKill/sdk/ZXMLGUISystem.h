@@ -2,6 +2,9 @@
 
 #include <cstdint>
 #include <sdk/ZLinkedListNodeBase.h>
+#include <sdk/ZWINDOWS.h>
+#include <sdk/ZWINDOW.h>
+#include <sdk/ZGlacierRTTI.h>
 
 namespace ioi { namespace hm3 {
 
@@ -44,7 +47,7 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0033(); //#33 +84 .rdata:007812c8
 		virtual void Function_0034(); //#34 +88 .rdata:007812cc
 		virtual void Function_0035(); //#35 +8c .rdata:007812d0
-		virtual void Function_0036(); //#36 +90 .rdata:007812d4
+		virtual ZWINDOWS* getZWindowsSubsystem(); //#36 +90 .rdata:007812d4
 		virtual void Function_0037(); //#37 +94 .rdata:007812d8
 		virtual void Function_0038(); //#38 +98 .rdata:007812dc
 		virtual void Function_0039(); //#39 +9c .rdata:007812e0
@@ -58,8 +61,17 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0047(); //#47 +bc .rdata:00781300
 		virtual void Function_0048(); //#48 +c0 .rdata:00781304
 		virtual void Function_0049(); //#49 +c4 .rdata:00781308
-		virtual void Function_0050(); //#50 +c8 .rdata:0078130c
+		virtual int Function_0050(); //#50 +c8 .rdata:0078130c
 		virtual void Function_0051(); //#51 +cc .rdata:00781310 
+
+
+		/// === members ===
+		char pad_0014[16]; //0x0014
+		ZWINDOW* m_window; //0x0024
+		char pad_0028[4]; //0x0028
+		ZGlacierRTTI* m_RTTI; //0x002C
+		char pad_0030[2013]; //0x0030
+
 	};
 
 } }

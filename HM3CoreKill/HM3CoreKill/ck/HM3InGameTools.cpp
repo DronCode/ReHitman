@@ -30,6 +30,7 @@
 #include <sdk/ZGameGlobals.h>
 #include <sdk/ZHM3GameData.h>
 #include <sdk/ZEventBuffer.h>
+#include <sdk/ZHM3Camera.h>
 #include <sdk/ZHM3Item.h>
 #include <sdk/ZHM3HmAs.h>
 #include <sdk/REFTAB32.h>
@@ -406,6 +407,40 @@ namespace ck
 			}
 
 			{
+				static float fov = 0.f;
+
+				if (hitman3 && hitman3->m_camera && hitman3->m_camera->m_cameraClass)
+				{
+					static float prevFOV    = 0.f;
+					static float currentFOV = 0.f;
+
+					auto camClass = hitman3->m_camera->m_cameraClass;
+					
+					if (currentFOV != camClass->getFOV())
+					{
+						currentFOV = camClass->getFOV();
+						prevFOV = currentFOV;
+					}
+
+					ImGui::Text("FOV: "); ImGui::SameLine(0.f, 5.f);
+					ImGui::InputFloat(" ", &currentFOV, 0.1f, 0.1f, 10);
+					if (currentFOV != prevFOV)
+					{
+						prevFOV = currentFOV;
+						camClass->setFOV(currentFOV);
+					}
+
+					ImGui::SameLine(0.f, 10.f);
+					if (ImGui::Button("Reset to default"))
+					{
+						camClass->setFOV(67.4f);
+					}
+
+					ImGui::Separator();
+				}				
+			}
+
+			{
 				ImGui::Text("Player position { %.4f; %.4f; %.4f } Level Zone: \"%s\"",
 					hitman3->m_position.x,
 					hitman3->m_position.y,
@@ -501,6 +536,27 @@ namespace ck
 					typedef int(__thiscall* showUIMenu_t)(ioi::hm3::ZXMLGUISystem*, const char*, int);
 					showUIMenu_t showUIMenu = (showUIMenu_t)0x00568260;
 					showUIMenu(gameData->m_MenuElements->m_XMLGUISystem, "IngameMenu", 1);
+				}
+
+				if (ImGui::Button("Get top window"))
+				{
+					typedef int(__thiscall* getTopWindow_t)(ioi::hm3::ZXMLGUISystem*);
+					getTopWindow_t getTopWindow = (getTopWindow_t)0x005665E0;
+					HM3_DEBUG("VAUX: 0x%.8X\n", getTopWindow(gameData->m_MenuElements->m_XMLGUISystem));
+				}
+
+				if (ImGui::Button("Print GUI infos"))
+				{
+					HM3_DEBUG(
+						"Game Data      : 0x%.8x\n"
+						"Menu Elements  : 0x%.8X\n"
+						"XML GUI System : 0x%.8X\n"
+						"ZWINDOWS       : 0x%.8X\n",
+						gameData,
+						gameData->m_MenuElements,
+						gameData->m_MenuElements->m_XMLGUISystem,
+						gameData->m_MenuElements->m_XMLGUISystem->getZWindowsSubsystem()
+					);
 				}
 			}
 		}

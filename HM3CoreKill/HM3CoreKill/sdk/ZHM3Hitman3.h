@@ -6,6 +6,7 @@
 #include <sdk/ZBoxPrimitive.h>
 #include <sdk/CInventory.h>
 #include <sdk/ZHumanBoid.h>
+#include <sdk/ZHM3Camera.h>
 #include <sdk/ZHM3Actor.h>
 #include <sdk/ZHM3Item.h>
 #include <sdk/ZHM3HmAs.h>
@@ -514,7 +515,7 @@ namespace hm3 {
 		char pad_0B44[4]; //0x0B44
 		uint32_t m_group; //0x0B48
 		uint32_t m_timeMultEffectControl; //0x0B4C
-		uint32_t m_camera; //0x0B50
+		ZHM3Camera* m_camera; //0x0B50
 		char pad_0B54[8]; //0x0B54
 		uint32_t m_zMovementGuideToMatPos2; //0x0B5C
 		char pad_0B60[996]; //0x0B60

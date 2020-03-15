@@ -198,6 +198,7 @@
     <ClInclude Include="ck\HM3FreeFileSystemLocatorProxy.h" />
     <ClInclude Include="ck\HM3Function.h" />
     <ClInclude Include="ck\HM3Game.h" />
+    <ClInclude Include="ck\HM3GamepadSupport.h" />
     <ClInclude Include="ck\HM3Hooks.h" />
     <ClInclude Include="ck\HM3InGameTools.h" />
     <ClInclude Include="ck\HM3MemoryProvider.h" />
@@ -231,12 +232,14 @@
     <ClInclude Include="sdk\ResourceCollection.h" />
     <ClInclude Include="sdk\scripting\ZScriptC.h" />
     <ClInclude Include="sdk\ZActionDispatcher.h" />
+    <ClInclude Include="sdk\ZActionManager.h" />
     <ClInclude Include="sdk\ZAnimationInfo.h" />
     <ClInclude Include="sdk\ZBoxPrimitive.h" />
     <ClInclude Include="sdk\ZDirect3DDevice.h" />
     <ClInclude Include="sdk\ZEngineDatabase.h" />
     <ClInclude Include="sdk\ZEntityLocator.h" />
     <ClInclude Include="sdk\ZEventBuffer.h" />
+    <ClInclude Include="sdk\ZGameControlWintel.h" />
     <ClInclude Include="sdk\ZGameFunctions.h" />
     <ClInclude Include="sdk\ZGEOM.h" />
     <ClInclude Include="sdk\ZGeomBuffer.h" />
@@ -275,6 +278,8 @@
     <ClInclude Include="sdk\ZSysInterfaceWintel.h" />
     <ClInclude Include="sdk\ZSysMem.h" />
     <ClInclude Include="sdk\ZCar.h" />
+    <ClInclude Include="sdk\ZWINDOWS.h" />
+    <ClInclude Include="sdk\ZXMLGUISystem.h" />
     <ClInclude Include="third_party\fmt\include\fmt\chrono.h" />
     <ClInclude Include="third_party\fmt\include\fmt\color.h" />
     <ClInclude Include="third_party\fmt\include\fmt\compile.h" />
@@ -312,6 +317,7 @@
     <ClCompile Include="ck\HM3DoorsRegistry.cpp" />
     <ClCompile Include="ck\HM3FreeFileSystemLocatorProxy.cpp" />
     <ClCompile Include="ck\HM3Game.cpp" />
+    <ClCompile Include="ck\HM3GamepadSupport.cpp" />
     <ClCompile Include="ck\HM3Hooks.cpp" />
     <ClCompile Include="ck\HM3InGameTools.cpp" />
     <ClCompile Include="ck\HM3MemoryProvider.cpp" />

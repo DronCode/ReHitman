@@ -38,6 +38,7 @@ namespace HM3Offsets
 	static const FuncAddr_t ZHM3RegisterWindowClassExA_Func				 = 0x00453E68;
 	static const FuncAddr_t ZDirect3DDevice_ConstructorFunc				 = 0x0049091C;
 	static const FuncAddr_t ZWintelMouse_ContructorFunc					 = 0x0045007C;
+	static const FuncAddr_t ZWintelGameController_ConstructorFunc		 = 0x00450363;
 	static const FuncAddr_t Glacier_OriginalWNDPROC						 = 0x004513E0;
 
 	static const FuncAddr_t HM3_BuildString								 = 0x007562C0;

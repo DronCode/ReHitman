@@ -615,6 +615,8 @@ namespace ck
 
 									currentActor->sendEvent(removeItemEv, itemId, 0);
 									hitman3->sendEvent(addItemEv, reinterpret_cast<int*>(itemId), 0);
+
+									HM3_DEBUG("AddItemToInventoryEv: 0x%.8X\n", addItemEv);
 								}
 
 								ImGui::SameLine(0.f, 5.f);

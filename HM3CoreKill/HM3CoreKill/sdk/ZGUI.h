@@ -94,7 +94,7 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0084(); //#84 +150 .rdata:007a1ba4
 		virtual void Function_0085(); //#85 +154 .rdata:007a1ba8
 		virtual void Function_0086(); //#86 +158 .rdata:007a1bac
-		virtual void Function_0087(); //#87 +15c .rdata:007a1bb0
+		virtual void Function_0087(); //#87 +15c .rdata:007a1bb0 [update]
 		virtual void Function_0088(); //#88 +160 .rdata:007a1bb4
 		virtual void Function_0089(); //#89 +164 .rdata:007a1bb8
 		virtual void Function_0090(); //#90 +168 .rdata:007a1bbc

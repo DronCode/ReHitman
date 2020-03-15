@@ -14,7 +14,7 @@ namespace ck {
 		if (!sequence)
 			return;
 
-		m_registry.insert(sequence);
+		m_registry.push_back(sequence);
 	}
 	
 	void HM3CutSequencesRegistry::reset()
@@ -28,5 +28,10 @@ namespace ck {
 		{
 			pred(sequence);
 		}
+	}
+
+	const std::list<ioi::hm3::CCutSequence*>& HM3CutSequencesRegistry::getList() const
+	{
+		return m_registry;
 	}
 }

@@ -45,6 +45,8 @@ void __stdcall ZDirect3DDevice_OnDeviceReady(ioi::hm3::ZDirect3DDevice* device);
 
 void __stdcall OnZMouseWintelCreated(DWORD device);
 
+void __stdcall OnZGameControllerWintelCreated(DWORD device);
+
 void __stdcall ZHM3_OnAnimationLoaded(ioi::hm3::ZAnimationInfo* animationInstance);
 
 void __stdcall CMapObject_OnCreate(ioi::hm3::CMapObject* instance);

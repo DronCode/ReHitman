@@ -382,6 +382,21 @@
     <ClInclude Include="ck\HM3CutSequencesRegistry.h">
       <Filter>ck</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\ZGameControlWintel.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3GamepadSupport.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZActionManager.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZXMLGUISystem.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZWINDOWS.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">
@@ -482,6 +497,9 @@
       <Filter>third_party\fmt\src</Filter>
     </ClCompile>
     <ClCompile Include="ck\HM3CutSequencesRegistry.cpp">
+      <Filter>ck</Filter>
+    </ClCompile>
+    <ClCompile Include="ck\HM3GamepadSupport.cpp">
       <Filter>ck</Filter>
     </ClCompile>
   </ItemGroup>

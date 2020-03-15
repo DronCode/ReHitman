@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <sdk/ZMouseWintel.h>
 #include <sdk/ZKeyboardWintel.h>
+#include <sdk/ZGameControlWintel.h>
 
 namespace ioi { namespace hm3 {
 
@@ -11,9 +12,10 @@ namespace ioi { namespace hm3 {
 	class ZSysInputWintel
 	{
 	public:
-		char pad_0004[12]; //0x0004
-		ZMouseWintel* m_mouseDevice; //0x0010
-		ZKeyboardWintel* m_keyboardDevice; //0x0014
+		char pad_0004[12];							//0x0004
+		ZMouseWintel* m_mouseDevice;				//0x0010
+		ZKeyboardWintel* m_keyboardDevice;			//0x0014
+		ZGameControlWintel* m_gameControllerDevice; //0x0018
 
 		virtual void Function_0000(); //#0 +0 .rdata:0075f75c
 		virtual void Function_0001(); //#1 +4 .rdata:0075f760
@@ -22,7 +24,7 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0004(); //#4 +10 .rdata:0075f76c
 		virtual void Function_0005(); //#5 +14 .rdata:0075f770
 		virtual void Function_0006(); //#6 +18 .rdata:0075f774
-		virtual void Function_0007(); //#7 +1c .rdata:0075f778
+		virtual void Function_0007(); //#7 +1c .rdata:0075f778 [ask mouse device]
 		virtual void Function_0008(); //#8 +20 .rdata:0075f77c
 		virtual void Function_0009(); //#9 +24 .rdata:0075f780
 		virtual void Function_0010(); //#10 +28 .rdata:0075f784

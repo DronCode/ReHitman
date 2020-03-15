@@ -100,7 +100,7 @@ namespace hm3 {
 		virtual void Function_0070(); // [0070] +0118 [.rdata at 0x00790FA4]
 		virtual void Function_0071(); // [0071] +011C [.rdata at 0x00790FA8]
 		virtual void sendEvent(std::uintptr_t evId, int* unk1, int unk2); // [0072] +0120 [.rdata at 0x00790FAC]
-		virtual void Function_0073(); // [0073] +0124 [.rdata at 0x00790FB0]
+		virtual void sendEventWithNonSTDOBJ(int a1, std::intptr_t ev, int a3); // [0073] +0124 [.rdata at 0x00790FB0]
 		virtual void sendEventWithSTDOBJ(ZSTDOBJ* stdObj, std::intptr_t ev, int* pResult); // [0074] +0128 [.rdata at 0x00790FB4]
 		virtual void Function_0075(); // [0075] +012C [.rdata at 0x00790FB8]
 		virtual void Function_0076(); // [0076] +0130 [.rdata at 0x00790FBC]

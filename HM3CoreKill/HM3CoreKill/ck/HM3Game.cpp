@@ -192,15 +192,31 @@ void HM3Game::setupD3DDeviceCreationHook()
 	HM3_DEBUG("[Setup ZDirect3DDevice hook]\n");
 
 	HM3Function::hookFunction<void(__stdcall*)(DWORD), 5>(
-		HM3_PROCESS_NAME, 
+		HM3_PROCESS_NAME,
 		HM3Offsets::ZWintelMouse_ContructorFunc,
-		(DWORD)OnZMouseWintelCreated, 
+		(DWORD)OnZMouseWintelCreated,
 		// pre
 		{
 			x86_pushad,
 			x86_pushfd,
 			x86_push_eax
-		}, 
+		},
+		// post
+		{
+			x86_popfd,
+			x86_popad
+		});
+
+	HM3Function::hookFunction<void(__stdcall*)(DWORD), 5>(
+		HM3_PROCESS_NAME,
+		HM3Offsets::ZWintelGameController_ConstructorFunc,
+		(DWORD)OnZGameControllerWintelCreated,
+		// pre
+		{
+			x86_pushad,
+			x86_pushfd,
+			x86_push_eax
+		},
 		// post
 		{
 			x86_popfd,

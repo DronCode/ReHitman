@@ -2,7 +2,7 @@
 // Microsoft Visual C++ generated include file.
 // Used by Resource.rc
 
-// ICON
+//EXE ICON
 #define IDI_ICON1                       101
 
 // Next default values for new objects

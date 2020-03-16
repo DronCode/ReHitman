@@ -5,10 +5,13 @@
 #include <sdk/ZAnimationInfo.h>
 #include <sdk/ZBoxPrimitive.h>
 #include <sdk/CInventory.h>
+#include <sdk/ZHumanBoid.h>
+#include <sdk/ZHM3Camera.h>
 #include <sdk/ZHM3Actor.h>
 #include <sdk/ZHM3Item.h>
 #include <sdk/ZHM3HmAs.h>
 #include <sdk/ZIKHAND.h>
+
 
 namespace ioi {
 namespace hm3 {
@@ -89,7 +92,7 @@ namespace hm3 {
 		virtual void Function_0061(); // [0061] +00F4 [.rdata at 0x00790F80]
 		virtual void Function_0062(); // [0062] +00F8 [.rdata at 0x00790F84]
 		virtual void Function_0063(); // [0063] +00FC [.rdata at 0x00790F88]
-		virtual void Function_0064(); // [0064] +0100 [.rdata at 0x00790F8C]
+		virtual int  getComponent(const char* componentName); // [0064] +0100 [.rdata at 0x00790F8C]
 		virtual void Function_0065(); // [0065] +0104 [.rdata at 0x00790F90]
 		virtual void Function_0066(); // [0066] +0108 [.rdata at 0x00790F94]
 		virtual void Function_0067(); // [0067] +010C [.rdata at 0x00790F98]
@@ -98,7 +101,7 @@ namespace hm3 {
 		virtual void Function_0070(); // [0070] +0118 [.rdata at 0x00790FA4]
 		virtual void Function_0071(); // [0071] +011C [.rdata at 0x00790FA8]
 		virtual void sendEvent(std::uintptr_t evId, int* unk1, int unk2); // [0072] +0120 [.rdata at 0x00790FAC]
-		virtual void Function_0073(); // [0073] +0124 [.rdata at 0x00790FB0]
+		virtual void sendEventWithNonSTDOBJ(int a1, std::intptr_t ev, int a3); // [0073] +0124 [.rdata at 0x00790FB0]
 		virtual void sendEventWithSTDOBJ(ZSTDOBJ* stdObj, std::intptr_t ev, int* pResult); // [0074] +0128 [.rdata at 0x00790FB4]
 		virtual void Function_0075(); // [0075] +012C [.rdata at 0x00790FB8]
 		virtual void Function_0076(); // [0076] +0130 [.rdata at 0x00790FBC]
@@ -443,8 +446,7 @@ namespace hm3 {
 		char pad_0004[376]; //0x0004
 		uint32_t m_lnkActionQueue; //0x017C
 		char pad_0180[612]; //0x0180
-		uint32_t m_humanBoid0; //0x03E4
-		
+		ZHumanBoid* m_humanBoid0; //0x03E4
 		int32_t m_pad0; //+3E8
 		int32_t m_pad1; //+3EC
 		int32_t m_pad2; //+3F0
@@ -513,7 +515,7 @@ namespace hm3 {
 		char pad_0B44[4]; //0x0B44
 		uint32_t m_group; //0x0B48
 		uint32_t m_timeMultEffectControl; //0x0B4C
-		uint32_t m_camera; //0x0B50
+		ZHM3Camera* m_camera; //0x0B50
 		char pad_0B54[8]; //0x0B54
 		uint32_t m_zMovementGuideToMatPos2; //0x0B5C
 		char pad_0B60[996]; //0x0B60

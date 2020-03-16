@@ -188,6 +188,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ck\Features.h" />
+    <ClInclude Include="ck\HM3CutSequencesRegistry.h" />
     <ClInclude Include="ck\HM3DoorsRegistry.h" />
     <ClInclude Include="ck\HM3ActionFactory.h" />
     <ClInclude Include="ck\HM3AnimationRegistry.h" />
@@ -197,6 +198,7 @@
     <ClInclude Include="ck\HM3FreeFileSystemLocatorProxy.h" />
     <ClInclude Include="ck\HM3Function.h" />
     <ClInclude Include="ck\HM3Game.h" />
+    <ClInclude Include="ck\HM3GamepadSupport.h" />
     <ClInclude Include="ck\HM3Hooks.h" />
     <ClInclude Include="ck\HM3InGameTools.h" />
     <ClInclude Include="ck\HM3MemoryProvider.h" />
@@ -209,6 +211,7 @@
     <ClInclude Include="sdk\actions\ZHitmanActionPickLock.h" />
     <ClInclude Include="sdk\actions\ZHM3ActorPunch.h" />
     <ClInclude Include="sdk\actions\ZLnkAction.h" />
+    <ClInclude Include="sdk\CCutSequence.h" />
     <ClInclude Include="sdk\CDoor.h" />
     <ClInclude Include="sdk\CIngameMap.h" />
     <ClInclude Include="sdk\CInventory.h" />
@@ -229,12 +232,14 @@
     <ClInclude Include="sdk\ResourceCollection.h" />
     <ClInclude Include="sdk\scripting\ZScriptC.h" />
     <ClInclude Include="sdk\ZActionDispatcher.h" />
+    <ClInclude Include="sdk\ZActionManager.h" />
     <ClInclude Include="sdk\ZAnimationInfo.h" />
     <ClInclude Include="sdk\ZBoxPrimitive.h" />
     <ClInclude Include="sdk\ZDirect3DDevice.h" />
     <ClInclude Include="sdk\ZEngineDatabase.h" />
     <ClInclude Include="sdk\ZEntityLocator.h" />
     <ClInclude Include="sdk\ZEventBuffer.h" />
+    <ClInclude Include="sdk\ZGameControlWintel.h" />
     <ClInclude Include="sdk\ZGameFunctions.h" />
     <ClInclude Include="sdk\ZGEOM.h" />
     <ClInclude Include="sdk\ZGeomBuffer.h" />
@@ -257,19 +262,28 @@
     <ClInclude Include="sdk\ZHM3ItemTemplateAmmo.h" />
     <ClInclude Include="sdk\ZHM3LevelControl.h" />
     <ClInclude Include="sdk\ZHM3MenuElements.h" />
+    <ClInclude Include="sdk\ZHM3MenuFactory.h" />
     <ClInclude Include="sdk\ZHM3WeaponItem.h" />
+    <ClInclude Include="sdk\ZHumanBoid.h" />
     <ClInclude Include="sdk\ZIKHAND.h" />
     <ClInclude Include="sdk\ZKeyboardWintel.h" />
     <ClInclude Include="sdk\ZLinkedListNodeBase.h" />
     <ClInclude Include="sdk\ZLNKWHANDS.h" />
     <ClInclude Include="sdk\ZMouseWintel.h" />
+    <ClInclude Include="sdk\ZOnlineElements.h" />
     <ClInclude Include="sdk\ZOSD.h" />
+    <ClInclude Include="sdk\ZPathFollower.h" />
     <ClInclude Include="sdk\ZRenderWintelD3D.h" />
+    <ClInclude Include="sdk\ZStandardMenuFactory.h" />
     <ClInclude Include="sdk\ZSTD.h" />
     <ClInclude Include="sdk\ZSysFile.h" />
     <ClInclude Include="sdk\ZSysInputWintel.h" />
     <ClInclude Include="sdk\ZSysInterfaceWintel.h" />
     <ClInclude Include="sdk\ZSysMem.h" />
+    <ClInclude Include="sdk\ZCar.h" />
+    <ClInclude Include="sdk\ZWINDOW.h" />
+    <ClInclude Include="sdk\ZWINDOWS.h" />
+    <ClInclude Include="sdk\ZXMLGUISystem.h" />
     <ClInclude Include="third_party\fmt\include\fmt\chrono.h" />
     <ClInclude Include="third_party\fmt\include\fmt\color.h" />
     <ClInclude Include="third_party\fmt\include\fmt\compile.h" />
@@ -301,11 +315,13 @@
     <ClCompile Include="ck\HM3ActionFactory.cpp" />
     <ClCompile Include="ck\HM3AnimationRegistry.cpp" />
     <ClCompile Include="ck\HM3CrashHandler.cpp" />
+    <ClCompile Include="ck\HM3CutSequencesRegistry.cpp" />
     <ClCompile Include="ck\HM3DebugConsole.cpp" />
     <ClCompile Include="ck\HM3Direct3D.cpp" />
     <ClCompile Include="ck\HM3DoorsRegistry.cpp" />
     <ClCompile Include="ck\HM3FreeFileSystemLocatorProxy.cpp" />
     <ClCompile Include="ck\HM3Game.cpp" />
+    <ClCompile Include="ck\HM3GamepadSupport.cpp" />
     <ClCompile Include="ck\HM3Hooks.cpp" />
     <ClCompile Include="ck\HM3InGameTools.cpp" />
     <ClCompile Include="ck\HM3MemoryProvider.cpp" />

@@ -4,6 +4,7 @@
 #include <imgui_impl_dx9.h>
 #include <imgui_impl_win32.h>
 
+#include <ck/HM3CutSequencesRegistry.h>
 #include <ck/HM3AnimationRegistry.h>
 #include <ck/HM3DoorsRegistry.h>
 #include <ck/HM3ActionFactory.h>
@@ -23,15 +24,19 @@
 #include <sdk/ZEngineDatabase.h>
 #include <sdk/ZHM3CameraClass.h>
 #include <sdk/ZAnimationInfo.h>
+#include <sdk/ZPathFollower.h>
 #include <sdk/CTelePortList.h>
 #include <sdk/ZMouseWintel.h>
 #include <sdk/ZGameGlobals.h>
 #include <sdk/ZHM3GameData.h>
 #include <sdk/ZEventBuffer.h>
+#include <sdk/ZHM3Camera.h>
 #include <sdk/ZHM3Item.h>
+#include <sdk/ZHM3HmAs.h>
 #include <sdk/REFTAB32.h>
 #include <sdk/CDoor.h>
 #include <sdk/ZOSD.h>
+#include <sdk/ZSTD.h>
 
 #include <set>
 
@@ -182,12 +187,14 @@ namespace ck
 	void HM3InGameTools::drawTopMenuBar()
 	{
 		static bool showActorsViewer = false;
+		static bool showInventoryEditor = false;
 
 		if (ImGui::BeginMainMenuBar())
 		{
 			if (ImGui::BeginMenu("Tools"))
 			{
 				ImGui::MenuItem("Actors viewer", nullptr, &showActorsViewer);
+				ImGui::MenuItem("Inventory editor", nullptr, &showInventoryEditor);
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();
@@ -195,6 +202,7 @@ namespace ck
 
 
 		if (showActorsViewer) showDebugActorsWindow(&showActorsViewer);
+		if (showInventoryEditor) showInventoryEditorWindow(&showInventoryEditor);
 	}
 
 	void HM3InGameTools::drawDebugMenu()
@@ -258,6 +266,40 @@ namespace ck
 				else
 					noiseLevelColor = ImVec4(1.f, 0.f, 0.f, 1.f);
 				ImGui::TextColored(noiseLevelColor, "%.3f", osd->m_realNosieLevel);
+			}
+
+			{ //FOV
+				static float fov = 0.f;
+
+				if (hitman3 && hitman3->m_camera && hitman3->m_camera->m_cameraClass)
+				{
+					static float prevFOV = 0.f;
+					static float currentFOV = 0.f;
+
+					auto camClass = hitman3->m_camera->m_cameraClass;
+
+					if (float _fov = camClass->getFOV(); currentFOV != _fov)
+					{
+						currentFOV = _fov;
+						prevFOV = currentFOV;
+					}
+
+					ImGui::Text("FOV: "); ImGui::SameLine(0.f, 5.f);
+					ImGui::InputFloat(" ", &currentFOV, 0.1f, 0.1f, 10);
+					if (currentFOV != prevFOV)
+					{
+						prevFOV = currentFOV;
+						camClass->setFOV(currentFOV);
+					}
+
+					ImGui::SameLine(0.f, 10.f);
+					if (ImGui::Button("Reset to default"))
+					{
+						camClass->setFOV(67.4f);
+					}
+
+					ImGui::Separator();
+				}
 			}
 
 			{ //Teleport
@@ -392,7 +434,7 @@ namespace ck
 
 		if (ImGui::CollapsingHeader("Glacier | Level info"))
 		{
-			if (!levelControl)
+			if (!hitman3 || !levelControl)
 			{
 				ImGui::Text("No active level");
 				return;
@@ -457,6 +499,66 @@ namespace ck
 				ImGui::Text("Player's inventory: ");
 				drawInventory(hitman3->m_inventory);
 			}
+
+			{
+				ImGui::Separator();
+
+				std::string_view levelControlName = gameData->m_LevelControl->getTypeName();
+
+				if (auto foundIt = levelControlName.find("M13") != std::string_view::npos)
+				{
+					if (ImGui::Button("Teleport podium to out of room"))
+					{
+						auto ccom = ioi::hm3::getCCOMObjectFromEngineDB(engineDB);
+						if (!ccom)
+							return;
+
+						std::uintptr_t table = 0;
+
+						ccom->getSTDOBJEntityIdByName("M13Table", &table);
+
+						if (!table)
+							return;
+
+						auto tableSTD = ioi::hm3::getSTDOBJById(table);
+						if (!tableSTD)
+							return;
+
+						tableSTD->m_entityLocation->position.x = -2600.f;
+					}
+				}
+			}
+
+			{
+				ImGui::Separator();
+				if (ImGui::Button("Show ingame menu"))
+				{
+					typedef int(__thiscall* showUIMenu_t)(ioi::hm3::ZXMLGUISystem*, const char*, int);
+					showUIMenu_t showUIMenu = (showUIMenu_t)0x00568260;
+					showUIMenu(gameData->m_MenuElements->m_XMLGUISystem, "IngameMenu", 1);
+				}
+
+				if (ImGui::Button("Get top window"))
+				{
+					typedef int(__thiscall* getTopWindow_t)(ioi::hm3::ZXMLGUISystem*);
+					getTopWindow_t getTopWindow = (getTopWindow_t)0x005665E0;
+					HM3_DEBUG("VAUX: 0x%.8X\n", getTopWindow(gameData->m_MenuElements->m_XMLGUISystem));
+				}
+
+				if (ImGui::Button("Print GUI infos"))
+				{
+					HM3_DEBUG(
+						"Game Data      : 0x%.8x\n"
+						"Menu Elements  : 0x%.8X\n"
+						"XML GUI System : 0x%.8X\n"
+						"ZWINDOWS       : 0x%.8X\n",
+						gameData,
+						gameData->m_MenuElements,
+						gameData->m_MenuElements->m_XMLGUISystem,
+						gameData->m_MenuElements->m_XMLGUISystem->getZWindowsSubsystem()
+					);
+				}
+			}
 		}
 	}
 
@@ -505,6 +607,113 @@ namespace ck
 		ImGui::End();
 	}
 
+	void HM3InGameTools::showInventoryEditorWindow(bool* pOpen)
+	{
+		auto sys = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
+		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
+		if (!gameData || !gameData->m_LevelControl)
+			return;
+
+		auto hitman3 = gameData->m_Hitman3;
+		auto engineDB = sys->m_engineDataBase;
+
+		ImGui::SetNextWindowSize(ImVec2(750, 400), ImGuiCond_FirstUseEver);
+		if (ImGui::Begin("Inventory editor", pOpen))
+		{
+			ImGui::Separator();
+			// left
+			static int selected = 0;
+			ImGui::BeginChild("left pane", ImVec2(150, 0), true);
+			for (int i = 0; i < gameData->m_ActorsInPoolCount; i++)
+			{
+				char label[128];
+				sprintf(label, "Actor #%.2d", i + 1);
+				if (ImGui::Selectable(label, selected == i))
+					selected = i;
+			}
+			ImGui::EndChild();
+			ImGui::SameLine();
+
+			// right
+			if (selected >= 0)
+			{
+				ioi::hm3::ZHM3Actor* currentActor = gameData->m_ActorsPool[selected];
+
+				ImGui::BeginGroup();
+				ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); // Leave room for 1 line below us
+
+				ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "INVENTORY:");
+				ImGui::Separator();
+
+				auto inventory = reinterpret_cast<ioi::hm3::CInventory*>(currentActor->getComponent("Inventory"));
+				if (inventory)
+				{
+					ioi::REFTAB32* inventoryREFTAB32 = inventory->getREFTAB32();
+
+					if (inventoryREFTAB32)
+					{
+						if (inventoryREFTAB32->m_itemsCount == 0)
+						{
+							ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), " (Empty) ");
+						}
+						else {
+							for (int i = 0; i < inventoryREFTAB32->m_itemsCount; i++)
+							{
+								std::intptr_t itemId = *ioi::get<std::intptr_t>(inventoryREFTAB32, i);
+								ioi::hm3::ZHM3Item* pItem = ioi::hm3::ZHM3Item::findItemByID(itemId);
+								if (!pItem || !pItem->m_entityLocator)
+								{
+									continue;
+								}
+
+								auto itemTemplate = pItem->getItemTemplate();
+								ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "[0x%.8X]", pItem); ImGui::SameLine(0.f, 4.f);
+								ImGui::Text("#%.3d %s (%.4X)", i, pItem->m_entityLocator->entityName, itemId);
+
+								auto lHand = currentActor->getHand(ioi::hm3::HandType::LeftHand);
+								auto rHand = currentActor->getHand(ioi::hm3::HandType::RightHand);
+
+								ImGui::SameLine(0.f, 5.f);
+								if (ImGui::Button("TAKE"))
+								{
+									auto addItemEv = engineDB->getEvent("MSG_ADDITEMTOINVENTORY", 0, __FILE__, 0);
+									auto removeItemEv = engineDB->getEvent("MSG_REMOVEITEMFROMINVENTORY", 0, __FILE__, 0);
+
+									currentActor->sendEvent(removeItemEv, itemId, 0);
+									hitman3->sendEvent(addItemEv, reinterpret_cast<int*>(itemId), 0);
+
+									HM3_DEBUG("AddItemToInventoryEv: 0x%.8X\n", addItemEv);
+								}
+
+								ImGui::SameLine(0.f, 5.f);
+								if (ImGui::Button("REMOVE"))
+								{
+									auto removeItemEv = engineDB->getEvent("MSG_REMOVEITEMFROMINVENTORY", 0, __FILE__, 0);
+
+									currentActor->sendEvent(removeItemEv, itemId, 0);
+								}
+							}
+						}
+					}
+					else
+					{
+						ImGui::SameLine(0.f, 3.f);
+						ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
+					}
+				}
+				else {
+					ImGui::SameLine(0.f, 3.f);
+					ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
+				}
+				
+
+				ImGui::EndChild();
+				ImGui::EndGroup();
+			}
+		}
+		ImGui::End();
+	}
+
 	void HM3InGameTools::drawActorInfo(ioi::hm3::ZHM3Actor* currentActor)
 	{
 		auto sys = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
@@ -528,6 +737,54 @@ namespace ck
 
 				ImGui::Text("Location pointer at 0x%.8X", currentActor->ActorInformation->location);
 				ImGui::Text("Position:"); ImGui::SameLine(0.f, 4.f); ImGui::InputFloat3("", actorPosition);
+
+				{
+					if (auto boid = currentActor->m_boid; boid)
+					{
+						using BoidState = ioi::hm3::BoidState;
+
+						ImGui::Separator();
+						ImGui::Text("Human boid info (0x%.8X)", currentActor->m_boid);
+						ImGui::Spacing();
+						ImGui::Text("Boid locations : {%.4f; %.4f; %.4f} | {%.4f; %.4f; %.4f}", boid->m_pos.x, boid->m_pos.y, boid->m_pos.z, boid->m_newPos.x, boid->m_newPos.y, boid->m_newPos.z);
+						ImGui::Text("Movement speed : %.4f", boid->m_speed); 
+						
+						ImGui::Text("Boid state     : "); ImGui::SameLine(0.f, 0.f);
+						switch (boid->m_boidState)
+						{
+						case BoidState::Moving:
+							ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "MOVE TO POINT");
+							break;
+						case BoidState::Staying:
+							ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "STAY AT POSITION");
+							break;
+						case BoidState::ParentActorDestroyed:
+							ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "ACTOR DEAD");
+							break;
+						case BoidState::Sitting:
+							ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "SITTING");
+							break;
+						default:
+							ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "UNKNOWN STATE (%d)", boid->m_boidState);
+							break;
+						}
+
+						static float newBoidPosition[] = { 0.f, 0.f, 0.f, 0.f };
+
+						ImGui::Text("Teleport boid to "); ImGui::SameLine(0.f, 5.f);
+						ImGui::InputFloat3(" ", newBoidPosition); ImGui::SameLine(0.f, 5.f);
+
+						if (ImGui::Button("Teleport"))
+						{
+							boid->setPosition(newBoidPosition);
+						}
+					}
+					else
+					{
+						ImGui::SameLine(0.f, 0.5f);
+						ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "NOT AVAILABLE");
+					}
+				}
 
 				ImGui::Text("Change actor status: "); ImGui::SameLine(0.f, 0.5f);
 				{
@@ -563,6 +820,53 @@ namespace ck
 					{
 						ImGui::SameLine(0.f, 5.f);
 						ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
+					}
+				}
+
+				{
+					ioi::hm3::ZPathFollower* pathFollowerComponent = reinterpret_cast<ioi::hm3::ZPathFollower*>(currentActor->getComponent("PathFollower"));
+					
+					if (pathFollowerComponent)
+					{
+						ImGui::Separator();
+						ImGui::Text("Path follower (0x%.8X | %s):", pathFollowerComponent, (pathFollowerComponent ? pathFollowerComponent->getTypeName() : "Unknown"));
+
+						int totalPaths = pathFollowerComponent->m_reftab.getCapacity();
+						ImGui::Text("Path nodes count : %.4d", totalPaths);
+
+						for (int i = 0; i < totalPaths; i++)
+						{
+							ioi::ZLIST* pointsList = reinterpret_cast<ioi::ZLIST*>(ioi::hm3::getSTDOBJById(pathFollowerComponent->m_reftab.at(i))); // we know that path can contains only ZLIST as internal data representation
+							if (pointsList)
+							{
+								int pathPointsCount = pointsList->m_reftab->getCapacity();
+								ImGui::Text("[%.4d] Path at 0x%.8X (%d points)", i, pointsList, pathPointsCount);
+								/*ImGui::SameLine(0.f, 5.f);
+								if (ImGui::Button("Follow"))
+								{
+									using FollowPath_t = int(__thiscall*)(ioi::hm3::ZPathFollower*, int);
+									FollowPath_t FollowPath = (FollowPath_t)0x00654380;
+									FollowPath(pathFollowerComponent, i);
+									
+									currentActor->m_boid->setFloat_8(100.f);
+									currentActor->m_boid->m_boidState = ioi::hm3::BoidState::Moving;
+									pathFollowerComponent->Function_0014();
+								}*/
+
+								for (int pointIndex = 0; pointIndex < pathPointsCount; pointIndex++)
+								{
+									auto entity = ioi::hm3::getSTDOBJById(pointsList->m_reftab->at(pointIndex));
+									auto locator = entity->m_entityLocation;
+									
+									ImGui::Text("    [%.4d] Point %s (#%.4d) at {%.4f; %.4f; %.4f}", i, locator->entityName, pointIndex, locator->position.x, locator->position.y, locator->position.z);
+								}
+								
+							}
+							else
+							{
+								ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "[%.4d] BAD POINTS LIST", i);
+							}
+						}
 					}
 				}
 
@@ -709,7 +1013,12 @@ namespace ck
 
 	void HM3InGameTools::drawInventory(ioi::hm3::CInventory* inventory)
 	{
+		auto sys = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
+		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
+		HM3_ASSERT(gameData != nullptr, "GameData must be valid here!");
+
 		ioi::REFTAB32* inventoryREFTAB32 = inventory->getREFTAB32();
+		
 		if (inventoryREFTAB32)
 		{
 			if (inventoryREFTAB32->m_itemsCount == 0)

@@ -20,15 +20,10 @@ Executable String:
 
 	blood-build3-20060616-26123
 
-Installation Instructions.
+FAQ
 ---------------
- * Ensure you meet [Game Build Information](https://github.com/DronCode/ReHitman#game-build-information)
- * Place the pre-compiled files into the "Hitman: Blood Money" installation folder.
- * Run Launcher.exe
- 
-Usage.
----------------
- * Press F3 to launch the ReHitman Debug Menu
+[Installation Instructions.](https://github.com/DronCode/ReHitman/wiki/ReHitman_Installation-Instructions)
+[Usage.](https://github.com/DronCode/ReHitman/wiki/ReHitman_Usage)
 
 For developers
 ===============

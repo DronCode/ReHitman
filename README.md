@@ -22,7 +22,7 @@ Executable String:
 
 Installation Instructions.
 ---------------
- * Ensure you meet (https://github.com/DronCode/ReHitman#game-build-information)[Game Build Information]
+ * Ensure you meet (Game Build Information)[https://github.com/DronCode/ReHitman#game-build-information]
  * Place the pre-compiled files into the "Hitman: Blood Money" installation folder.
  * Run Launcher.exe
  

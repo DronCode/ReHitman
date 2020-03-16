@@ -26,7 +26,7 @@ Installation Instructions.
  * Place the pre-compiled files into the "Hitman: Blood Money" installation folder.
  * Run Launcher.exe
  
-RunTime Instructions.
+Usage.
 ---------------
  * Press F3 to launch the ReHitman Debug Menu
 

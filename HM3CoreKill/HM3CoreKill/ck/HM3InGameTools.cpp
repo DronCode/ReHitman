@@ -268,6 +268,40 @@ namespace ck
 				ImGui::TextColored(noiseLevelColor, "%.3f", osd->m_realNosieLevel);
 			}
 
+			{ //FOV
+				static float fov = 0.f;
+
+				if (hitman3 && hitman3->m_camera && hitman3->m_camera->m_cameraClass)
+				{
+					static float prevFOV = 0.f;
+					static float currentFOV = 0.f;
+
+					auto camClass = hitman3->m_camera->m_cameraClass;
+
+					if (float _fov = camClass->getFOV(); currentFOV != _fov)
+					{
+						currentFOV = _fov;
+						prevFOV = currentFOV;
+					}
+
+					ImGui::Text("FOV: "); ImGui::SameLine(0.f, 5.f);
+					ImGui::InputFloat(" ", &currentFOV, 0.1f, 0.1f, 10);
+					if (currentFOV != prevFOV)
+					{
+						prevFOV = currentFOV;
+						camClass->setFOV(currentFOV);
+					}
+
+					ImGui::SameLine(0.f, 10.f);
+					if (ImGui::Button("Reset to default"))
+					{
+						camClass->setFOV(67.4f);
+					}
+
+					ImGui::Separator();
+				}
+			}
+
 			{ //Teleport
 				static float newActorPosition[4] = { 0.f, 0.f, 0.f, 0.f };
 				float actorTransform[16] = { 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f };
@@ -400,44 +434,10 @@ namespace ck
 
 		if (ImGui::CollapsingHeader("Glacier | Level info"))
 		{
-			if (!levelControl)
+			if (!hitman3 || !levelControl)
 			{
 				ImGui::Text("No active level");
 				return;
-			}
-
-			{
-				static float fov = 0.f;
-
-				if (hitman3 && hitman3->m_camera && hitman3->m_camera->m_cameraClass)
-				{
-					static float prevFOV    = 0.f;
-					static float currentFOV = 0.f;
-
-					auto camClass = hitman3->m_camera->m_cameraClass;
-					
-					if (currentFOV != camClass->getFOV())
-					{
-						currentFOV = camClass->getFOV();
-						prevFOV = currentFOV;
-					}
-
-					ImGui::Text("FOV: "); ImGui::SameLine(0.f, 5.f);
-					ImGui::InputFloat(" ", &currentFOV, 0.1f, 0.1f, 10);
-					if (currentFOV != prevFOV)
-					{
-						prevFOV = currentFOV;
-						camClass->setFOV(currentFOV);
-					}
-
-					ImGui::SameLine(0.f, 10.f);
-					if (ImGui::Button("Reset to default"))
-					{
-						camClass->setFOV(67.4f);
-					}
-
-					ImGui::Separator();
-				}				
 			}
 
 			{

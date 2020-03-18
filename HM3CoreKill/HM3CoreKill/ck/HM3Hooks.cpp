@@ -8,9 +8,12 @@
 #include <ck/HM3Offsets.h>
 #include <ck/HM3AnimationRegistry.h>
 #include <ck/HM3DoorsRegistry.h>
+#include <ck/HM3CutSequencesRegistry.h>
 #include <ck/HM3FreeFileSystemLocatorProxy.h>
+#include <ck/HM3GamepadSupport.h>
 
 #include <sdk/ZMouseWintel.h>
+#include <sdk/ZGameControlWintel.h>
 #include <sdk/ZSysInputWintel.h>
 #include <sdk/actions/ZLnkAction.h>
 #include <sdk/ZHM3Hitman3.h>
@@ -70,6 +73,7 @@ HWND __stdcall CreateWindowExA_Hooked(
 int __stdcall ZHM3Player_DoesPlayerAcceptAnyDamage(void* pThis)
 {
 	//HM3_DEBUG("ZHM3Player_DoesPlayerAcceptAnyDamage| ZHitman3 vftable instance at 0x%X", pThis);
+	ck::HM3GamepadSupport::vibrate();
 	return static_cast<int>(HM3Game::getInstance().GetPlayer()->isDoesAcceptDamage());
 }
 
@@ -96,6 +100,7 @@ void __stdcall ZPlayer_Destructor(DWORD instance)
 	// Free session base data
 	ck::HM3AnimationRegistry::getRegistry().reset();
 	ck::HM3DoorsRegistry::getRegistry().reset();
+	ck::HM3CutSequencesRegistry::getRegistry().reset();
 }
 
 void __stdcall ZDirect3DDevice_OnDeviceReady(ioi::hm3::ZDirect3DDevice* device)
@@ -110,7 +115,8 @@ void __stdcall ZDirect3DDevice_OnDeviceReady(ioi::hm3::ZDirect3DDevice* device)
 
 /// --------------------------------------------------------------------------------
 
-DWORD originalMember = 0x0;
+DWORD m_ZMouseDeviceWintel__OnUpdateOrg = 0x0;
+DWORD m_ZGameControllerWintel_OnUpdateOrg = 0x0;
 
 DWORD __stdcall ZMouseWintel_OnUpdate()
 {
@@ -121,7 +127,7 @@ DWORD __stdcall ZMouseWintel_OnUpdate()
 
 	__asm {
 		mov ecx, mouse
-		call [originalMember]
+		call [m_ZMouseDeviceWintel__OnUpdateOrg]
 		mov result, eax
 	}
 
@@ -135,11 +141,36 @@ DWORD __stdcall ZMouseWintel_OnUpdate()
 	return result;
 }
 
+DWORD __stdcall ZGameController_OnUpdate()
+{
+	DWORD result = false;
+	ck::HM3InGameTools& instance = ck::HM3InGameTools::getInstance();
+	ioi::hm3::ZSysInputWintel* input = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInputWintel>(ioi::hm3::WintelInput);
+	ioi::hm3::ZGameControlWintel* controller = input->m_gameControllerDevice;
+
+	__asm {
+		mov ecx, controller
+		call[m_ZGameControllerWintel_OnUpdateOrg]
+		mov result, eax
+	}
+
+	//result = ck::HM3GamepadSupport::onDeviceUpdateRequest(controller);
+
+	__asm mov ecx, controller
+	return result;
+}
+
 void __stdcall OnZMouseWintelCreated(DWORD device)
 {
 	HM3_DEBUG("ZMouseWintel created at 0x%.8X\n", device);
 
-	originalMember = HM3Function::hookVFTable(device, 26, (DWORD)ZMouseWintel_OnUpdate, true);
+	m_ZMouseDeviceWintel__OnUpdateOrg = HM3Function::hookVFTable(device, 26, (DWORD)ZMouseWintel_OnUpdate, true);
+}
+
+void __stdcall OnZGameControllerWintelCreated(DWORD device)
+{
+	HM3_DEBUG("ZGameControllerWintel created at 0x%.8X\n", device);
+	//m_ZGameControllerWintel_OnUpdateOrg = HM3Function::hookVFTable(device, 26, (DWORD)ZGameController_OnUpdate, true);
 }
 
 void __stdcall ZHM3_OnAnimationLoaded(ioi::hm3::ZAnimationInfo* animationInstance)
@@ -221,4 +252,22 @@ void __stdcall ZM13PosController_Constructor(ioi::hm3::ZM13PosController* instan
 		return;
 
 	HM3_DEBUG("[ZM13PosController] created at 0x%.8X\n", instance);
+}
+
+void __stdcall ZCar_Constructor(ioi::hm3::ZCar* instance)
+{
+	if (!instance)
+		return;
+
+	HM3_DEBUG("[ZCar] constructed at 0x%.8X\n", instance);
+}
+
+void __stdcall CutSequence_Constructor(ioi::hm3::CCutSequence* instance)
+{
+	if (!instance)
+		return;
+
+	HM3_DEBUG("CutSequence| at 0x%.8X\n", instance);
+
+	ck::HM3CutSequencesRegistry::getRegistry().registerCutSequence(instance);
 }

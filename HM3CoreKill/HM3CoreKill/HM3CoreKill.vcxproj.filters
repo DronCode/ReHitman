@@ -367,6 +367,48 @@
     <ClInclude Include="sdk\game\ZHM3MovementGuideToMatPos.h">
       <Filter>sdk\game</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\ZCar.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZHumanBoid.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZPathFollower.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\CCutSequence.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3CutSequencesRegistry.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZGameControlWintel.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="ck\HM3GamepadSupport.h">
+      <Filter>ck</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZActionManager.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZXMLGUISystem.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZWINDOWS.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZHM3MenuFactory.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZStandardMenuFactory.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZOnlineElements.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZWINDOW.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">
@@ -465,6 +507,12 @@
     </ClCompile>
     <ClCompile Include="third_party\fmt\src\format.cc">
       <Filter>third_party\fmt\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ck\HM3CutSequencesRegistry.cpp">
+      <Filter>ck</Filter>
+    </ClCompile>
+    <ClCompile Include="ck\HM3GamepadSupport.cpp">
+      <Filter>ck</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

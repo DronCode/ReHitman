@@ -5,9 +5,12 @@
 #include <sdk/ZHM3Camera.h>
 #include <sdk/ZHM3Actor.h>
 #include <sdk/ZOSD.h>
+#include <sdk/ZGUI.h>
+#include <sdk/ZSTD.h>
 #include <sdk/ZHM3MenuElements.h>
 #include <sdk/ZHM3LevelControl.h>
 #include <sdk/ZHM3BriefingControl.h>
+#include <sdk/ZHM3CameraClass.h>
 #include <sdk/CIngameMap.h>
 #include <sdk/ZHM3Hitman3.h>
 
@@ -17,11 +20,8 @@ namespace ioi {
 namespace hm3 {
 	DECLARE_UNKNOWN_TYPE_PTR(N00001B3F);
 	DECLARE_UNKNOWN_TYPE_PTR(N000033C1);
-	DECLARE_UNKNOWN_TYPE_PTR(REFTAB);
 	DECLARE_UNKNOWN_TYPE_PTR(ZHM3GameStats);
 	DECLARE_UNKNOWN_TYPE_PTR(N0000163D);
-	DECLARE_UNKNOWN_TYPE_PTR(ZGui);
-	DECLARE_UNKNOWN_TYPE_PTR(m_Gui);
 	DECLARE_UNKNOWN_TYPE_PTR(CGlobalCom);
 	DECLARE_UNKNOWN_TYPE_PTR(ZHM3WeaponUpgradeControl);
 	DECLARE_UNKNOWN_TYPE_PTR(ZHM3CameraEventCameraClass);
@@ -84,7 +84,7 @@ namespace hm3 {
 		char pad_0x0A44[0x4]; //0x0A44
 		ZHM3LevelControl* m_LevelControl; //0x0A48 
 		ZOSD* m_OSD; //0x0A4C 
-		ZGui* m_Gui; //0x0A50 
+		ZGUI* m_Gui; //0x0A50 
 		CIngameMap* m_IngameMap; //0x0A54 
 		char pad_0x0A58[0x4]; //0x0A58
 		CGlobalCom* m_GlobCom; //0x0A5C 
@@ -96,7 +96,7 @@ namespace hm3 {
 		char pad_68FC[116]; //0x68FC
 		ZHM3WeaponUpgradeControl* m_WeaponUpgradeControl; //0x6970
 		ZHM3CameraEventCameraClass* m_CameraEventCameraClass; //0x6974
-		ZHM3Camera* m_CameraClass; //0x6978
+		ZHM3CameraClass* m_CameraClass; //0x6978
 		char pad_697C[32]; //0x697C
 		ZClothTracker* m_ClothTracker; //0x699C
 		char pad_69A0[8]; //0x69A0

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cstdint>
+#include <sdk/ZSTD.h>
+#include <sdk/REFTAB32.h>
 #include <sdk/ZGeomBuffer.h>
 #include <sdk/ResourceCollection.h>
 
@@ -139,7 +141,7 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0028(); //#0028 +0070 .rdata:007564d4
 		virtual void Function_0029(); //#0029 +0074 .rdata:007564d8
 		virtual void Function_0030(); //#0030 +0078 .rdata:007564dc
-		virtual void getVariableValue(const char* varName, std::intptr_t& result); //#0031 +007C .rdata:007564e0
+		virtual void getSTDOBJEntityIdByName(const char* entityName, std::uintptr_t* result); //#0031 +007C .rdata:007564e0
 		virtual void Function_0032(); //#0032 +0080 .rdata:007564e4
 		virtual void Function_0033(); //#0033 +0084 .rdata:007564e8
 		virtual void Function_0034(); //#0034 +0088 .rdata:007564ec
@@ -150,8 +152,10 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0039(); //#0039 +009c .rdata:00756500
 		virtual void Function_0040(); //#0040 +00a0 .rdata:00756504
 		virtual void Function_0041(); //#0041 +00a4 .rdata:00756508
-		virtual void Function_0042(); //#0042 +00a8 .rdata:0075650c 
+		virtual void Function_0042(); //#0042 +00a8 .rdata:0075650c
 	};
 
 	CCOM* getCCOMObjectFromEngineDB(ZEngineDatabase* instance);
+	ZSTDOBJ* getSTDOBJById(std::uintptr_t objectId);
+	REFTAB32* getEntitiesListFromCCOM(CCOM* instance);
 }}

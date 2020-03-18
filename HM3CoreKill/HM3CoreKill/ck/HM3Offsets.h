@@ -38,6 +38,7 @@ namespace HM3Offsets
 	static const FuncAddr_t ZHM3RegisterWindowClassExA_Func				 = 0x00453E68;
 	static const FuncAddr_t ZDirect3DDevice_ConstructorFunc				 = 0x0049091C;
 	static const FuncAddr_t ZWintelMouse_ContructorFunc					 = 0x0045007C;
+	static const FuncAddr_t ZWintelGameController_ConstructorFunc		 = 0x00450363;
 	static const FuncAddr_t Glacier_OriginalWNDPROC						 = 0x004513E0;
 
 	static const FuncAddr_t HM3_BuildString								 = 0x007562C0;
@@ -52,6 +53,9 @@ namespace HM3Offsets
 	static const FuncAddr_t FsZip_Destructor							 = 0x0042D137;
 	static const FuncAddr_t FsZip_ReadMethodFunc						 = 0x0042C470;
 	static const FuncAddr_t ZM13PosController_Constructor				 = 0x005D7195;
+	static const FuncAddr_t ZCar_Constructor							 = 0x005949E3;
+	static const FuncAddr_t CCutSequence_Constructor					 = 0x00531A14;
+	static const FuncAddr_t GetComponent_Func							 = 0x004E704C;
 
 	static const Index_t	CMapObject_OnProcessMethodIndex				 = 29;
 	static const Index_t	FsZip_ReadMethodIndex = 7;

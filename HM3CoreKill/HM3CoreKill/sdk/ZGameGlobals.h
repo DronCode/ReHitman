@@ -38,6 +38,7 @@ namespace hm3 {
 	static const std::uintptr_t ScriptComponent  = 0x008A89CC;  //Based on ZScriptComponent
 	static const std::uintptr_t ItemIdToNameMap  = 0x008031E0;  //Map between item ID and their code name (1'st - id, 2'nd - char*)
 	static const std::uintptr_t ItemNameToIdMap  = 0x008031E4;  //Map between item codename and their id (1'st - name ptr, 2'nd - id)
+	static const std::uintptr_t ActionManager	 = 0x008ACAC4;  //Based on ZActionManager 
 
 	static const std::uintptr_t ComponentManager_RuntimeComponentBase = 0x002DB0038;	//Based on ZComponentManager<ZRuntimeComponentBase> : ZComponentManagerBase : ZComponentBase : NotCopyable
 
@@ -49,5 +50,8 @@ namespace hm3 {
 
 	static const std::uintptr_t GlacierMallocFunc = 0x00446720;	//Glacier's malloc
 	static const std::uintptr_t GlacierFreeFunc	  = 0x004466D0;	//Glacier's free
+
+	static const std::uintptr_t CTelePortList_ConstructorFunc = 0x0052AA80;
+	static const std::uintptr_t CTelePortList_RTTI = 0x0099CB30;
 
 }}

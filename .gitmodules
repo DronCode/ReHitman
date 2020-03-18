@@ -1,6 +1,0 @@
-[submodule "HM3CoreKill/HM3CoreKill/third_party/ImGUI"]
-	path = HM3CoreKill/HM3CoreKill/third_party/ImGUI
-	url = https://github.com/ocornut/imgui.git
-[submodule "HM3CoreKill/HM3CoreKill/third_party/fmt"]
-	path = HM3CoreKill/HM3CoreKill/third_party/fmt
-	url = https://github.com/fmtlib/fmt.git

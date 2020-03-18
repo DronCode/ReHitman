@@ -3,8 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-# REHITMAN SPECIFIC IGNORES
+# REHITMAN SPECIFIC FOLDER IGNORES
 GitHub/
+.wiki/
+
+# REHITMAN SPECIFIC FILES IGNORES
+README.md
 
 # User-specific files
 *.rsuser

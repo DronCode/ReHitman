@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <sdk/ZEntityLocator.h>
 
 namespace ioi { namespace hm3 {
 
@@ -129,7 +130,7 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0119(); //#119 +1dc .rdata:007a1c30
 		
 		/// ---------- MEMBERS -----------
-		uint32_t m_entityLocator; //0x0004
+		ZEntityLocator* m_entityLocator; //0x0004
 		char pad_0008[4]; //0x0008
 		uint32_t __MEMCHECK__; //0x000C [should be equal to 0x50000, otherwise memory corrupted!]
 		int32_t m_uiFlags; //0x0010

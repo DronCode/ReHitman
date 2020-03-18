@@ -537,27 +537,6 @@ namespace ck
 					showUIMenu_t showUIMenu = (showUIMenu_t)0x00568260;
 					showUIMenu(gameData->m_MenuElements->m_XMLGUISystem, "IngameMenu", 1);
 				}
-
-				if (ImGui::Button("Get top window"))
-				{
-					typedef int(__thiscall* getTopWindow_t)(ioi::hm3::ZXMLGUISystem*);
-					getTopWindow_t getTopWindow = (getTopWindow_t)0x005665E0;
-					HM3_DEBUG("VAUX: 0x%.8X\n", getTopWindow(gameData->m_MenuElements->m_XMLGUISystem));
-				}
-
-				if (ImGui::Button("Print GUI infos"))
-				{
-					HM3_DEBUG(
-						"Game Data      : 0x%.8x\n"
-						"Menu Elements  : 0x%.8X\n"
-						"XML GUI System : 0x%.8X\n"
-						"ZWINDOWS       : 0x%.8X\n",
-						gameData,
-						gameData->m_MenuElements,
-						gameData->m_MenuElements->m_XMLGUISystem,
-						gameData->m_MenuElements->m_XMLGUISystem->getZWindowsSubsystem()
-					);
-				}
 			}
 		}
 	}

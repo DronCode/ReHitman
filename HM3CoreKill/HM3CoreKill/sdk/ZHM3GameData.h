@@ -10,6 +10,7 @@
 #include <sdk/ZHM3MenuElements.h>
 #include <sdk/ZHM3LevelControl.h>
 #include <sdk/ZHM3BriefingControl.h>
+#include <sdk/ZHM3CameraClass.h>
 #include <sdk/CIngameMap.h>
 #include <sdk/ZHM3Hitman3.h>
 
@@ -95,7 +96,7 @@ namespace hm3 {
 		char pad_68FC[116]; //0x68FC
 		ZHM3WeaponUpgradeControl* m_WeaponUpgradeControl; //0x6970
 		ZHM3CameraEventCameraClass* m_CameraEventCameraClass; //0x6974
-		int m_CameraClass; //0x6978 [NOT CAMERA, JUST CAMERA CLASS]
+		ZHM3CameraClass* m_CameraClass; //0x6978
 		char pad_697C[32]; //0x697C
 		ZClothTracker* m_ClothTracker; //0x699C
 		char pad_69A0[8]; //0x69A0

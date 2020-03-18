@@ -328,6 +328,7 @@
     <ClCompile Include="ck\HM3Player.cpp" />
     <ClCompile Include="ck\HM3ProcessCache.cpp" />
     <ClCompile Include="DllEntry.cpp" />
+    <ClCompile Include="sdk\CTelePortList.cpp" />
     <ClCompile Include="sdk\ZHM3Actor.cpp" />
     <ClCompile Include="sdk\ZHM3Hitman3.cpp" />
     <ClCompile Include="sdk\ZEngineDatabase.cpp" />

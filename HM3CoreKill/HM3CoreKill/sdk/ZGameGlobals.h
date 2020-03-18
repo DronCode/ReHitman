@@ -51,4 +51,7 @@ namespace hm3 {
 	static const std::uintptr_t GlacierMallocFunc = 0x00446720;	//Glacier's malloc
 	static const std::uintptr_t GlacierFreeFunc	  = 0x004466D0;	//Glacier's free
 
+	static const std::uintptr_t CTelePortList_ConstructorFunc = 0x0052AA80;
+	static const std::uintptr_t CTelePortList_RTTI = 0x0099CB30;
+
 }}

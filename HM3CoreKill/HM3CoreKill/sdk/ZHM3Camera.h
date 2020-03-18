@@ -73,7 +73,7 @@ namespace hm3 {
 		float m_ZCamOffset;					//0x003C 
 		float m_camZoom;					//0x0040 
 		float N00001B61;					//0x0044 
-		__int32 N00001B62;					//0x0048 
+		int32_t N00001B62;					//0x0048 
 		float N00001B6D;					//0x004C 
 		float m_fogDist;					//0x0050 (default 30000.0)
 		char pad_0x0054[0x50];				//0x0054

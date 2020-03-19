@@ -22,8 +22,7 @@ Executable String:
 
 FAQ
 ---------------
- * [Installation Instructions.](https://github.com/DronCode/ReHitman/wiki/ReHitman_Installation-Instructions)
- * [Usage.](https://github.com/DronCode/ReHitman/wiki/ReHitman_Usage)
+ * [Wiki.](https://github.com/DronCode/ReHitman/wiki)
 
 For developers
 ===============

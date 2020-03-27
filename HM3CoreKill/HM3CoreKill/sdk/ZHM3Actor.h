@@ -516,7 +516,9 @@ namespace hm3 {
 		ZHumanBoid* m_boid; //0x03F4
 		char pad_03F8[1288]; //0x03F8
 		int32_t m_onMapType; //0x0900
-		char pad_0904[452]; //0x0904
+		int32_t m_pad0;		 //0x0904
+		int32_t m_STDOBJID;	 //0x0908
+		char pad_0904[444];  //0x090C
 		uint32_t m_currentZROOM; //0x0AC8
 		char pad_0ACC[148]; //0x0ACC
 

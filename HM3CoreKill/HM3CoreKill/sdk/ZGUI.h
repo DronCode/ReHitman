@@ -2,6 +2,10 @@
 
 #include <cstdint>
 #include <sdk/ZEntityLocator.h>
+#include <sdk/ZWeaponDisplay.h>
+#include <sdk/ZInfoDisplay.h>
+#include <sdk/ZHM3InventoryMenu.h>
+#include <sdk/ZHM3CameraClass.h>
 
 namespace ioi { namespace hm3 {
 
@@ -141,18 +145,18 @@ namespace ioi { namespace hm3 {
 		uint32_t m_postFilterEvent; //0x0038
 		uint32_t m_postFilterSetEvent; //0x003C
 		char pad_0040[28]; //0x0040
-		uint32_t m_inventoryMenu; //0x005C
+		ZHM3InventoryMenu* m_inventoryMenu; //0x005C
 		char pad_0060[212]; //0x0060
 		int32_t m_isWeaponShowed; //0x0134
 		char pad_0138[32]; //0x0138
 		uint32_t m_camera; //0x0158
-		uint32_t m_cameraClass; //0x015C
+		ZHM3CameraClass* m_cameraClass; //0x015C
 		char pad_0160[92]; //0x0160
-		uint32_t m_weaponDisplay; //0x01BC
+		ZWeaponDisplay* m_weaponDisplay; //0x01BC
 		char pad_01C0[4]; //0x01C0
 		int32_t m_iconClassId; //0x01C4
 		char pad_01C8[16]; //0x01C8
-		uint32_t m_infoDisplay; //0x01D8
+		ZInfoDisplay* m_infoDisplay; //0x01D8
 		char pad_01DC[240]; //0x01DC
 		uint32_t m_cheatMenu; //0x02CC
 		char pad_02D0[16]; //0x02D0

@@ -409,6 +409,46 @@
     <ClInclude Include="sdk\ZWINDOW.h">
       <Filter>sdk</Filter>
     </ClInclude>
+    <ClInclude Include="sdk\ZROOM.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZActorCommunication.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZCHAROBJ.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZWeaponDisplay.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZInfoDisplay.h" />
+    <ClInclude Include="sdk\ZHM3InventoryMenu.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZCheatMenu.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZEventBase.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\actions\ZHitmanReviveCIAAgent.h">
+      <Filter>sdk\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\actions\ZHitmanSedateCIAAgent.h">
+      <Filter>sdk\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\actions\ZHitmanActionChargeHitStungun.h">
+      <Filter>sdk\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZLnkActionQueue.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\actions\ZHitmanActionReloadItem.h">
+      <Filter>sdk\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\actions\ZHitmanActionDestroyDualWeapons.h">
+      <Filter>sdk\actions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ck\HM3DebugConsole.cpp">
@@ -514,5 +554,6 @@
     <ClCompile Include="ck\HM3GamepadSupport.cpp">
       <Filter>ck</Filter>
     </ClCompile>
+    <ClCompile Include="sdk\CTelePortList.cpp" />
   </ItemGroup>
 </Project>

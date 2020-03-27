@@ -2,6 +2,7 @@
 
 #include <sdk/actions/ZLnkAction.h>
 #include <sdk/game/ZHM3MovementGuideToMatPos.h>
+#include <sdk/ZLnkActionQueue.h>
 #include <sdk/ZAnimationInfo.h>
 #include <sdk/ZBoxPrimitive.h>
 #include <sdk/CInventory.h>
@@ -256,7 +257,7 @@ namespace hm3 {
 		virtual void Function_0225(); // [0225] +0384 [.rdata at 0x00791210]
 		virtual void Function_0226(); // [0226] +0388 [.rdata at 0x00791214]
 		virtual void Function_0227(); // [0227] +038C [.rdata at 0x00791218]
-		virtual void Function_0228(); // [0228] +0390 [.rdata at 0x0079121C]
+		virtual ZLnkAction* createAction(ZLnkActionType type); // [0228] +0390 [.rdata at 0x0079121C]
 		virtual void Function_0229(); // [0229] +0394 [.rdata at 0x00791220]
 		virtual void Function_0230(); // [0230] +0398 [.rdata at 0x00791224]
 		virtual void Function_0231(); // [0231] +039C [.rdata at 0x00791228]
@@ -335,7 +336,7 @@ namespace hm3 {
 		virtual void Function_0304(); // [0304] +04C0 [.rdata at 0x0079134C]
 		virtual void Function_0305(); // [0305] +04C4 [.rdata at 0x00791350]
 		virtual void Function_0306(); // [0306] +04C8 [.rdata at 0x00791354]
-		virtual void Function_0307(); // [0307] +04CC [.rdata at 0x00791358]
+		virtual ZHM3Item* getCurrentWeapon(); // [0307] +04CC [.rdata at 0x00791358]
 		virtual void Function_0308(); // [0308] +04D0 [.rdata at 0x0079135C]
 		virtual void Function_0309(); // [0309] +04D4 [.rdata at 0x00791360]
 		virtual void Function_0310(); // [0310] +04D8 [.rdata at 0x00791364]
@@ -432,7 +433,7 @@ namespace hm3 {
 		virtual void Function_0401(); // [0401] +0644 [.rdata at 0x007914D0]
 		virtual void Function_0402(); // [0402] +0648 [.rdata at 0x007914D4]
 		virtual void Function_0403(); // [0403] +064C [.rdata at 0x007914D8]
-		virtual void Function_0404(); // [0404] +0650 [.rdata at 0x007914DC]
+		virtual void Function_0404(int); // [0404] +0650 [.rdata at 0x007914DC]
 		virtual void Function_0405(); // [0405] +0654 [.rdata at 0x007914E0]
 		virtual void Function_0406(); // [0406] +0658 [.rdata at 0x007914E4]
 		virtual void Function_0407(); // [0407] +065C [.rdata at 0x007914E8]
@@ -444,7 +445,7 @@ namespace hm3 {
 
 		// === members ===
 		char pad_0004[376]; //0x0004
-		uint32_t m_lnkActionQueue; //0x017C
+		ZLnkActionQueue* m_lnkActionQueue; //0x017C
 		char pad_0180[612]; //0x0180
 		ZHumanBoid* m_humanBoid0; //0x03E4
 		int32_t m_pad0; //+3E8

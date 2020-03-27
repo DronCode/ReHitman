@@ -2,6 +2,7 @@
 
 #include <sdk/ZAnimationInfo.h>
 #include <sdk/ZEntityLocator.h>
+#include <sdk/ZGameGlobals.h>
 #include <sdk/ZSTD.h>
 
 namespace ioi { namespace hm3 {
@@ -206,10 +207,10 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0184(); //#184 +2e0 .rdata:00772e44
 		virtual void Function_0185(); //#185 +2e4 .rdata:00772e48
 		virtual void Function_0186(); //#186 +2e8 .rdata:00772e4c
-		virtual void Function_0187(); //#187 +2ec .rdata:00772e50
+		virtual void Function_0187(int); //#187 +2ec .rdata:00772e50
 		virtual int getClipCapacity(); //#188 +2f0 .rdata:00772e54
-		virtual void Function_0189(); //#189 +2f4 .rdata:00772e58
-		virtual void Function_0190(); //#190 +2f8 .rdata:00772e5c
+		virtual void Function_0189(int); //#189 +2f4 .rdata:00772e58
+		virtual int Function_0190(); //#190 +2f8 .rdata:00772e5c
 		virtual void Function_0191(); //#191 +2fc .rdata:00772e60
 		virtual void Function_0192(); //#192 +300 .rdata:00772e64
 		virtual void Function_0193(); //#193 +304 .rdata:00772e68
@@ -227,4 +228,20 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0205(); //#205 +334 .rdata:00772e98
 	}; //Size: 0x015C
 
-} }
+}}
+
+namespace ioi {
+	template <>
+	ioi::hm3::ZHM3ItemWeapon* stdobj_cast(ZSTDOBJ* obj)
+	{
+		if (!obj)
+			return nullptr;
+
+		if ((*(int*)(ioi::hm3::rtti::WeaponItemClassIDMask) & obj->getClassID()) == *(int*)(ioi::hm3::rtti::WeaponItemClassID))
+		{
+			return reinterpret_cast<ioi::hm3::ZHM3ItemWeapon*>(obj);
+		}
+
+		return nullptr;
+	}
+}

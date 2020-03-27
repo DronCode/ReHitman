@@ -54,4 +54,10 @@ namespace hm3 {
 	static const std::uintptr_t CTelePortList_ConstructorFunc = 0x0052AA80;
 	static const std::uintptr_t CTelePortList_RTTI = 0x0099CB30;
 
+	namespace rtti
+	{
+		static const std::uintptr_t WeaponItemClassID		= 0x0099BF58;
+		static const std::uintptr_t WeaponItemClassIDMask	= 0x0099BF5C;
+	}
+
 }}

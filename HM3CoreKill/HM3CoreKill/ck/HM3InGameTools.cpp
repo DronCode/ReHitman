@@ -14,6 +14,10 @@
 #include <ck/HM3Game.h>
 
 #include <sdk/actions/ZHitmanActionPickLock.h>
+#include <sdk/actions/ZHitmanSedateCIAAgent.h>
+#include <sdk/actions/ZHitmanReviveCIAAgent.h>
+#include <sdk/actions/ZHitmanActionDestroyDualWeapons.h>
+
 #include <sdk/game/ZM13PosController.h>
 #include <sdk/ZHM3ItemTemplateAmmo.h>
 #include <sdk/ZHM3BriefingControl.h>
@@ -24,6 +28,8 @@
 #include <sdk/ZEngineDatabase.h>
 #include <sdk/ZHM3CameraClass.h>
 #include <sdk/ZAnimationInfo.h>
+#include <sdk/ZWeaponDisplay.h>
+#include <sdk/ZHM3WeaponItem.h>
 #include <sdk/ZPathFollower.h>
 #include <sdk/CTelePortList.h>
 #include <sdk/ZMouseWintel.h>
@@ -31,6 +37,7 @@
 #include <sdk/ZHM3GameData.h>
 #include <sdk/ZEventBuffer.h>
 #include <sdk/ZHM3Camera.h>
+#include <sdk/ZCHAROBJ.h>
 #include <sdk/ZHM3Item.h>
 #include <sdk/ZHM3HmAs.h>
 #include <sdk/REFTAB32.h>
@@ -538,6 +545,41 @@ namespace ck
 					showUIMenu(gameData->m_MenuElements->m_XMLGUISystem, "IngameMenu", 1);
 				}
 			}
+
+			{
+				if (ImGui::Button("Close top window"))
+				{
+					typedef bool(__thiscall* CloseTopWindow_t)(ioi::hm3::ZXMLGUISystem*, int);
+					CloseTopWindow_t CloseTopWindow = (CloseTopWindow_t)0x005685C0;
+					CloseTopWindow(gameData->m_MenuElements->m_XMLGUISystem, 0);
+				}
+
+				if (ImGui::Button("Check"))
+				{
+					ioi::hm3::ZHitmanActionDestroyDualWeapons* action = reinterpret_cast<ioi::hm3::ZHitmanActionDestroyDualWeapons*>(hitman3->createAction(ioi::hm3::ZLnkActionType::HitmanActionDestroyDualWeapons));
+					action->m_itemTemplate = nullptr; //be safe
+
+					auto hand = hitman3->getHand(ioi::hm3::HandType::RightHand);
+					if (hand)
+					{
+						auto item = hand->getItem();
+						if (item)
+						{
+							auto itemTemplate = item->getItemTemplate();
+							action->m_itemTemplate = itemTemplate;
+						}
+					}
+					
+					if (action->m_itemTemplate)
+					{
+						hitman3->m_lnkActionQueue->pushAction(reinterpret_cast<ioi::hm3::ZLnkAction*>(action));
+					}
+					else 
+					{
+						HM3_DEBUG("No item at hand or unable to take item template for item of left hand");
+					}
+				}
+			}
 		}
 	}
 
@@ -716,6 +758,7 @@ namespace ck
 
 				ImGui::Text("Location pointer at 0x%.8X", currentActor->ActorInformation->location);
 				ImGui::Text("Position:"); ImGui::SameLine(0.f, 4.f); ImGui::InputFloat3("", actorPosition);
+				ImGui::Text("STDOBJID: 0x%.4x | STDOBJ: 0x%.8X\n", currentActor->m_STDOBJID, ioi::hm3::getSTDOBJById(currentActor->m_STDOBJID));
 
 				{
 					if (auto boid = currentActor->m_boid; boid)
@@ -784,7 +827,6 @@ namespace ck
 					ImGui::SameLine(0.f, 5.f);
 					if (ImGui::Button("Reset AI"))
 						currentActor->setStatus(Status::ResetAI);
-
 				}
 
 				{
@@ -962,7 +1004,8 @@ namespace ck
 
 	void HM3InGameTools::drawHandInfo(ioi::hm3::ZIKHAND* hand)
 	{
-		HM3_ASSERT(hand != nullptr, "hand should be valid pointer!");
+		if (!hand)
+			return;
 
 		if (hand->m_handType != ioi::hm3::HandType::LeftHand && hand->m_handType != ioi::hm3::HandType::RightHand)
 		{
@@ -982,11 +1025,11 @@ namespace ck
 
 		if (!pItem)
 		{
-			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "NO ITEM");
+			ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "NO ITEM");
 		}
 		else
 		{
-			ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "%s (%.4X)", pItem->m_entityLocator->entityName, hand->m_itemID);
+			ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "[0x%.8X] %s (%.4X)", pItem, pItem->m_entityLocator->entityName, hand->m_itemID);
 		}
 	}
 

@@ -87,6 +87,14 @@ void HM3Game::Initialise()
 	setupCutSequenceConstructorHook();
 	//setupGetComponentHook();
 
+	{
+		//DWORD addr = 0x0061CC77;
+		//HM3Function::overrideInstruction(HM3_PROCESS_NAME, addr, { 0xEB });
+
+		//DWORD addr2 = 0x006C9E12;
+		//HM3Function::overrideInstruction(HM3_PROCESS_NAME, addr2, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
+	}
+
 	/*
 	
 	sub_4E6AF0 <- Add resource frontend

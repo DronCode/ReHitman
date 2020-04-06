@@ -69,6 +69,6 @@ Contact Information.
 
 The team can be contacted in the Project's issue tracker or via Discord (any questions, ideas, etc).
 
-<a href="https://discord.gg/WK9jbqR">
+<a href="https://discord.gg/V5grGRw">
 	<img src="https://img.shields.io/badge/discord-join-7289DA.svg?logo=discord&longCache=true&style=flat" />
 </a>

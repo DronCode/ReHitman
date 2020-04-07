@@ -11,7 +11,7 @@ namespace ioi { namespace hm3 {
 	{
 	public:
 		char pad_0014[16]; //0x0014
-		ZBoxPrimitive* m_primitive; //0x0024
+		ZSTDOBJ* m_primitive; //0x0024
 		char pad_0028[4]; //0x0028
 		ZGlacierRTTI* m_RTTI; //0x002C
 		char pad_0030[272]; //0x0030

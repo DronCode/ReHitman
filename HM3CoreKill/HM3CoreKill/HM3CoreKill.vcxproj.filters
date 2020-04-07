@@ -363,7 +363,6 @@
     <ClInclude Include="sdk\ZLinkedListNodeBase.h">
       <Filter>sdk</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\game\ZHM3WeaponsControl.h" />
     <ClInclude Include="sdk\game\ZHM3MovementGuideToMatPos.h">
       <Filter>sdk\game</Filter>
     </ClInclude>
@@ -421,7 +420,6 @@
     <ClInclude Include="sdk\ZWeaponDisplay.h">
       <Filter>sdk</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\ZInfoDisplay.h" />
     <ClInclude Include="sdk\ZHM3InventoryMenu.h">
       <Filter>sdk</Filter>
     </ClInclude>
@@ -448,6 +446,57 @@
     </ClInclude>
     <ClInclude Include="sdk\actions\ZHitmanActionDestroyDualWeapons.h">
       <Filter>sdk\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZGROUP.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZPickupMenu.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZAction.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZHM3ItemBomb.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZPackedInput.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZInputStream.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZIOInputStream.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\CMetalDetector.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ConstrainedParticleSystem.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\CRagdoll2.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZBodyInfo.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\game\ZHM3WeaponsControl.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZInfoDisplay.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZMoveTo.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZGuardQuarterController.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZWeaponStorage.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\ZFightController.h">
+      <Filter>sdk</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -554,6 +603,17 @@
     <ClCompile Include="ck\HM3GamepadSupport.cpp">
       <Filter>ck</Filter>
     </ClCompile>
-    <ClCompile Include="sdk\CTelePortList.cpp" />
+    <ClCompile Include="sdk\ZAnimationInfo.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\ZGROUP.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\ZROOM.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\CTelePortList.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

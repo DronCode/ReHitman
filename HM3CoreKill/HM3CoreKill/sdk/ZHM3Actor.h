@@ -4,11 +4,17 @@
 #include <sdk/ZHumanBoid.h>
 #include <sdk/ZEntityLocator.h>
 #include <sdk/ZAnimationInfo.h>
+#include <sdk/ZActionDispatcher.h>
+#include <sdk/ZPackedInput.h>
+#include <sdk/ZEventBase.h>
+#include <sdk/ZBodyInfo.h>
 #include <sdk/ZIKHAND.h>
+#include <sdk/ZGROUP.h>
+#include <sdk/ZROOM.h>
 
-namespace ioi {
-namespace hm3 {
+namespace ioi { namespace hm3 {
 
+	class ZLnkAction;
 	class ZHM3Actor;
 
 	class ActorInfos
@@ -23,11 +29,38 @@ namespace hm3 {
 		char pad_0070[80];			//0x0070
 		uint32_t equipment;			//0x00C0 [ptr]
 		char pad_00C4[12];			//0x00C4
-		uint32_t group;				//0x00D0 [ptr]
+		ZGROUP* group;				//0x00D0 [ptr]
 		char pad_00D4[92];			//0x00D4
 		uint32_t unk_equ2;			//0x0130 [ptr]
 		char pad_0134[12];			//0x0134
 	}; //Size: 0x0140
+
+	enum class UnknownEnum : int { //From 00637BD0 
+		Value0 = 0x2000000C,
+		Value1 = 0x2000000E,
+		Value2 = 0x2000000F,
+		Value3 = 0x20000010,
+		Value4 = 0x20000011,
+		Value5 = 0x20000009,
+		Value6 = 0x2000000A,
+		Value7 = 0x2000000D,
+		Other  = 0x0
+	};
+
+	enum class UnknownEnum1 : int {
+		Value7 = 7,
+		Value8 = 8,
+		/// also
+		Value5 = 5,
+		Value6 = 6,
+		Value9 = 9,
+		Value10 = 10,
+		Value11 = 11,
+		Value12 = 12,
+		Value13 = 13,
+		Value14 = 14,
+		Value15 = 15
+	};
 
 	class ZHM3Actor
 	{
@@ -62,7 +95,7 @@ namespace hm3 {
 		virtual void Function_0001(); //#1 +4 .rdata:00796338
 		virtual void Function_0002(); //#2 +8 .rdata:0079633c
 		virtual void Function_0003(); //#3 +c .rdata:00796340
-		virtual void Function_0004(); //#4 +10 .rdata:00796344
+		virtual void loadParameters(ZPackedInput* params); //#4 +10 .rdata:00796344
 		virtual void Function_0005(); //#5 +14 .rdata:00796348
 		virtual void Function_0006(); //#6 +18 .rdata:0079634c
 		virtual void Function_0007(); //#7 +1c .rdata:00796350
@@ -145,7 +178,7 @@ namespace hm3 {
 		virtual void Function_0084(); //#84 +150 .rdata:00796484
 		virtual void Function_0085(); //#85 +154 .rdata:00796488
 		virtual void Function_0086(); //#86 +158 .rdata:0079648c
-		virtual void Function_0087(); //#87 +15c .rdata:00796490
+		virtual void processAI(); //#87 +15c .rdata:00796490
 		virtual void Function_0088(); //#88 +160 .rdata:00796494
 		virtual void dropAnimation(int, int); //#89 +164 .rdata:00796498
 		virtual void Function_0090(); //#90 +168 .rdata:0079649c
@@ -183,8 +216,8 @@ namespace hm3 {
 		virtual void Function_0122(); //#122 +1e8 .rdata:0079651c
 		virtual void Function_0123(); //#123 +1ec .rdata:00796520
 		virtual void Function_0124(); //#124 +1f0 .rdata:00796524
-		virtual void Function_0125(); //#125 +1f4 .rdata:00796528
-		virtual void setAnimation(ioi::hm3::ZAnimationInfo* animation, int unknown0 = 1); //#126 +1f8 .rdata:0079652c
+		virtual void Function_0125(ioi::hm3::ZAnimationInfo* _anim, int _flag, float a0, float a1, float a2); //#125 +1f4 .rdata:00796528
+		virtual ioi::hm3::ZAnimationInfo** setAnimation(ioi::hm3::ZAnimationInfo* animation, int unknown0 = 1); //#126 +1f8 .rdata:0079652c
 		virtual void Function_0127(); //#127 +1fc .rdata:00796530
 		virtual void Function_0128(); //#128 +200 .rdata:00796534
 		virtual void Function_0129(); //#129 +204 .rdata:00796538
@@ -246,12 +279,12 @@ namespace hm3 {
 		virtual void Function_0185(); //#185 +2e4 .rdata:00796618
 		virtual void Function_0186(); //#186 +2e8 .rdata:0079661c
 		virtual void Function_0187(); //#187 +2ec .rdata:00796620
-		virtual void Function_0188(); //#188 +2f0 .rdata:00796624
-		virtual void Function_0189(); //#189 +2f4 .rdata:00796628
-		virtual void Function_0190(); //#190 +2f8 .rdata:0079662c
+		virtual int Function_0188(); //#188 +2f0 .rdata:00796624 {desc=Get +B40 field from thisptr)
+		virtual int Function_0189(); //#189 +2f4 .rdata:00796628
+		virtual bool Function_0190(); //#190 +2f8 .rdata:0079662c
 		virtual void Function_0191(); //#191 +2fc .rdata:00796630
-		virtual void Function_0192(); //#192 +300 .rdata:00796634
-		virtual void Function_0193(); //#193 +304 .rdata:00796638
+		virtual void Function_0192(int _a0, int _a1, int _a2); //#192 +300 .rdata:00796634 (possible rotate actor or navigate)
+		virtual void Function_0193(); //#193 +304 .rdata:00796638 {load anim cache}
 		virtual void Function_0194(); //#194 +308 .rdata:0079663c
 		virtual void Function_0195(); //#195 +30c .rdata:00796640
 		virtual void Function_0196(); //#196 +310 .rdata:00796644
@@ -286,7 +319,7 @@ namespace hm3 {
 		virtual void Function_0225(); //#225 +384 .rdata:007966b8
 		virtual void Function_0226(); //#226 +388 .rdata:007966bc
 		virtual void Function_0227(); //#227 +38c .rdata:007966c0
-		virtual void Function_0228(); //#228 +390 .rdata:007966c4
+		virtual ZLnkAction* getActionByEnum(UnknownEnum a0); //#228 +390 .rdata:007966c4
 		virtual void Function_0229(); //#229 +394 .rdata:007966c8
 		virtual void Function_0230(); //#230 +398 .rdata:007966cc
 		virtual void Function_0231(); //#231 +39c .rdata:007966d0
@@ -297,15 +330,15 @@ namespace hm3 {
 		virtual void Function_0236(); //#236 +3b0 .rdata:007966e4
 		virtual void Function_0237(); //#237 +3b4 .rdata:007966e8
 		virtual void Function_0238(); //#238 +3b8 .rdata:007966ec
-		virtual void Function_0239(); //#239 +3bc .rdata:007966f0
+		virtual void Function_0239(int _unk0); //#239 +3bc .rdata:007966f0
 		virtual void Function_0240(); //#240 +3c0 .rdata:007966f4
-		virtual void Function_0241(); //#241 +3c4 .rdata:007966f8
+		virtual void Function_0241(int _possibleItemId); //#241 +3c4 .rdata:007966f8
 		virtual void Function_0242(); //#242 +3c8 .rdata:007966fc
 		virtual void Function_0243(); //#243 +3cc .rdata:00796700
 		virtual void Function_0244(); //#244 +3d0 .rdata:00796704
 		virtual void Function_0245(); //#245 +3d4 .rdata:00796708
 		virtual void Function_0246(); //#246 +3d8 .rdata:0079670c
-		virtual void Function_0247(); //#247 +3dc .rdata:00796710
+		virtual bool Function_0247(); //#247 +3dc .rdata:00796710
 		virtual void Function_0248(); //#248 +3e0 .rdata:00796714
 		virtual void Function_0249(); //#249 +3e4 .rdata:00796718
 		virtual void Function_0250(); //#250 +3e8 .rdata:0079671c
@@ -318,7 +351,7 @@ namespace hm3 {
 		virtual void Function_0257(); //#257 +404 .rdata:00796738
 		virtual void Function_0258(); //#258 +408 .rdata:0079673c
 		virtual void Function_0259(); //#259 +40c .rdata:00796740
-		virtual void Function_0260(); //#260 +410 .rdata:00796744
+		virtual void Function_0260(UnknownEnum1 _a0, int _itemID); //#260 +410 .rdata:00796744
 		virtual const char* Function_0261(); //#261 +414 .rdata:00796748
 		virtual void Function_0262(); //#262 +418 .rdata:0079674c
 		virtual void Function_0263(); //#263 +41c .rdata:00796750
@@ -348,7 +381,7 @@ namespace hm3 {
 		virtual void Function_0287(); //#287 +47c .rdata:007967b0
 		virtual void Function_0288(); //#288 +480 .rdata:007967b4
 		virtual void Function_0289(); //#289 +484 .rdata:007967b8
-		virtual void Function_0290(); //#290 +488 .rdata:007967bc
+		virtual double Function_0290(); //#290 +488 .rdata:007967bc
 		virtual void Function_0291(); //#291 +48c .rdata:007967c0
 		virtual void Function_0292(); //#292 +490 .rdata:007967c4
 		virtual void Function_0293(); //#293 +494 .rdata:007967c8
@@ -365,7 +398,7 @@ namespace hm3 {
 		virtual void Function_0304(); //#304 +4c0 .rdata:007967f4
 		virtual void Function_0305(); //#305 +4c4 .rdata:007967f8
 		virtual void Function_0306(); //#306 +4c8 .rdata:007967fc
-		virtual void Function_0307(); //#307 +4cc .rdata:00796800
+		virtual ZHM3Item* Function_0307(); //#307 +4cc .rdata:00796800
 		virtual void Function_0308(); //#308 +4d0 .rdata:00796804
 		virtual void Function_0309(); //#309 +4d4 .rdata:00796808
 		virtual void Function_0310(); //#310 +4d8 .rdata:0079680c
@@ -386,31 +419,31 @@ namespace hm3 {
 		virtual void Function_0325(); //#325 +514 .rdata:00796848
 		virtual void Function_0326(); //#326 +518 .rdata:0079684c
 		virtual void Function_0327(); //#327 +51c .rdata:00796850
-		virtual void Function_0328(); //#328 +520 .rdata:00796854
+		virtual int Function_0328(); //#328 +520 .rdata:00796854 {always 999}
 		virtual void Function_0329(); //#329 +524 .rdata:00796858
 		virtual void Function_0330(); //#330 +528 .rdata:0079685c
 		virtual void Function_0331(); //#331 +52c .rdata:00796860
 		virtual void Function_0332(); //#332 +530 .rdata:00796864
 		virtual void Function_0333(); //#333 +534 .rdata:00796868
-		virtual void Function_0334(); //#334 +538 .rdata:0079686c
+		virtual int Function_0334(int _a0, int _a1, int _a2); //#334 +538 .rdata:0079686c
 		virtual void Function_0335(); //#335 +53c .rdata:00796870
 		virtual void Function_0336(); //#336 +540 .rdata:00796874
-		virtual void Function_0337(); //#337 +544 .rdata:00796878
+		virtual float Function_0337(float _a0); //#337 +544 .rdata:00796878
 		virtual void Function_0338(); //#338 +548 .rdata:0079687c
-		virtual void Function_0339(); //#339 +54c .rdata:00796880
+		virtual int Function_0339(int _a0, int _a1); //#339 +54c .rdata:00796880
 		virtual void Function_0340(); //#340 +550 .rdata:00796884
-		virtual void Function_0341(); //#341 +554 .rdata:00796888
+		virtual int Function_0341(float* _a0); //#341 +554 .rdata:00796888 {possible setPosition!!!}
 		virtual void Function_0342(); //#342 +558 .rdata:0079688c
-		virtual void Function_0343(); //#343 +55c .rdata:00796890
+		virtual void Function_0343(float _a0, int _a1, float _a2, float _a3, int _a4, int _a5, bool _a6, int _a7, int _a8); //#343 +55c .rdata:00796890
 		virtual void Function_0344(); //#344 +560 .rdata:00796894
-		virtual void Function_0345(); //#345 +564 .rdata:00796898
+		virtual void Function_0345(); //#345 +564 .rdata:00796898 {possible isAlive}
 		virtual void Function_0346(); //#346 +568 .rdata:0079689c
 		virtual void Function_0347(); //#347 +56c .rdata:007968a0
 		virtual int setStatus(ActorStatus status); //#348 +570 .rdata:007968a4
 		virtual void Function_0349(); //#349 +574 .rdata:007968a8
 		virtual void Function_0350(); //#350 +578 .rdata:007968ac
 		virtual void Function_0351(); //#351 +57c .rdata:007968b0
-		virtual void Function_0352(); //#352 +580 .rdata:007968b4
+		virtual bool Function_0352(bool _a0); //#352 +580 .rdata:007968b4
 		virtual void Function_0353(); //#353 +584 .rdata:007968b8
 		virtual void setPosition__FAKE(float* pThreeFloats); //#354 +588 .rdata:007968bc (it works with coordinates but not world coordinates [-1.0; 1.0])
 		virtual const float* getPosition__FAKE(); //#355 +58c .rdata:007968c0
@@ -419,35 +452,35 @@ namespace hm3 {
 		virtual void Function_0358(); //#358 +598 .rdata:007968cc
 		virtual bool Function_0359(bool arg); //#359 +59c .rdata:007968d0
 		virtual bool Function_0360(bool arg); //#360 +5a0 .rdata:007968d4
-		virtual void Function_0361(); //#361 +5a4 .rdata:007968d8
+		virtual void Function_0361(int a0, int a1, int a2); //#361 +5a4 .rdata:007968d8
 		virtual void Function_0362(); //#362 +5a8 .rdata:007968dc
 		virtual void Function_0363(); //#363 +5ac .rdata:007968e0
 		virtual void Function_0364(); //#364 +5b0 .rdata:007968e4
 		virtual int Function_0365(bool arg); //#365 +5b4 .rdata:007968e8
-		virtual bool Function_0366(bool); //#366 +5b8 .rdata:007968ec
-		virtual void Function_0367(); //#367 +5bc .rdata:007968f0
+		virtual bool Function_0366(bool _a0); //#366 +5b8 .rdata:007968ec
+		virtual bool Function_0367(bool _a0); //#367 +5bc .rdata:007968f0
 		virtual void Function_0368(); //#368 +5c0 .rdata:007968f4
-		virtual void Function_0369(); //#369 +5c4 .rdata:007968f8
-		virtual void Function_0370(); //#370 +5c8 .rdata:007968fc
+		virtual void Function_0369(int _a0, int _a1, int _a2, float _a3); //#369 +5c4 .rdata:007968f8
+		virtual float Function_0370(float _a0); //#370 +5c8 .rdata:007968fc {set 5B0 value}
 		virtual void Function_0371(); //#371 +5cc .rdata:00796900
 		virtual void Function_0372(); //#372 +5d0 .rdata:00796904
-		virtual void Function_0373(); //#373 +5d4 .rdata:00796908
+		virtual void Function_0373(int _a0); //#373 +5d4 .rdata:00796908 {possible reset actor state}
 		virtual void Function_0374(); //#374 +5d8 .rdata:0079690c
 		virtual void Function_0375(); //#375 +5dc .rdata:00796910
 		virtual void Function_0376(); //#376 +5e0 .rdata:00796914
 		virtual bool Function_0377(); //#377 +5e4 .rdata:00796918
 		virtual void Function_0378(); //#378 +5e8 .rdata:0079691c
-		virtual void Function_0379(); //#379 +5ec .rdata:00796920
+		virtual void Function_0379(int _enum0); //#379 +5ec .rdata:00796920
 		virtual void kill(); //#380 +5f0 .rdata:00796924
 		virtual void Function_0381(); //#381 +5f4 .rdata:00796928
-		virtual int Function_0382(); //#382 +5f8 .rdata:0079692c
-		virtual int sedate(); //#383 +5fc .rdata:00796930 (possible not but actor not dies here)
-		virtual int Function_0384(); //#384 +600 .rdata:00796934
+		virtual int setNormalStatus(); //#382 +5f8 .rdata:0079692c
+		virtual int setSleepStatus(); //#383 +5fc .rdata:00796930 (possible not but actor not dies here)
+		virtual int Function_0384(); //#384 +600 .rdata:00796934 {possible sedate or smth l ths}
 		virtual void Function_0385(); //#385 +604 .rdata:00796938
 		virtual int Function_0386(); //#386 +608 .rdata:0079693c
 		virtual void Function_0387(); //#387 +60c .rdata:00796940
 		virtual void Function_0388(); //#388 +610 .rdata:00796944
-		virtual void Function_0389(); //#389 +614 .rdata:00796948
+		virtual void Function_0389(int _a0); //#389 +614 .rdata:00796948
 		virtual void Function_0390(); //#390 +618 .rdata:0079694c
 		virtual void Function_0391(); //#391 +61c .rdata:00796950
 		virtual void Function_0392(); //#392 +620 .rdata:00796954
@@ -456,11 +489,11 @@ namespace hm3 {
 		virtual void Function_0395(); //#395 +62c .rdata:00796960 (sync suspicious level with ZOSD)
 		virtual void Function_0396(); //#396 +630 .rdata:00796964
 		virtual void Function_0397(); //#397 +634 .rdata:00796968
-		virtual void Function_0398(); //#398 +638 .rdata:0079696c
+		virtual bool Function_0398(); //#398 +638 .rdata:0079696c
 		virtual void Function_0399(); //#399 +63c .rdata:00796970
 		virtual void Function_0400(); //#400 +640 .rdata:00796974
-		virtual void Function_0401(); //#401 +644 .rdata:00796978
-		virtual void Function_0402(); //#402 +648 .rdata:0079697c
+		virtual int Function_0401(ZHM3Item* _item, int _a1, bool* _a2); //#401 +644 .rdata:00796978
+		virtual ZAnimationInfo* Function_0402(ZAnimationInfo* _anim); //#402 +648 .rdata:0079697c
 		virtual void Function_0403(); //#403 +64c .rdata:00796980
 		virtual void Function_0404(); //#404 +650 .rdata:00796984
 		virtual void Function_0405(); //#405 +654 .rdata:00796988
@@ -468,59 +501,150 @@ namespace hm3 {
 		virtual void Function_0407(); //#407 +65c .rdata:00796990
 		virtual void Function_0408(); //#408 +660 .rdata:00796994
 		virtual void Function_0409(); //#409 +664 .rdata:00796998
-		virtual void Function_0410(); //#410 +668 .rdata:0079699c
-		virtual void Function_0411(); //#411 +66c .rdata:007969a0
+		virtual int takeItem(std::intptr_t _itemID); //#410 +668 .rdata:0079699c, possible giveItem method
+		virtual std::intptr_t getCurrentItemID(); //#411 +66c .rdata:007969a0
 		virtual void Function_0412(); //#412 +670 .rdata:007969a4
-		virtual void Function_0413(); //#413 +674 .rdata:007969a8
-		virtual void Function_0414(); //#414 +678 .rdata:007969ac
+		virtual std::intptr_t getInHandItem(); //#413 +674 .rdata:007969a8
+		virtual int Function_0414(std::intptr_t _itemID, double _unkDouble, int _unkInt0, char _a5, int _a6, float _a7); //#414 +678 .rdata:007969ac
 		virtual void Function_0415(); //#415 +67c .rdata:007969b0
-		virtual void Function_0416(); //#416 +680 .rdata:007969b4
+		virtual void Function_0416(int _a0, int _a1); //#416 +680 .rdata:007969b4
 		virtual void Function_0417(); //#417 +684 .rdata:007969b8
-		virtual void Function_0418(); //#418 +688 .rdata:007969bc (knife thrower check, maybe item hooking here)
-		virtual void Function_0419(); //#419 +68c .rdata:007969c0
+		virtual int Function_0418(std::intptr_t _itemID0, std::intptr_t _itemID1); //#418 +688 .rdata:007969bc (knife thrower check, maybe item hooking here)
+		virtual void Function_0419(ZEventBase* _ev, int _a1); //#419 +68c .rdata:007969c0
 		virtual void Function_0420(); //#420 +690 .rdata:007969c4
 		virtual void Function_0421(); //#421 +694 .rdata:007969c8
 		virtual void Function_0422(); //#422 +698 .rdata:007969cc
 		virtual void Function_0423(); //#423 +69c .rdata:007969d0
 		virtual void Function_0424(); //#424 +6a0 .rdata:007969d4
-		virtual void Function_0425(); //#425 +6a4 .rdata:007969d8
+		virtual float Function_0425(); //#425 +6a4 .rdata:007969d8
 		virtual void Function_0426(); //#426 +6a8 .rdata:007969dc
 		virtual void Function_0427(); //#427 +6ac .rdata:007969e0
-		virtual void Function_0428(); //#428 +6b0 .rdata:007969e4
-		virtual void Function_0429(); //#429 +6b4 .rdata:007969e8
-		virtual void Function_0430(); //#430 +6b8 .rdata:007969ec
-		virtual void Function_0431(); //#431 +6bc .rdata:007969f0
+		virtual bool hasWeapon(); //#428 +6b0 .rdata:007969e4
+		virtual void Function_0429(int _itemOrItemID); //#429 +6b4 .rdata:007969e8
+		virtual void Function_0430(int _itemID, UnknownEnum1 _unk0); //#430 +6b8 .rdata:007969ec | _unk0 allowed only Value7 and Value8
+		virtual bool takeItemFromInventoryIntoHands(int _itemID, bool _flag0); //#431 +6bc .rdata:007969f0
 		virtual void Function_0432(); //#432 +6c0 .rdata:007969f4
 		virtual void Function_0433(); //#433 +6c4 .rdata:007969f8
 		virtual void Function_0434(); //#434 +6c8 .rdata:007969fc
 		virtual void Function_0435(); //#435 +6cc .rdata:00796a00
-		virtual void Function_0436(); //#436 +6d0 .rdata:00796a04
+		virtual std::intptr_t getAvailableSuitObjectID(); //#436 +6d0 .rdata:00796a04
 		virtual void Function_0437(); //#437 +6d4 .rdata:00796a08
 		virtual void Function_0438(); //#438 +6d8 .rdata:00796a0c
-		virtual void Function_0439(); //#439 +6dc .rdata:00796a10
-		virtual void Function_0440(); //#440 +6e0 .rdata:00796a14
+		virtual int  Function_0439(ZHM3Actor* _a0); //#439 +6dc .rdata:00796a10
+		virtual void Function_0440(int _itemID); //#440 +6e0 .rdata:00796a14
 		virtual void Function_0441(); //#441 +6e4 .rdata:00796a18
 		virtual void Function_0442(); //#442 +6e8 .rdata:00796a1c
-		virtual void Function_0443(); //#443 +6ec .rdata:00796a20
-		virtual void Function_0444(); //#444 +6f0 .rdata:00796a24 (loadExtendedAnimations)
+		virtual void Function_0443(bool value); //#443 +6ec .rdata:00796a20
+		virtual void preloadHandAnimations(); //#444 +6f0 .rdata:00796a24 (loadExtendedAnimations)
 		virtual void Function_0445(); //#445 +6f4 .rdata:00796a28
-		virtual void Function_0446(); //#446 +6f8 .rdata:00796a2c
+		virtual int Function_0446(ZHM3Item* item); //#446 +6f8 .rdata:00796a2c
 		virtual void Function_0447(); //#447 +6fc .rdata:00796a30 (actor flags, maybe not used by game)
-		virtual void Function_0448(); //#448 +700 .rdata:00796a34
+		virtual bool Function_0448(); //#448 +700 .rdata:00796a34
 
 		// === members ===
 		ActorInfos* ActorInformation;	//0x0004
-		char pad_0008[68]; //0x0008
+		/// ===========================================
+		char pad_0008[12]; //0x0008
+		uint32_t m_field14; //0x0014
+		char pad_0018[52]; //0x0018
 		SuiteMask m_suitMask; //0x004C
-		char pad_0050[932]; //0x0050
+		char pad_0050[20]; //0x0050
+		int32_t m_field64; //0x0064
+		char pad_0068[28]; //0x0068
+		ZBodyInfo* m_bodyInfo; //0x0084
+		char pad_0088[240]; //0x0088
+		float m_field178; //0x0178
+		ZActionDispatcher* m_actionDispatcher; //0x017C
+		char pad_0180[140]; //0x0180
+		int32_t m_field20C; //0x020C
+		char pad_0210[12]; //0x0210
+		int32_t m_field21C; //0x021C
+		char pad_0220[16]; //0x0220
+		int32_t m_field230; //0x0230
+		char pad_0234[4]; //0x0234
+		int32_t m_field238; //0x0238
+		char pad_023C[244]; //0x023C
+		int32_t m_field330; //0x0330
+		char pad_0334[12]; //0x0334
+		int32_t m_field340; //0x0340
+		char pad_0344[108]; //0x0344
+		int32_t m_field3B0; //0x03B0
+		char pad_03B4[12]; //0x03B4
+		int32_t m_field3C0; //0x03C0
+		char pad_03C4[44]; //0x03C4
+		int32_t m_field3F0; //0x03F0
 		ZHumanBoid* m_boid; //0x03F4
-		char pad_03F8[1288]; //0x03F8
-		int32_t m_onMapType; //0x0900
-		int32_t m_pad0;		 //0x0904
-		int32_t m_STDOBJID;	 //0x0908
-		char pad_0904[444];  //0x090C
-		uint32_t m_currentZROOM; //0x0AC8
-		char pad_0ACC[148]; //0x0ACC
+		char pad_03F8[68]; //0x03F8
+		float m_field43C; //0x043C
+		float m_field440; //0x0440
+		float m_field444; //0x0444
+		char pad_0448[24]; //0x0448
+		int32_t m_field460; //0x0460
+		char pad_0464[28]; //0x0464
+		int32_t m_field480; //0x0480
+		int32_t m_field484; //0x0484
+		char pad_0488[4]; //0x0488
+		int32_t m_field48C; //0x048C
+		char pad_0490[256]; //0x0490
+		float m_field590; //0x0590
+		float m_field594; //0x0594
+		float m_field598; //0x0598
+		char pad_059C[68]; //0x059C
+		int32_t m_field5E0; //0x05E0
+		char pad_05E4[8]; //0x05E4
+		float m_field5EC; //0x05EC
+		float m_field5F0; //0x05F0
+		float m_field5F4; //0x05F4
+		char pad_05F8[736]; //0x05F8
+		int32_t m_field8D8; //0x08D8
+		char pad_08DC[4]; //0x08DC
+		int32_t m_field8E0; //0x08E0
+		int32_t m_field8E4; //0x08E4
+		uint32_t m_animCurrent; //0x08E8
+		char pad_08EC[20]; //0x08EC
+		int32_t m_actorRole; //0x0900
+		int32_t m_HmAsID; //0x0904
+		int32_t m_STDOBJID; //0x0908
+		int32_t m_field90C; //0x090C
+		int32_t m_field910; //0x0910
+		int32_t m_field914; //0x0914
+		char pad_0918[56]; //0x0918
+		float m_field950; //0x0950
+		char pad_0954[4]; //0x0954
+		float m_field958; //0x0958
+		char pad_095C[4]; //0x095C
+		float m_field960; //0x0960
+		char pad_0964[4]; //0x0964
+		float m_field968; //0x0968
+		char pad_096C[8]; //0x096C
+		float m_field974; //0x0974
+		float m_field978; //0x0978
+		char pad_097C[88]; //0x097C
+		int32_t m_field9D4; //0x09D4
+		int32_t m_field9D8; //0x09D8
+		char pad_09DC[20]; //0x09DC
+		uint32_t m_animHoldToolbox; //0x09F0
+		uint32_t m_animHoldBriefcase; //0x09F4
+		char pad_09F8[4]; //0x09F8
+		uint32_t m_animHoldCoffee; //0x09FC
+		char pad_0A00[12]; //0x0A00
+		uint32_t m_animHoldBeer; //0x0A0C
+		char pad_0A10[44]; //0x0A10
+		float m_fieldA3C; //0x0A3C
+		float m_fieldA40; //0x0A40
+		char pad_0A44[132]; //0x0A44
+		ZROOM* m_room; //0x0AC8
+		float m_fieldACC; //0x0ACC
+		char pad_0AD0[8]; //0x0AD0
+		int32_t m_lastLogicUpdateTick; //0x0AD8
+		char pad_0ADC[32]; //0x0ADC
+		int32_t m_fieldAFC; //0x0AFC
+		char pad_0B00[12]; //0x0B00
+		float m_fieldB0C; //0x0B0C
+		int32_t m_fieldB10; //0x0B10
+		char pad_0B14[56]; //0x0B14
+		int32_t m_fieldB4C; //0x0B4C
+		char pad_0B50[16]; //0x0B50
 
 
 		// === custom ===

@@ -4,6 +4,7 @@
 #include <sdk/ZLinkedListNodeBase.h>
 #include <sdk/ZWINDOWS.h>
 #include <sdk/ZWINDOW.h>
+#include <sdk/ZGROUP.h>
 #include <sdk/ZGlacierRTTI.h>
 
 namespace ioi { namespace hm3 {
@@ -11,6 +12,15 @@ namespace ioi { namespace hm3 {
 	class ZXMLGUISystem : public ZLinkedListNodeBase
 	{
 	public:
+		/// === members ===
+		char pad_0014[16]; //0x0014
+		ZWINDOW* m_window; //0x0024
+		char pad_0028[4]; //0x0028
+		ZGlacierRTTI* m_RTTI; //0x002C
+		int m_unkInt0; //0x0030
+		ZGROUP* m_windowGroups[18]; //0x0034
+
+		/// === vftable ===
 		virtual void Function_0000(); //#0 +0 .rdata:00781244
 		virtual void Function_0001(); //#1 +4 .rdata:00781248
 		virtual void Function_0002(); //#2 +8 .rdata:0078124c
@@ -63,15 +73,6 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0049(); //#49 +c4 .rdata:00781308
 		virtual int Function_0050(); //#50 +c8 .rdata:0078130c
 		virtual void Function_0051(); //#51 +cc .rdata:00781310 
-
-
-		/// === members ===
-		char pad_0014[16]; //0x0014
-		ZWINDOW* m_window; //0x0024
-		char pad_0028[4]; //0x0028
-		ZGlacierRTTI* m_RTTI; //0x002C
-		char pad_0030[2013]; //0x0030
-
 	};
 
 } }

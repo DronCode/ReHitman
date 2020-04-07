@@ -13,7 +13,7 @@ namespace ioi { namespace hm3 {
 	public:
 		ZLnkAction*		m_currentAction; //0x0004
 		ZHM3Hitman3*	m_hitman3; //0x0008
-		ZLINKREFTAB*	m_lnkRefTab; //0x000C
+		LINKREFTAB*		m_lnkRefTab; //0x000C
 		char			pad_0010[1164]; //0x0010
 
 		virtual void Function_0000(); //#0 +0 .rdata:0079d988

@@ -10,4 +10,14 @@ namespace ioi {	namespace hm3 {
 		return GetItemInfoByID(itemID);
 	}
 
-} }
+	int ZHM3Item::getItemIDByItemInstance(ZHM3Item* instance)
+	{
+		if (!instance)
+			return 0;
+
+		typedef int(__thiscall* GetItemIDByInstance_t)(ioi::hm3::ZHM3Item*);
+		GetItemIDByInstance_t GetItemIDByInstance = (GetItemIDByInstance_t)0x004E5BC0;
+		return GetItemIDByInstance(instance);
+	}
+
+}}

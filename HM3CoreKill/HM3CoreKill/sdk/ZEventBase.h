@@ -1,16 +1,22 @@
 #pragma once
 
 #include <cstdint>
+
+#include <sdk/ZSTD.h>
 #include <sdk/ZLinkedListNodeBase.h>
 
 namespace ioi { namespace hm3 { 
-	class ZEventBase : public ZLinkedListNodeBase 
+	class ZEventBase : public ZLinkedListNodeBase
 	{
 	public:
 		/// === members ===
-		char pad_0014[16]; //0x0014
-		void* m_entity; //0x0024
-		char pad_0028[8]; //0x0028
+		int32_t m_field14; //0x0014
+		int32_t m_field18; //0x0018
+		int32_t m_field1C; //0x001C
+		int32_t m_field20; //0x0020
+		ZSTDOBJ* m_STDOBJ; //0x0024
+		int32_t m_field28; //0x0028
+		int32_t m_field2C; //0x002C
 
 		/// === vftable ===
 		virtual void Function_0000(); //#0 +0 .rdata:00768ce4
@@ -47,5 +53,5 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0031(); //#31 +7c .rdata:00768d60
 		virtual void Function_0032(); //#32 +80 .rdata:00768d64
 		virtual void Function_0033(); //#33 +84 .rdata:00768d68
-	}; 
+	}; //Size: 0x0030
 } }

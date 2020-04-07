@@ -4,6 +4,7 @@
 #include <sdk/ZEntityLocator.h>
 #include <sdk/ZWeaponDisplay.h>
 #include <sdk/ZInfoDisplay.h>
+#include <sdk/ZPickupMenu.h>
 #include <sdk/ZHM3InventoryMenu.h>
 #include <sdk/ZHM3CameraClass.h>
 
@@ -12,6 +13,43 @@ namespace ioi { namespace hm3 {
 	class ZGUI
 	{
 	public:
+		/// ---------- MEMBERS -----------
+		ZEntityLocator* m_entityLocator; //0x0004
+		char pad_0008[4]; //0x0008
+		uint32_t __MEMCHECK__; //0x000C [should be equal to 0x50000, otherwise memory corrupted!]
+		int32_t m_uiFlags; //0x0010
+		char pad_0014[16]; //0x0014
+		int32_t m_uiMapState; //0x0024
+		char pad_0028[12]; //0x0028
+		uint32_t m_postFilterCollectionEvent; //0x0034
+		uint32_t m_postFilterEvent; //0x0038
+		uint32_t m_postFilterSetEvent; //0x003C
+		char pad_0040[28]; //0x0040
+		ZHM3InventoryMenu* m_inventoryMenu; //0x005C
+		char pad_0060[212]; //0x0060
+		int32_t m_isWeaponShowed; //0x0134
+		char pad_0138[32]; //0x0138
+		uint32_t m_camera; //0x0158
+		ZHM3CameraClass* m_cameraClass; //0x015C
+		char pad_0160[92]; //0x0160
+		ZWeaponDisplay* m_weaponDisplay; //0x01BC
+		char pad_01C0[4]; //0x01C0
+		int32_t m_iconClassId; //0x01C4
+		char pad_01C8[16]; //0x01C8
+		ZInfoDisplay* m_infoDisplay; //0x01D8
+		char pad_01DC[240]; //0x01DC
+		uint32_t m_cheatMenu; //0x02CC
+		char pad_02D0[16]; //0x02D0
+		ZPickupMenu* m_pickupMenu; //0x02E0
+		char pad_02E4[16]; //0x02E4
+		uint32_t m_dropDisplay; //0x02F4
+		char pad_02F8[16]; //0x02F8
+		uint32_t m_actionMenu; //0x0308
+		char pad_030C[16]; //0x030C
+		uint32_t m_containerMenu; //0x031C
+		char pad_0320[32]; //0x0320
+
+		/// === vftable ===
 		virtual void Function_0000(); //#0 +0 .rdata:007a1a54
 		virtual void Function_0001(); //#1 +4 .rdata:007a1a58
 		virtual void Function_0002(); //#2 +8 .rdata:007a1a5c
@@ -132,42 +170,6 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0117(); //#117 +1d4 .rdata:007a1c28
 		virtual void Function_0118(); //#118 +1d8 .rdata:007a1c2c
 		virtual void Function_0119(); //#119 +1dc .rdata:007a1c30
-		
-		/// ---------- MEMBERS -----------
-		ZEntityLocator* m_entityLocator; //0x0004
-		char pad_0008[4]; //0x0008
-		uint32_t __MEMCHECK__; //0x000C [should be equal to 0x50000, otherwise memory corrupted!]
-		int32_t m_uiFlags; //0x0010
-		char pad_0014[16]; //0x0014
-		int32_t m_uiMapState; //0x0024
-		char pad_0028[12]; //0x0028
-		uint32_t m_postFilterCollectionEvent; //0x0034
-		uint32_t m_postFilterEvent; //0x0038
-		uint32_t m_postFilterSetEvent; //0x003C
-		char pad_0040[28]; //0x0040
-		ZHM3InventoryMenu* m_inventoryMenu; //0x005C
-		char pad_0060[212]; //0x0060
-		int32_t m_isWeaponShowed; //0x0134
-		char pad_0138[32]; //0x0138
-		uint32_t m_camera; //0x0158
-		ZHM3CameraClass* m_cameraClass; //0x015C
-		char pad_0160[92]; //0x0160
-		ZWeaponDisplay* m_weaponDisplay; //0x01BC
-		char pad_01C0[4]; //0x01C0
-		int32_t m_iconClassId; //0x01C4
-		char pad_01C8[16]; //0x01C8
-		ZInfoDisplay* m_infoDisplay; //0x01D8
-		char pad_01DC[240]; //0x01DC
-		uint32_t m_cheatMenu; //0x02CC
-		char pad_02D0[16]; //0x02D0
-		uint32_t m_pickupMenu; //0x02E0
-		char pad_02E4[16]; //0x02E4
-		uint32_t m_dropDisplay; //0x02F4
-		char pad_02F8[16]; //0x02F8
-		uint32_t m_actionMenu; //0x0308
-		char pad_030C[16]; //0x030C
-		uint32_t m_containerMenu; //0x031C
-		char pad_0320[32]; //0x0320
 	};
 
 }}

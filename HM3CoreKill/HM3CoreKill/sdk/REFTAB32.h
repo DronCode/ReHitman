@@ -14,7 +14,7 @@ namespace ioi {
 		int32_t m_itemsCount; //0x0024
 		char pad_0028[4]; //0x0028
 		uint32_t m_firstItem; //0x002C
-		char pad_0030[80]; //0x0030
+		char pad_0030[128]; //0x0030
 
 		// === vftable ===
 		virtual void Function_0000(); //#0 +0 .rdata:00756adc

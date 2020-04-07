@@ -1,66 +1,81 @@
 #pragma once
 
+#include <cstdint>
+
+#include <sdk/ZSTD.h>
+#include <sdk/ZROOM.h>
+#include <sdk/ZEventBuffer.h>
+#include <sdk/ZEntityLocator.h>
+#include <sdk/ZLinkedListNodeBase.h>
+
 namespace ioi { namespace hm3 {
 
-	// Created with ReClass.NET 1.2 by KN4CK3R
+	class ZGeomBufferPoolEntity;
+	class ZQElemsBuffer;
+	class ZBaseGeomLists;
+
+	/// --- { TODO : Move entities to their own files! } ---
 
 	class ZGeomBuffer
 	{
 	public:
+		/// === members ===
+		ZEventBuffer* m_eventBuffer; //0x0004
+		int32_t m_quartersCount; //0x0008
+		ZGeomBufferPoolEntity* m_pool; //0x000C
+		ZQElemsBuffer* m_quickElementsBuffer; //0x0010
+		ZBaseGeomLists* m_baseGeomLists; //0x0014
 
-		virtual void Function0();
-		virtual void Function1();
-		virtual void Function2();
-		virtual void Function3();
-		virtual void Function4();
-		virtual void Function5();
-		virtual void Function6();
-		virtual void Function7();
-		virtual void Function8();
-		virtual void Function9();
-		virtual void Function10();
-		virtual void Function11();
-		virtual void Function12();
-		virtual void Function13();
-		virtual void Function14();
-		virtual void Function15();
-		virtual void Function16();
-		virtual void Function17();
-		virtual void Function18();
-		virtual void Function19();
-		virtual void Function20();
-		virtual void Function21();
-		virtual void Function22();
-		virtual void Function23();
-		virtual void Function24();
-		virtual void Function25();
-		virtual void Function26();
-		virtual void Function27();
-		virtual void Function28();
-		virtual void Function29();
-		virtual void Function30();
-		virtual void Function31();
-		virtual void Function32();
-		virtual void Function33();
-		virtual void Function34();
-		virtual void Function35();
-		virtual void Function36();
-		virtual void Function37();
-		virtual void Function38();
-		virtual void Function39();
-		virtual void Function40();
-		virtual void Function41();
-		virtual void Function42();
-		virtual void Function43();
-		virtual void Function44();
-		virtual void Function45();
-		virtual void Function46();
-		virtual void Function47();
-		virtual void Function48();
-		virtual void Function49();
-		virtual void Function50();
-		virtual void Function51();
-		virtual void Function52();
-		virtual void Function53();
-	}; //Size: 0x0004
+		/// === vftable ===
+		virtual void Function_0000(); //#0 +0 .rdata:00760fd8
+		virtual void Function_0001(); //#1 +4 .rdata:00760fdc
+		virtual void Function_0002(); //#2 +8 .rdata:00760fe0
+		virtual void Function_0003(); //#3 +c .rdata:00760fe4
+		virtual void Function_0004(); //#4 +10 .rdata:00760fe8
+		virtual void Function_0005(); //#5 +14 .rdata:00760fec
+		virtual void Function_0006(); //#6 +18 .rdata:00760ff0
+		virtual void Function_0007(); //#7 +1c .rdata:00760ff4
+		virtual void Function_0008(); //#8 +20 .rdata:00760ff8
+		virtual void Function_0009(); //#9 +24 .rdata:00760ffc
+		virtual void Function_0010(); //#10 +28 .rdata:00761000
+		virtual void Function_0011(); //#11 +2c .rdata:00761004
+	}; //Size: 0x0018
+
+	class ZGeomBufferPoolEntity
+	{
+	public:
+		/// === members ===
+		char pad_0000[4]; //0x0000
+		int32_t m_unkInt; //0x0004
+		int32_t m_id; //0x0008
+		char pad_000C[124]; //0x000C
+	}; //Size: 0x0088
+
+
+	class ZQElemsBuffer
+	{
+	public:
+		/// === members ===
+		ZOffsetAlloc* m_offsetAllocator; //0x0004
+		ZROOM* m_roomTreeGroup; //0x0008
+
+		/// === vftable ===
+		virtual void Function0(); //#0 +0x0 .rdata:00761060
+	}; //Size: 0x000C
+
+	class ZBaseGeomLists
+	{
+	public:
+		/// === members ===
+		ZOffsetAlloc* m_offsetAllocator; //0x0004
+		uint32_t m_unkData; //0x0008
+		int32_t m_fieldC; //0x000C
+		int32_t m_field10; //0x0010
+		int32_t m_field14; //0x0014
+
+		/// === vftable ===
+		virtual void Function0(); //#0 +0x0 .rdata:007610A0
+	}; //Size: 0x0018
+
+
 } }

@@ -50,6 +50,16 @@ struct ComponentWatcher
 	}
 };
 
+struct ZCustomActor : public ioi::hm3::ZHM3Actor
+{
+	bool onUpdate()
+	{ 
+		typedef bool(__thiscall* ZActor_onUpdate_t)(ZCustomActor*);
+		ZActor_onUpdate_t onUpdate = (ZActor_onUpdate_t)0x00504CB0;
+		return onUpdate(this);
+	}
+};
+
 void HM3Game::Initialise()
 {
 	if (!checkBuildVersion())
@@ -88,11 +98,21 @@ void HM3Game::Initialise()
 	//setupGetComponentHook();
 
 	{
-		//DWORD addr = 0x0061CC77;
-		//HM3Function::overrideInstruction(HM3_PROCESS_NAME, addr, { 0xEB });
+		/*
+		/// Patch AI
+		HM3Function::overrideInstruction(
+			HM3_PROCESS_NAME,
+			0x0063E1C0,
+			{
+				//1'st
+				0x90, 0x90, 0x90, 0x90, 0x90, 0x90,
+				//2'nd
+				0x90, 0x90, 0x90, 0xC3
+			});
 
-		//DWORD addr2 = 0x006C9E12;
-		//HM3Function::overrideInstruction(HM3_PROCESS_NAME, addr2, { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 });
+		bool(__thiscall ZCustomActor::* onUpdateCallback)() = &ZCustomActor::onUpdate;
+		HM3Function::hookFunction<bool(__thiscall*)(), 5>(HM3_PROCESS_NAME, 0x0063E1C0, (DWORD)(DWORD*&)onUpdateCallback, {}, {});
+		*/
 	}
 
 	/*

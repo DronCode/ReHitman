@@ -59,7 +59,67 @@ namespace ioi
 		virtual void Function_0034(); //#34 +88 .rdata:00756a74
 	}; //Size: 0x0020
 
-	class ZSTDOBJ_TeleportEntity
+	class LINKREFTAB
+	{
+	public:
+		uint32_t m_items; //0x0004
+		uint32_t m_items1; //0x0008
+		int32_t m_capacity; //0x000C
+		int32_t m_field10; //0x0010
+		int32_t m_field14; //0x0014
+		int32_t m_field18; //0x0018
+		int32_t m_field1C_PTR; //0x001C
+		int32_t m_field20_PTR; //0x0020
+		REFTAB* m_reftab; //0x0024
+
+		/// === vftable ===
+		virtual void Function_0000(); //#0 +0 .rdata:00756c0c
+		virtual void Function_0001(); //#1 +4 .rdata:00756c10
+		virtual void Function_0002(); //#2 +8 .rdata:00756c14
+		virtual void Function_0003(); //#3 +c .rdata:00756c18
+		virtual void Function_0004(); //#4 +10 .rdata:00756c1c
+		virtual void Function_0005(); //#5 +14 .rdata:00756c20
+		virtual void Function_0006(); //#6 +18 .rdata:00756c24
+		virtual void Function_0007(); //#7 +1c .rdata:00756c28
+		virtual void Function_0008(); //#8 +20 .rdata:00756c2c
+		virtual void Function_0009(); //#9 +24 .rdata:00756c30
+		virtual void Function_0010(); //#10 +28 .rdata:00756c34
+		virtual void Function_0011(); //#11 +2c .rdata:00756c38
+		virtual void Function_0012(); //#12 +30 .rdata:00756c3c
+		virtual int at(int index); //#13 +34 .rdata:00756c40
+		virtual void Function_0014(); //#14 +38 .rdata:00756c44
+		virtual void Function_0015(); //#15 +3c .rdata:00756c48
+		virtual void Function_0016(); //#16 +40 .rdata:00756c4c
+		virtual void Function_0017(); //#17 +44 .rdata:00756c50
+		virtual void Function_0018(); //#18 +48 .rdata:00756c54
+		virtual void Function_0019(); //#19 +4c .rdata:00756c58
+		virtual void Function_0020(); //#20 +50 .rdata:00756c5c
+		virtual void Function_0021(); //#21 +54 .rdata:00756c60
+		virtual void Function_0022(); //#22 +58 .rdata:00756c64
+		virtual void Function_0023(); //#23 +5c .rdata:00756c68
+		virtual void Function_0024(); //#24 +60 .rdata:00756c6c
+		virtual void Function_0025(); //#25 +64 .rdata:00756c70
+		virtual void Function_0026(); //#26 +68 .rdata:00756c74
+		virtual void Function_0027(); //#27 +6c .rdata:00756c78
+		virtual void Function_0028(); //#28 +70 .rdata:00756c7c
+		virtual void Function_0029(); //#29 +74 .rdata:00756c80
+		virtual void Function_0030(); //#30 +78 .rdata:00756c84
+		virtual void Function_0031(); //#31 +7c .rdata:00756c88
+		virtual void Function_0032(); //#32 +80 .rdata:00756c8c
+		virtual void Function_0033(); //#33 +84 .rdata:00756c90
+		virtual void Function_0034(); //#34 +88 .rdata:00756c94
+		virtual void Function_0035(); //#35 +8c .rdata:00756c98
+		virtual void Function_0036(); //#36 +90 .rdata:00756c9c
+		virtual void Function_0037(); //#37 +94 .rdata:00756ca0
+		virtual void Function_0038(); //#38 +98 .rdata:00756ca4
+		virtual void Function_0039(); //#39 +9c .rdata:00756ca8
+		virtual void Function_0040(); //#40 +a0 .rdata:00756cac
+		virtual void Function_0041(); //#41 +a4 .rdata:00756cb0
+		virtual void Function_0042(); //#42 +a8 .rdata:00756cb4
+		virtual void Function_0043(); //#43 +ac .rdata:00756cb8
+	};
+
+	class ZSTDOBJ_TeleportEntity /// <<< DEPRECATED, DO NOT USE IT!
 	{
 	public:
 		char pad_0000[36]; //0x0000
@@ -333,58 +393,43 @@ namespace ioi
 		virtual void Function_0117(); //#117 +1d4 .rdata:00769250
 	}; //Size: 0x0010
 
-	class ZLINKREFTAB
+	class ZOffsetAlloc
 	{
 	public:
 		/// === members ===
-		///
+		int32_t m_field4; //0x0004
+		int32_t m_field8; //0x0008
+		int32_t m_fieldC; //0x000C
+		int32_t m_field10; //0x0010
+		int32_t m_field14; //0x0014
 
 		/// === vftable ===
-		virtual void Function_0000(); //#0 +0 .rdata:00756c0c
-		virtual void pushEntity(void* entity); //#1 +4 .rdata:00756c10
-		virtual void Function_0002(); //#2 +8 .rdata:00756c14
-		virtual void Function_0003(); //#3 +c .rdata:00756c18
-		virtual void Function_0004(); //#4 +10 .rdata:00756c1c
-		virtual void Function_0005(); //#5 +14 .rdata:00756c20
-		virtual void Function_0006(); //#6 +18 .rdata:00756c24
-		virtual void Function_0007(); //#7 +1c .rdata:00756c28
-		virtual void Function_0008(); //#8 +20 .rdata:00756c2c
-		virtual void Function_0009(); //#9 +24 .rdata:00756c30
-		virtual void Function_0010(); //#10 +28 .rdata:00756c34
-		virtual void Function_0011(); //#11 +2c .rdata:00756c38
-		virtual void Function_0012(); //#12 +30 .rdata:00756c3c
-		virtual void Function_0013(); //#13 +34 .rdata:00756c40
-		virtual void Function_0014(); //#14 +38 .rdata:00756c44
-		virtual void Function_0015(); //#15 +3c .rdata:00756c48
-		virtual void Function_0016(); //#16 +40 .rdata:00756c4c
-		virtual void Function_0017(); //#17 +44 .rdata:00756c50
-		virtual void Function_0018(); //#18 +48 .rdata:00756c54
-		virtual void Function_0019(); //#19 +4c .rdata:00756c58
-		virtual void Function_0020(); //#20 +50 .rdata:00756c5c
-		virtual void Function_0021(); //#21 +54 .rdata:00756c60
-		virtual void Function_0022(); //#22 +58 .rdata:00756c64
-		virtual void Function_0023(); //#23 +5c .rdata:00756c68
-		virtual void Function_0024(); //#24 +60 .rdata:00756c6c
-		virtual void Function_0025(); //#25 +64 .rdata:00756c70
-		virtual void Function_0026(); //#26 +68 .rdata:00756c74
-		virtual void Function_0027(); //#27 +6c .rdata:00756c78
-		virtual void Function_0028(); //#28 +70 .rdata:00756c7c
-		virtual void Function_0029(); //#29 +74 .rdata:00756c80
-		virtual void Function_0030(); //#30 +78 .rdata:00756c84
-		virtual void Function_0031(); //#31 +7c .rdata:00756c88
-		virtual void Function_0032(); //#32 +80 .rdata:00756c8c
-		virtual void Function_0033(); //#33 +84 .rdata:00756c90
-		virtual void Function_0034(); //#34 +88 .rdata:00756c94
-		virtual void Function_0035(); //#35 +8c .rdata:00756c98
-		virtual void Function_0036(); //#36 +90 .rdata:00756c9c
-		virtual void Function_0037(); //#37 +94 .rdata:00756ca0
-		virtual void Function_0038(); //#38 +98 .rdata:00756ca4
-		virtual void Function_0039(); //#39 +9c .rdata:00756ca8
-		virtual void Function_0040(); //#40 +a0 .rdata:00756cac
-		virtual void Function_0041(); //#41 +a4 .rdata:00756cb0
-		virtual void Function_0042(); //#42 +a8 .rdata:00756cb4
-		virtual void Function_0043(); //#43 +ac .rdata:00756cb8
-	};
+		virtual void Function0();
+	}; //Size: 0x0018
+
+	class ZOctreeCompiled
+	{
+	public:
+		/// === members ===
+		int32_t m_field4; //0x0004
+		int32_t m_field8; //0x0008
+		int32_t m_fieldC; //0x000C
+		int32_t m_field10; //0x0010
+		uint32_t m_unkData; //0x0014
+
+		/// === vftable ===
+		virtual void Function_0000(); //#0 +0 .rdata:00766494
+		virtual void Function_0001(); //#1 +4 .rdata:00766498
+		virtual void Function_0002(); //#2 +8 .rdata:0076649c
+		virtual void Function_0003(); //#3 +c .rdata:007664a0
+		virtual void Function_0004(); //#4 +10 .rdata:007664a4
+		virtual void Function_0005(); //#5 +14 .rdata:007664a8
+		virtual void Function_0006(); //#6 +18 .rdata:007664ac
+		virtual void Function_0007(); //#7 +1c .rdata:007664b0
+		virtual void Function_0008(); //#8 +20 .rdata:007664b4
+		virtual void Function_0009(); //#9 +24 .rdata:007664b8
+		virtual void Function_0010(); //#10 +28 .rdata:007664bc
+	}; //Size: 0x0018
 
 	/***
 	 * @fn stdobj_cast

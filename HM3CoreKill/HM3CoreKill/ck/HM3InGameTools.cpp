@@ -340,6 +340,40 @@ namespace ck
 					}
 				}
 			}
+
+			{ //Flags
+				auto boolVarEditor = [](const char* name, bool* pVar)
+				{
+					ImGui::Checkbox(name, pVar);
+					ImGui::SameLine(0.f, 5.f);
+					ImGui::Text("at 0x%.8X", pVar);
+				};
+
+				boolVarEditor("m_bChangingClothes", &hitman3->m_bChangingClothes);
+				boolVarEditor("m_bChangingClothesAllowed", &hitman3->m_bChangingClothesAllowed);
+				boolVarEditor("m_bSneaking", &hitman3->m_bSneaking);
+				boolVarEditor("m_bStrangulating", &hitman3->m_bStrangulating);
+				boolVarEditor("m_bInjecting", &hitman3->m_bInjecting);
+				boolVarEditor("m_bPunching", &hitman3->m_bPunching);
+				boolVarEditor("m_bPushing", &hitman3->m_bPushing);
+				boolVarEditor("m_bClimbingHatch", &hitman3->m_bClimbingHatch);
+				ImGui::Text("m_fInjectingTime: %f", hitman3->m_fInjectingTime);
+				boolVarEditor("m_bLockPicking", &hitman3->m_bLockPicking);
+				boolVarEditor("m_bNightVisionEnabled", &hitman3->m_bNightVisionEnabled);
+				boolVarEditor("m_bBinocularsEnabled", &hitman3->m_bBinocularsEnabled);
+				boolVarEditor("m_bFacingEnabled", &hitman3->m_bFacingEnabled);
+				boolVarEditor("m_bIsInMotion", &hitman3->m_bIsInMotion);
+				boolVarEditor("m_bIsWalking", &hitman3->m_bIsWalking);
+				boolVarEditor("m_bIsRunning", &hitman3->m_bIsRunning);
+				boolVarEditor("m_bIsCrouching", &hitman3->m_bIsCrouching);
+				boolVarEditor("m_bIsSneaking", &hitman3->m_bIsSneaking);
+				boolVarEditor("m_bIsCrouchSneaking", &hitman3->m_bIsCrouchSneaking);
+				boolVarEditor("m_bIsOnLadder", &hitman3->m_bIsOnLadder);
+				boolVarEditor("m_bIsOnDrainPipe", &hitman3->m_bIsOnDrainPipe);
+				boolVarEditor("m_bIsOnGuide", &hitman3->m_bIsOnGuide);
+				boolVarEditor("m_bForceCrouch", &hitman3->m_bForceCrouch);
+				boolVarEditor("m_bDragPosForced", &hitman3->m_bDragPosForced);
+			}
 		}
 	}
 
@@ -390,11 +424,19 @@ namespace ck
 			}
 
 			{
-				ImGui::Text("ZGui: "); ImGui::SameLine(0.f, 15.f); 
+				ImGui::Text("ZGui: "); ImGui::SameLine(0.f, 15.f);
 				if (!gameData || !gameData->m_Gui)
 					ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
 				else
 					ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", gameData->m_Gui);
+			}
+
+			{
+				ImGui::Text("ZXMLGUISystem: "); ImGui::SameLine(0.f, 15.f);
+				if (!gameData || !gameData->m_MenuElements || !gameData->m_MenuElements->m_XMLGUISystem)
+					ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
+				else
+					ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "0x%.8X", gameData->m_MenuElements->m_XMLGUISystem);
 			}
 
 			{
@@ -455,6 +497,8 @@ namespace ck
 					(hitman3->m_currentZone ? hitman3->m_currentZone->entityName : "N/A")
 				);
 
+				ImGui::Text("GMS: \"%s\"", engineDB->m_gms);
+
 				ImGui::Separator();
 				ImGui::Text("Hands: ");
 
@@ -504,7 +548,7 @@ namespace ck
 			{
 				ImGui::Separator();
 				ImGui::Text("Player's inventory: ");
-				drawInventory(hitman3->m_inventory);
+				drawInventory(hitman3->m_inventory, true);
 			}
 
 			{
@@ -553,31 +597,12 @@ namespace ck
 					CloseTopWindow_t CloseTopWindow = (CloseTopWindow_t)0x005685C0;
 					CloseTopWindow(gameData->m_MenuElements->m_XMLGUISystem, 0);
 				}
+			}
 
-				if (ImGui::Button("Check"))
+			{
+				if (ImGui::Button("GetHmAs"))
 				{
-					ioi::hm3::ZHitmanActionDestroyDualWeapons* action = reinterpret_cast<ioi::hm3::ZHitmanActionDestroyDualWeapons*>(hitman3->createAction(ioi::hm3::ZLnkActionType::HitmanActionDestroyDualWeapons));
-					action->m_itemTemplate = nullptr; //be safe
-
-					auto hand = hitman3->getHand(ioi::hm3::HandType::RightHand);
-					if (hand)
-					{
-						auto item = hand->getItem();
-						if (item)
-						{
-							auto itemTemplate = item->getItemTemplate();
-							action->m_itemTemplate = itemTemplate;
-						}
-					}
-					
-					if (action->m_itemTemplate)
-					{
-						hitman3->m_lnkActionQueue->pushAction(reinterpret_cast<ioi::hm3::ZLnkAction*>(action));
-					}
-					else 
-					{
-						HM3_DEBUG("No item at hand or unable to take item template for item of left hand");
-					}
+					HM3_DEBUG("HMAS: 0x%.8X\n", hitman3->m_HmAs);
 				}
 			}
 		}
@@ -735,6 +760,11 @@ namespace ck
 		ImGui::End();
 	}
 
+	static void onAnimCompletedCallback(std::uintptr_t raw)
+	{
+		HM3_DEBUG(" * Animation completed for object 0x%.8x\n", raw);
+	}
+
 	void HM3InGameTools::drawActorInfo(ioi::hm3::ZHM3Actor* currentActor)
 	{
 		auto sys = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
@@ -798,7 +828,14 @@ namespace ck
 
 						if (ImGui::Button("Teleport"))
 						{
-							boid->setPosition(newBoidPosition);
+							ioi::Vector3 newPos = { newBoidPosition[0], newBoidPosition[1], newBoidPosition[2] };
+							boid->setCurrentPosition(&newPos);
+						}
+
+						if (ImGui::Button("Run to"))
+						{
+							ioi::Vector3 runTo = { newBoidPosition[0], newBoidPosition[1], newBoidPosition[2] };
+							boid->setTrackingPosition(&runTo);
 						}
 					}
 					else
@@ -835,7 +872,7 @@ namespace ck
 					auto inventory = reinterpret_cast<ioi::hm3::CInventory*>(currentActor->getComponent("Inventory"));
 					if (inventory)
 					{
-						drawInventory(inventory);
+						drawInventoryOfActor(inventory, currentActor);
 					}
 					else
 					{
@@ -892,6 +929,7 @@ namespace ck
 				}
 
 				ImGui::Separator();
+
 				drawSuitInfoForActor(currentActor);
 				drawHandInfo(currentActor->getHand(ioi::hm3::HandType::LeftHand));
 				drawHandInfo(currentActor->getHand(ioi::hm3::HandType::RightHand));
@@ -939,8 +977,11 @@ namespace ck
 						ImGui::SameLine(0.f, 5.f);
 						if (ImGui::Button("Apply for player"))
 						{
-							gameData->m_Hitman3->dropCurrentAnimation();
-							gameData->m_Hitman3->setAnimation(currentAnim);
+							if (gameData)
+							{
+								gameData->m_Hitman3->dropCurrentAnimation();
+								gameData->m_Hitman3->setAnimation(currentAnim);
+							}
 						}
 					}
 				}
@@ -949,6 +990,34 @@ namespace ck
 					if (ImGui::Button("Kill actor"))
 					{
 						currentActor->kill();
+					}
+				}
+
+				ImGui::Separator();
+
+				{
+					if (ImGui::Button("call Function_0334(0, 4, 1)"))
+					{
+						HM3_DEBUG("RES = 0x%.8X\n", currentActor->Function_0334(0, 4, 1));
+					}
+
+					if (ImGui::Button("call Function_0334(34, 20, 1)"))
+					{
+						HM3_DEBUG("RES = 0x%.8X\n", currentActor->Function_0334(34, 20, 1));
+					}
+
+					if (ImGui::Button("call Function_0398()"))
+					{
+						HM3_DEBUG("RES = 0x%.8X\n", currentActor->Function_0398());
+					}
+
+					if (ImGui::Button("Check Body Direction 0"))
+					{
+						typedef int(__thiscall* ZHumanBoid__setNewDirection_t)(ioi::hm3::ZHumanBoid*, ioi::Vector3*, ioi::Vector3*, float, bool);
+						ZHumanBoid__setNewDirection_t setNewDirection = (ZHumanBoid__setNewDirection_t)0x00585670;
+						
+						ioi::Vector3 newPosition = { 5.f, 5.f, 5.f };
+						ioi::Vector3 newRotation = { 100.f, 100.f, 100.f };
 					}
 				}
 
@@ -1033,7 +1102,7 @@ namespace ck
 		}
 	}
 
-	void HM3InGameTools::drawInventory(ioi::hm3::CInventory* inventory)
+	void HM3InGameTools::drawInventory(ioi::hm3::CInventory* inventory, bool isPlayer)
 	{
 		auto sys = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
 		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
@@ -1058,6 +1127,11 @@ namespace ck
 					}
 
 					auto itemTemplate = pItem->getItemTemplate();
+
+					if (isPlayer)
+					{
+					}
+
 					ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "[0x%.8X]", pItem); ImGui::SameLine(0.f, 4.f);
 					ImGui::Text("#%.3d %s (%.4X) | Item template (at 0x%.8X) %s | ClassID is 0x%.8X", i, pItem->m_entityLocator->entityName, itemId, itemTemplate, (itemTemplate ? itemTemplate->m_entityLocator->entityName : "(N/A)"), pItem->getClassID());
 				}
@@ -1068,5 +1142,49 @@ namespace ck
 			ImGui::SameLine(0.f, 3.f);
 			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
 		}
+	}
+
+	void HM3InGameTools::drawInventoryOfActor(ioi::hm3::CInventory* inventory, ioi::hm3::ZHM3Actor* currentActor)
+	{
+		auto sys = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
+		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
+		HM3_ASSERT(gameData != nullptr, "GameData must be valid here!");
+
+		ioi::REFTAB32* inventoryREFTAB32 = inventory->getREFTAB32();
+
+		if (inventoryREFTAB32)
+		{
+			if (inventoryREFTAB32->m_itemsCount == 0)
+			{
+				ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), " (Empty) ");
+			}
+			else {
+				for (int i = 0; i < inventoryREFTAB32->m_itemsCount; i++)
+				{
+					std::intptr_t itemId = *ioi::get<std::intptr_t>(inventoryREFTAB32, i);
+					ioi::hm3::ZHM3Item* pItem = ioi::hm3::ZHM3Item::findItemByID(itemId);
+					if (!pItem || !pItem->m_entityLocator)
+					{
+						continue;
+					}
+
+					auto itemTemplate = pItem->getItemTemplate();
+
+					/// custom logic here
+
+					ImGui::SameLine(0.f, 5.f);
+
+					ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "[0x%.8X]", pItem); ImGui::SameLine(0.f, 4.f);
+					ImGui::Text("#%.3d %s (%.4X) | Item template (at 0x%.8X) %s | ClassID is 0x%.8X", i, pItem->m_entityLocator->entityName, itemId, itemTemplate, (itemTemplate ? itemTemplate->m_entityLocator->entityName : "(N/A)"), pItem->getClassID());
+				}
+			}
+		}
+		else
+		{
+			ImGui::SameLine(0.f, 3.f);
+			ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "N/A");
+		}
+
+
 	}
 }

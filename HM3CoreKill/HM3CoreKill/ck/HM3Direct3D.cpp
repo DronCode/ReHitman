@@ -2,6 +2,10 @@
 #include <ck/HM3Function.h>
 #include <ck/HM3InGameTools.h>
 
+#include <imgui.h>
+#include <imgui_impl_dx9.h>
+
+
 //#define CKD3D_USE_TEXTURES_HOOK
 #define CKD3D_USE_VERTEX_BINDER_HOOK
 
@@ -49,8 +53,10 @@ namespace ck
 
 	HRESULT __stdcall Direct3DDevice_OnReset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* pPresentationParameters)
 	{
+		ImGui_ImplDX9_InvalidateDeviceObjects();
 		auto result = originalResetFunc(device, pPresentationParameters);
-		
+		ImGui_ImplDX9_CreateDeviceObjects();
+
 		auto callback = HM3Direct3D::getInstance().onDeviceLost;
 		if (callback)
 			callback(device);

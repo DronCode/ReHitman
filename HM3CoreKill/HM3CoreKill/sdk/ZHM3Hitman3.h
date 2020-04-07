@@ -445,7 +445,7 @@ namespace ioi { namespace hm3 {
 		// === members ===
 		char pad_0004[376]; //0x0004
 		ZLnkActionQueue* m_lnkActionQueue; //0x017C
-		char pad_0180[609]; //0x0180
+		char pad_0180[597]; //0x0180
 		int m_field3D8; //0x03D8
 		int m_field3DC; //0x03DC
 		int m_field3E0; //0x03E0
@@ -549,7 +549,8 @@ namespace ioi { namespace hm3 {
 		int32_t m_field1020; //0x1020
 		int32_t m_field1024; //0x1024
 		int8_t m_field1028; //0x1028
-		int16_t m_field1029; //0x1029
+		int8_t m_field1029; //0x1029
+		int8_t m_field102A; //0x102A
 		int8_t m_field102B; //0x102B
 		bool m_bChangingClothes; //0x102C
 		bool m_bChangingClothesAllowed; //0x102D
@@ -561,7 +562,8 @@ namespace ioi { namespace hm3 {
 		bool m_bClimbingHatch; //0x1033
 		float m_fInjectingTime; //0x1034
 		bool m_bLockPicking; //0x1038
-		int16_t m_field1039; //0x1039
+		int8_t m_field1039; //0x1039
+		int8_t m_field103A; //0x103A
 		int8_t m_field103B; //0x103B
 		bool m_bNightVisionEnabled; //0x103C { controlled by +3D8 & 19, when true - game crashing }
 		bool m_bBinocularsEnabled; //0x103D
@@ -606,4 +608,6 @@ namespace ioi { namespace hm3 {
 		const NearActorRef& getNearActorByTheirIndex(int32_t index);
 		ZIKHAND* getHand(HandType type);
 	}; //Size: 0x1478
+
+
 }}

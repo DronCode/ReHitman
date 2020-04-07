@@ -146,9 +146,9 @@ namespace ck
 
 	void HM3InGameTools::setRenderDevice(IDirect3DDevice9* dxDevice)
 	{
-		ImGui_ImplDX9_InvalidateDeviceObjects();
-		m_device = dxDevice;
-		ImGui_ImplDX9_CreateDeviceObjects();
+		HM3_UNUSED(dxDevice);
+
+		// Unused because main logic moved to HM3Direct3D.cpp : Direct3DDevice_OnReset
 	}
 
 	HM3InGameTools::SceneRenderMode HM3InGameTools::getSceneRenderMode() const
@@ -596,13 +596,6 @@ namespace ck
 					typedef bool(__thiscall* CloseTopWindow_t)(ioi::hm3::ZXMLGUISystem*, int);
 					CloseTopWindow_t CloseTopWindow = (CloseTopWindow_t)0x005685C0;
 					CloseTopWindow(gameData->m_MenuElements->m_XMLGUISystem, 0);
-				}
-			}
-
-			{
-				if (ImGui::Button("GetHmAs"))
-				{
-					HM3_DEBUG("HMAS: 0x%.8X\n", hitman3->m_HmAs);
 				}
 			}
 		}
@@ -1127,10 +1120,6 @@ namespace ck
 					}
 
 					auto itemTemplate = pItem->getItemTemplate();
-
-					if (isPlayer)
-					{
-					}
 
 					ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "[0x%.8X]", pItem); ImGui::SameLine(0.f, 4.f);
 					ImGui::Text("#%.3d %s (%.4X) | Item template (at 0x%.8X) %s | ClassID is 0x%.8X", i, pItem->m_entityLocator->entityName, itemId, itemTemplate, (itemTemplate ? itemTemplate->m_entityLocator->entityName : "(N/A)"), pItem->getClassID());

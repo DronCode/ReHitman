@@ -202,7 +202,7 @@ namespace ioi
 		virtual void Function_0061(); //#61 +f4 .rdata:0076bfd0
 		virtual void Function_0062(); //#62 +f8 .rdata:0076bfd4
 		virtual void Function_0063(); //#63 +fc .rdata:0076bfd8
-		virtual void Function_0064(); //#64 +100 .rdata:0076bfdc
+		virtual int Function_0064(const char* _componentName); //#64 +100 .rdata:0076bfdc
 		virtual void Function_0065(); //#65 +104 .rdata:0076bfe0
 		virtual void Function_0066(); //#66 +108 .rdata:0076bfe4
 		virtual void Function_0067(); //#67 +10c .rdata:0076bfe8

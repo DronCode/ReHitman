@@ -1,28 +1,95 @@
 #pragma once
 
 #include <cstdint>
+
 #include <sdk/ZSTD.h>
+#include <sdk/ZROOM.h>
+#include <sdk/ZGEOM.h>
+#include <sdk/ZCAMERA.h>
 #include <sdk/REFTAB32.h>
+#include <sdk/ZEventBase.h>
 #include <sdk/ZGeomBuffer.h>
+#include <sdk/ZAnimationInfo.h>
 #include <sdk/ResourceCollection.h>
+#include <sdk/scripting/ZScriptC.h>
+#include <sdk/ZLinkedListNodeBase.h>
 
 namespace ioi { namespace hm3 {
-
-	// Created with ReClass.NET 1.2 by KN4CK3R
 
 	class ZEngineDatabase
 	{
 	public:
-		char pad_0004[12]; //0x0004
+		/// === members ===
+		int32_t m_field4; //0x0004
+		int32_t m_field8; //0x0008
+		int32_t m_fieldC; //0x000C
 		ZGeomBuffer* m_geomBuffer; //0x0010
-		char pad_0014[124]; //0x0014
-		uint32_t m_room; //0x0090
+		uint32_t m_pf4runtime__data; //0x0014
+		ZAnimationInfo* m_animUnknown; //0x0018
+		uint32_t m_ppPF4Runtime__Data; //0x001C
+		int32_t m_field20; //0x0020
+		int32_t m_field24; //0x0024
+		char* m_field28; //0x0028
+		int32_t m_field2C; //0x002C
+		int32_t m_field30; //0x0030
+		/// ---{ LINKED LIST GOD RAY BEGIN }---
+		
+		///TODO: Use ZLinkedList<T> for this we need to implement ZEventBase, CWinEvent<ZWINDOW>, ZLIST, ZGEOM, ZCAMERA, CBaseEvent<ZGEOM> and ZPostFilterBoxEvent
+		
+		//uint32_t m_ZEventBase_LinkedList_EndPtr; //0x0034
+		//uint32_t m_ZEventBase_LinkedList_BeginPtr; //0x0038
+		ZLinkedListHeader<ZEventBase> m_eventBase_LinkedList; //0x0034
+		
+		//uint32_t m_CWinEvent_LinkedList_EndPtr; //0x003C
+		//uint32_t m_CWinEvent_LinkedList_BeginPtr; //0x0040
+		ZLinkedListHeader<ZEventBase> m_cWinEvent_LinkedList; //0x003C
+		
+		//uint32_t m_UnknownClass0_LinkedListPtr_EndPtr_BP; //0x0044
+		//uint32_t m_UnknownClass0_LinkedListPtr_BeginPtr_BP; //0x0048
+		ZLinkedListHeader<void> m_unknownClass0_LinkedList; //0x0044
+
+		//uint32_t m_ZLIST_LinkedList_EndPtr; //0x004C
+		//uint32_t m_ZLIST_LinkedList_BeginPtr; //0x0050
+		ZLinkedListHeader<ZLIST> m_zList_LinkedList; //0x004C
+		
+		//uint32_t m_ZGEOM_LinkedList_EndPtr; //0x0054
+		//uint32_t m_ZGEOM_LinkedList_BeginPtr; //0x0058
+		ZLinkedListHeader<ZGEOM> m_zGeom_LinkedList; //0x0054
+		
+		//uint32_t m_UnknownClass1_LinkedListPtr_EndPtr_BP; //0x005C
+		//uint32_t m_UnknownClass1_LinkedListPtr_BeginPtr_BP; //0x0060
+		ZLinkedListHeader<void> m_unknownClass1_LinkedList; //0x005C
+
+		//uint32_t m_ZCAMERA_LinkedList_EndPtr; //0x0064
+		//uint32_t m_ZCAMERA_LinkedList_BeginPtr; //0x0068
+		ZLinkedListHeader<ZCAMERA> m_zCamera_LinkedList; //0x0064
+		
+		//uint32_t m_ZGEOMPostFilterEvent_LinkedList_EndPtr; //0x006C
+		//uint32_t m_ZGEOMPostFilterEvent_LinkedList_BeginPtr; //0x0070
+		ZLinkedListHeader<ZGEOM> m_zGeomPostFilterEvent_LinkedList; //0x006C
+		
+		//uint32_t m_ZCAMERAPostFilterEvent_LinkedList_EndPtr; //0x0074
+		//uint32_t m_ZCAMERAPostFilterEvent_LinkedList_BeginPtr; //0x0078
+		ZLinkedListHeader<ZCAMERA> m_zCameraPostFilterEvent_LinkedList; //0x0074
+		
+		//uint32_t ZGEOM2_LinkedList_EndPtr; //0x007C
+		//uint32_t ZGEOM2_LinkedList_BeginPtr; //0x0080
+		ZLinkedListHeader<ZGEOM> m_zGeom2_LinkedList; //0x0074
+		
+		//uint32_t m_unk_LinkedList_EndPtr; //0x0084
+		//uint32_t m_unk_LinkedList_BeginPtr; //0x0088
+		ZLinkedListHeader<void> m_unknownClass2_LinkedList; //0x0084
+		
+		/// ---{ LINKED LIST GOD RAY END }---
+		ZScheduledScript* m_ppScheduledScript; //0x008C
+		ZROOM* m_room; //0x0090
 		char pad_0094[4]; //0x0094
 		ResourceCollection* m_resourceCollection; //0x0098
 		char pad_009C[56]; //0x009C
-		char* m_currentGMS; //0x00D4
-		char pad_00D8[104]; //0x00D8
+		char* m_gms; //0x00D4
 
+
+		/// === vftable ===
 		virtual void Function0();	//+0x0
 		virtual void Function1();	//+0x4
 		virtual void Function2();	//+0x8
@@ -131,7 +198,7 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0018(); //#0018 +0048 .rdata:007564ac
 		virtual void Function_0019(); //#0019 +004c .rdata:007564b0
 		virtual void Function_0020(); //#0020 +0050 .rdata:007564b4
-		virtual void Function_0021(); //#0021 +0054 .rdata:007564b8
+		virtual int Function_0021(const char* entityName, int entityId, int unk0 = 16); //#0021 +0054 .rdata:007564b8
 		virtual void Function_0022(); //#0022 +0058 .rdata:007564bc
 		virtual void Function_0023(); //#0023 +005c .rdata:007564c0
 		virtual void Function_0024(); //#0024 +0060 .rdata:007564c4

@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <cstdint>
+
 namespace ioi {
 namespace hm3 {
 	enum class ZLnkActionType
@@ -83,24 +85,33 @@ namespace hm3 {
 	class ZLnkAction
 	{
 	public:
-		/***
-		 * @brief Constructor
-		 **/
-		virtual void Function_0();	/// sub_51FFB0
-		virtual void Function_1();								/// sub_6FDBF0
-		virtual bool ApplyAction();								/// sub_69D5C0
-		virtual int Function_3();								/// sub_580400
-		virtual bool Function_4();								/// sub_580400
-		virtual void Function_5(void*);							/// jpeg_mem_term
-		virtual void Function_6();								/// nullsub_4
-		virtual const char* GetActionName();					/// nullsub_4
-		virtual void Function_8();								/// sub_402FE0
-		virtual bool Function_9();								/// sub_580400
-		virtual void* Function_10();							/// sub_6F7FC0
-		virtual bool Function_11(int, int);						/// sub_7113E0
-		virtual bool Function_12();								/// sub_69D5C0
-		virtual int setup(int, int);						/// sub_50E400
-	};
+		/// === members ===
+		ZLnkActionType m_actionType; //0x0004
+		uint32_t m_actor; //0x0008
+		uint32_t m_hand; //0x000C
+		uint32_t m_animPutGunRight; //0x0010
+		uint32_t m_animPutGunRight_1; //0x0014
+		uint32_t m_unk0; //0x0018
+		int32_t m_unk1; //0x001C
+		uint32_t m_unkPtr; //0x0020
+		uint32_t m_group; //0x0024
+
+		/// === vftable ===
+		virtual void Function_0();				/// sub_51FFB0
+		virtual void Function_1();				/// sub_6FDBF0
+		virtual bool ApplyAction();				/// sub_69D5C0
+		virtual int Function_3();				/// sub_580400
+		virtual bool Function_4();				/// sub_580400
+		virtual void Function_5(void*);			/// jpeg_mem_term
+		virtual void Function_6();				/// nullsub_4
+		virtual const char* GetActionName();	/// nullsub_4
+		virtual void Function_8();				/// sub_402FE0
+		virtual bool Function_9();				/// sub_580400
+		virtual void* Function_10();			/// sub_6F7FC0
+		virtual bool Function_11(int, int);		/// sub_7113E0
+		virtual bool Function_12();				/// sub_69D5C0
+		virtual int setup(int, int);			/// sub_50E400
+	}; //Size: 0x0028
 	/*
 HITMAN BLOOD MONEY ACTIONS LIST (TODO)
 

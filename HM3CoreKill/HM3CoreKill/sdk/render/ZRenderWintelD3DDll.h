@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cstdint>
+
+#include <sdk/ZSTD.h>
+#include <sdk/MathCommon.h>
 #include <sdk/render/ZTextureManagerD3D.h>
 #include <sdk/render/ZRenderMaterialBufferD3D.h>
 #include <sdk/render/ZPrimControlWintel.h>
@@ -17,15 +20,25 @@ namespace ioi { namespace hm3 {
 	{
 	public:
 		// === data ===
-		char* m_pDLL; //0x0004
-		char pad_0008[12]; //0x0008
+		char* m_dllName; //0x0004
+		int32_t m_field8; //0x0008
+		int32_t m_fieldC; //0x000C
+		int32_t m_field10; //0x0010
 		ZTextureManagerD3D* m_textureManager; //0x0014
-		ZPrimControlWintel* m_primitivesControl; //0x0018
-		ZRenderMaterialBufferD3D* m_materialBuffer; //0x001C
-		char pad_0020[12]; //0x0020
-		ZVisibleEntitiesPool* m_visibleEntitiesList; //0x002C
-		char pad_0030[272]; //0x0030
-
+		ZPrimControlWintel* m_primControl; //0x0018
+		ZRenderMaterialBufferD3D* m_renderMaterialBuffer; //0x001C
+		char pad_0020[4]; //0x0020
+		Vector3* m_unkVec3; //0x0024
+		char pad_0028[28]; //0x0028
+		class LINKREFTAB m_linkreftab; //0x0044
+		char pad_006C[12]; //0x006C
+		int32_t m_field78; //0x0078
+		char pad_007C[8]; //0x007C
+		float m_field84; //0x0084
+		char pad_0088[28]; //0x0088
+		int32_t m_fieldA4; //0x00A4
+		float m_fieldA8; //0x00A8
+		char pad_00AC[28]; //0x00AC
 
 		// === vftable ===
 		virtual void Function_0000(); //#0 +0 .rdata:00763754

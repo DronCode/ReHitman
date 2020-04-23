@@ -16,7 +16,7 @@ namespace hm3 {
 	static const std::uintptr_t GameData		 = 0x0082083C;	//Based on ZHM3GameData (see sdk/ZHM3GameData.h for details)
 	static const std::uintptr_t SysInterface	 = 0x00820820;	//Based on ZSysInterface (67 methods, some of them is purecall), has child class ZSysInterfaceWintel
 	static const std::uintptr_t GlobalAllocator  = 0x008208C8;	//Based on ZSysMem
-	static const std::uintptr_t Renderer		 = 0x008ACA30;	//Based on ZRenderWintelD3DDll
+	static const std::uintptr_t RendererDLL		 = 0x008ACA30;	//Based on ZRenderWintelD3DDll
 	static const std::uintptr_t NetPlatform		 = 0x00820844;	//Based on ZNetPlatform_Win32_t : ZNetPlatform_t : ZNetAlloc_t
 	static const std::uintptr_t GlobalCOM		 = 0x00820830;	//Based on CGlobalCom : CSharedCom
 	static const std::uintptr_t LobbyRendezvous  = 0x00820848;	//Based on ZLobbyRendezvous : ZLobby : ZNetAlloc_t
@@ -53,5 +53,11 @@ namespace hm3 {
 
 	static const std::uintptr_t CTelePortList_ConstructorFunc = 0x0052AA80;
 	static const std::uintptr_t CTelePortList_RTTI = 0x0099CB30;
+
+	namespace rtti
+	{
+		static const std::uintptr_t WeaponItemClassID		= 0x0099BF58;
+		static const std::uintptr_t WeaponItemClassIDMask	= 0x0099BF5C;
+	}
 
 }}

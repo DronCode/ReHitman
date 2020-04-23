@@ -2,6 +2,7 @@
 
 #include <sdk/actions/ZLnkAction.h>
 #include <sdk/game/ZHM3MovementGuideToMatPos.h>
+#include <sdk/ZLnkActionQueue.h>
 #include <sdk/ZAnimationInfo.h>
 #include <sdk/ZBoxPrimitive.h>
 #include <sdk/CInventory.h>
@@ -11,10 +12,9 @@
 #include <sdk/ZHM3Item.h>
 #include <sdk/ZHM3HmAs.h>
 #include <sdk/ZIKHAND.h>
+#include <sdk/ZROOM.h>
 
-
-namespace ioi {
-namespace hm3 {
+namespace ioi { namespace hm3 {
 
 	struct NearActorRef
 	{
@@ -103,7 +103,7 @@ namespace hm3 {
 		virtual void sendEvent(std::uintptr_t evId, int* unk1, int unk2); // [0072] +0120 [.rdata at 0x00790FAC]
 		virtual void sendEventWithNonSTDOBJ(int a1, std::intptr_t ev, int a3); // [0073] +0124 [.rdata at 0x00790FB0]
 		virtual void sendEventWithSTDOBJ(ZSTDOBJ* stdObj, std::intptr_t ev, int* pResult); // [0074] +0128 [.rdata at 0x00790FB4]
-		virtual void Function_0075(); // [0075] +012C [.rdata at 0x00790FB8]
+		virtual int  sendEventWithEntityID(int entityID, std::intptr_t ev, int* pUnk = 0); // [0075] +012C [.rdata at 0x00790FB8]
 		virtual void Function_0076(); // [0076] +0130 [.rdata at 0x00790FBC]
 		virtual void Function_0077(); // [0077] +0134 [.rdata at 0x00790FC0]
 		virtual void Function_0078(); // [0078] +0138 [.rdata at 0x00790FC4]
@@ -154,7 +154,7 @@ namespace hm3 {
 		virtual void Function_0123(); // [0123] +01EC [.rdata at 0x00791078]
 		virtual void Function_0124(); // [0124] +01F0 [.rdata at 0x0079107C]
 		virtual void Function_0125(); // [0125] +01F4 [.rdata at 0x00791080]
-		virtual void setAnimation(ioi::hm3::ZAnimationInfo* animation, int unknown0 = 1); // [0126] +01F8 [.rdata at 0x00791084]
+		virtual ioi::hm3::ZAnimationInfo** setAnimation(ioi::hm3::ZAnimationInfo* animation, int unknown0 = 1); // [0126] +01F8 [.rdata at 0x00791084]
 		virtual void Function_0127(); // [0127] +01FC [.rdata at 0x00791088]
 		virtual void Function_0128(); // [0128] +0200 [.rdata at 0x0079108C]
 		virtual void Function_0129(); // [0129] +0204 [.rdata at 0x00791090]
@@ -256,7 +256,7 @@ namespace hm3 {
 		virtual void Function_0225(); // [0225] +0384 [.rdata at 0x00791210]
 		virtual void Function_0226(); // [0226] +0388 [.rdata at 0x00791214]
 		virtual void Function_0227(); // [0227] +038C [.rdata at 0x00791218]
-		virtual void Function_0228(); // [0228] +0390 [.rdata at 0x0079121C]
+		virtual ZLnkAction* createAction(ZLnkActionType type); // [0228] +0390 [.rdata at 0x0079121C]
 		virtual void Function_0229(); // [0229] +0394 [.rdata at 0x00791220]
 		virtual void Function_0230(); // [0230] +0398 [.rdata at 0x00791224]
 		virtual void Function_0231(); // [0231] +039C [.rdata at 0x00791228]
@@ -335,7 +335,7 @@ namespace hm3 {
 		virtual void Function_0304(); // [0304] +04C0 [.rdata at 0x0079134C]
 		virtual void Function_0305(); // [0305] +04C4 [.rdata at 0x00791350]
 		virtual void Function_0306(); // [0306] +04C8 [.rdata at 0x00791354]
-		virtual void Function_0307(); // [0307] +04CC [.rdata at 0x00791358]
+		virtual ZHM3Item* getCurrentWeapon(); // [0307] +04CC [.rdata at 0x00791358]
 		virtual void Function_0308(); // [0308] +04D0 [.rdata at 0x0079135C]
 		virtual void Function_0309(); // [0309] +04D4 [.rdata at 0x00791360]
 		virtual void Function_0310(); // [0310] +04D8 [.rdata at 0x00791364]
@@ -400,7 +400,7 @@ namespace hm3 {
 		virtual void Function_0369(); // [0369] +05C4 [.rdata at 0x00791450]
 		virtual void Function_0370(); // [0370] +05C8 [.rdata at 0x00791454]
 		virtual void Function_0371(); // [0371] +05CC [.rdata at 0x00791458]
-		virtual void Function_0372(); // [0372] +05D0 [.rdata at 0x0079145C]
+		virtual int Function_0372(); // [0372] +05D0 [.rdata at 0x0079145C]
 		virtual void Function_0373(); // [0373] +05D4 [.rdata at 0x00791460]
 		virtual void Function_0374(); // [0374] +05D8 [.rdata at 0x00791464]
 		virtual void Function_0375(); // [0375] +05DC [.rdata at 0x00791468]
@@ -432,8 +432,8 @@ namespace hm3 {
 		virtual void Function_0401(); // [0401] +0644 [.rdata at 0x007914D0]
 		virtual void Function_0402(); // [0402] +0648 [.rdata at 0x007914D4]
 		virtual void Function_0403(); // [0403] +064C [.rdata at 0x007914D8]
-		virtual void Function_0404(); // [0404] +0650 [.rdata at 0x007914DC]
-		virtual void Function_0405(); // [0405] +0654 [.rdata at 0x007914E0]
+		virtual void Function_0404(int); // [0404] +0650 [.rdata at 0x007914DC]
+		virtual int Function_0405(); // [0405] +0654 [.rdata at 0x007914E0]
 		virtual void Function_0406(); // [0406] +0658 [.rdata at 0x007914E4]
 		virtual void Function_0407(); // [0407] +065C [.rdata at 0x007914E8]
 		virtual void Function_0408(); // [0408] +0660 [.rdata at 0x007914EC]
@@ -444,8 +444,11 @@ namespace hm3 {
 
 		// === members ===
 		char pad_0004[376]; //0x0004
-		uint32_t m_lnkActionQueue; //0x017C
-		char pad_0180[612]; //0x0180
+		ZLnkActionQueue* m_lnkActionQueue; //0x017C
+		char pad_0180[597]; //0x0180
+		int m_field3D8; //0x03D8
+		int m_field3DC; //0x03DC
+		int m_field3E0; //0x03E0
 		ZHumanBoid* m_humanBoid0; //0x03E4
 		int32_t m_pad0; //+3E8
 		int32_t m_pad1; //+3EC
@@ -523,13 +526,81 @@ namespace hm3 {
 		char pad_0F48[28]; //0x0F48
 		uint32_t m_bloodTrails; //0x0F64
 		char pad_0F68[104]; //0x0F68
-		ZHM3HmAs* m_HmAs; //0x0FD0
-		char pad_0FD4[256]; //0x0FD4
+		ZHM3HmAs* m_HmAs_0; //0x0FD0
+		ZHM3HmAs* m_HmAs; //0x0FD4
+		int32_t m_fieldFD8; //0x0FD8
+		int32_t m_fieldFDC; //0x0FDC
+		int32_t m_fieldFE0; //0x0FE0
+		int32_t m_fieldFE4; //0x0FE4
+		int32_t m_fieldFE8; //0x0FE8
+		int32_t m_fieldFEC; //0x0FEC
+		int32_t m_fieldFF0; //0x0FF0
+		int32_t m_fieldFF4; //0x0FF4
+		int32_t m_fieldFF8; //0x0FF8
+		int32_t m_fieldFFC; //0x0FFC
+		int32_t m_field1000; //0x1000
+		int32_t m_field1004; //0x1004
+		int32_t m_field1008; //0x1008
+		int32_t m_field100C; //0x100C
+		uint32_t m_field1010; //0x1010
+		float m_unkFloatAt1014; //0x1014
+		int32_t m_field1018; //0x1018
+		int32_t m_field101C; //0x101C
+		int32_t m_field1020; //0x1020
+		int32_t m_field1024; //0x1024
+		int8_t m_field1028; //0x1028
+		int8_t m_field1029; //0x1029
+		int8_t m_field102A; //0x102A
+		int8_t m_field102B; //0x102B
+		bool m_bChangingClothes; //0x102C
+		bool m_bChangingClothesAllowed; //0x102D
+		bool m_bSneaking; //0x102E
+		bool m_bStrangulating; //0x102F
+		bool m_bInjecting; //0x1030
+		bool m_bPunching; //0x1031
+		bool m_bPushing; //0x1032
+		bool m_bClimbingHatch; //0x1033
+		float m_fInjectingTime; //0x1034
+		bool m_bLockPicking; //0x1038
+		int8_t m_field1039; //0x1039
+		int8_t m_field103A; //0x103A
+		int8_t m_field103B; //0x103B
+		bool m_bNightVisionEnabled; //0x103C { controlled by +3D8 & 19, when true - game crashing }
+		bool m_bBinocularsEnabled; //0x103D
+		bool m_bFacingEnabled; //0x103E
+		bool m_bIsInMotion; //0x103F
+		bool m_bIsWalking; //0x1040
+		bool m_bIsRunning; //0x1041
+		bool m_bIsCrouching; //0x1042
+		bool m_bIsSneaking; //0x1043
+		bool m_bIsCrouchSneaking; //0x1044
+		bool m_bIsOnLadder; //0x1045
+		bool m_bIsOnDrainPipe; //0x1046
+		bool m_bIsOnGuide; //0x1047
+		bool m_bForceCrouch; //0x1048
+		bool m_bDragPosForced; //0x1049
+		int8_t m_field104A; //0x104A
+		int8_t m_field104B; //0x104B
+		char pad_104C[136]; //0x104C
 		int32_t m_nearestActorsPoolCapacity; //0x10D4
 		uint32_t m_nearestActorsPoolFirstEntity; //0x10D8
-		char pad_10DC[524]; //0x10DC
+		char pad_10DC[500]; //0x10DC
+		ZROOM* m_room; //0x12D0
+		int32_t m_eRoomZone; //0x12D4
+		int32_t m_eCustomZone; //0x12D8
+		int32_t m_field12DC; //0x12DC
+		int32_t m_field12E0; //0x12E0
+		int32_t m_field12E4; //0x12E4
 		ZBoxPrimitive* m_zoneControlBoxPrimitive; //0x12E8
-		char pad_12EC[352]; //0x12EC
+		char pad_12EC[20]; //0x12EC
+		ZAnimationInfo* m_animCurrent; //0x1300
+		char pad_1304[136]; //0x1304
+		uint32_t m_RailInfo_pRailGeom; //0x138C
+		Vector3 m_RailInfo_vP1; //0x1390
+		Vector3 m_RailInfo_vP2; //0x139C
+		Vector3 m_RailInfo_vP3; //0x13A8
+		Vector3 m_RailInfo_vColiPt; //0x13B4
+		char pad_13C0[140]; //0x13C0
 		int32_t		m_availableItemsCount; //0x144C
 		ZHM3Item*	m_availableItemsPoolBegin[10]; //0x1450
 
@@ -537,4 +608,6 @@ namespace hm3 {
 		const NearActorRef& getNearActorByTheirIndex(int32_t index);
 		ZIKHAND* getHand(HandType type);
 	}; //Size: 0x1478
+
+
 }}

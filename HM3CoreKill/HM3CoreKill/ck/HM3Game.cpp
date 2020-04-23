@@ -36,17 +36,21 @@ void __stdcall OnTeleportsListLoaded_Callback(DWORD R1)
 	HM3_DEBUG("[ result at 0x%X ]\n", R1);
 }
 
-void __stdcall ShowWindowRequest()
-{
-	HM3_DEBUG("Require show window with HWND is 0x%.8X\n", HM3Game::GetSystemInterface()->m_renderer->m_HWND);
-	ShowWindow(HM3Game::GetSystemInterface()->m_renderer->m_HWND, SW_SHOW);
-}
-
 struct ComponentWatcher
 {
 	void onComponentRequest(const char* componentName)
 	{
 		HM3_DEBUG("[ComponentWatcher::onComponentRequest] request for component %s => 0x%.8X\n", componentName, this);
+	}
+};
+
+struct ZCustomActor : public ioi::hm3::ZHM3Actor
+{
+	bool onUpdate()
+	{ 
+		typedef bool(__thiscall* ZActor_onUpdate_t)(ZCustomActor*);
+		ZActor_onUpdate_t onUpdate = (ZActor_onUpdate_t)0x00504CB0;
+		return onUpdate(this);
 	}
 };
 
@@ -86,6 +90,24 @@ void HM3Game::Initialise()
 	setupZCarConstructorHook();
 	setupCutSequenceConstructorHook();
 	//setupGetComponentHook();
+
+	{
+		/*
+		/// Patch AI
+		HM3Function::overrideInstruction(
+			HM3_PROCESS_NAME,
+			0x0063E1C0,
+			{
+				//1'st
+				0x90, 0x90, 0x90, 0x90, 0x90, 0x90,
+				//2'nd
+				0x90, 0x90, 0x90, 0xC3
+			});
+
+		bool(__thiscall ZCustomActor::* onUpdateCallback)() = &ZCustomActor::onUpdate;
+		HM3Function::hookFunction<bool(__thiscall*)(), 5>(HM3_PROCESS_NAME, 0x0063E1C0, (DWORD)(DWORD*&)onUpdateCallback, {}, {});
+		*/
+	}
 
 	/*
 	
@@ -382,9 +404,7 @@ void HM3Game::setupGetComponentHook()
 
 void HM3Game::onD3DInitialized(IDirect3DDevice9* device)
 {
-	const auto renderer = GetSystemInterface()->m_renderer;
-
-	ck::HM3InGameTools::getInstance().initialize(renderer->m_HWND, device);
+	ck::HM3InGameTools::getInstance().initialize(GetSystemInterface()->m_renderer->m_HWND, device);
 }
 
 void HM3Game::onD3DBeginScene(IDirect3DDevice9* device)

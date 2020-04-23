@@ -201,5 +201,6 @@ namespace ioi { namespace hm3 {
 
 		// === custom ===
 		static ZHM3Item* findItemByID(int itemID);
+		static int getItemIDByItemInstance(ZHM3Item* instance);
 	}; //Size: 0x009C
 }}

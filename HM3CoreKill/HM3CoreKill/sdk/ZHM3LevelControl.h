@@ -86,7 +86,7 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0069(); //#69 +114 .rdata:007acac8
 		virtual void Function_0070(); //#70 +118 .rdata:007acacc
 		virtual void Function_0071(); //#71 +11c .rdata:007acad0
-		virtual void sendEvent(std::uintptr_t evId, int unk1, int unk2); //#72 +120 .rdata:007acad4
+		virtual void sendEvent(std::uintptr_t evId, int* unk1, int unk2); //#72 +120 .rdata:007acad4
 		virtual void Function_0073(); //#73 +124 .rdata:007acad8
 		virtual void sendEventWithSTDOBJ(ZSTDOBJ* stdObj, std::intptr_t ev, int* pResult); //#74 +128 .rdata:007acadc
 		virtual void Function_0075(); //#75 +12c .rdata:007acae0

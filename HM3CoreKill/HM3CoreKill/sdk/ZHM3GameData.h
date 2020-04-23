@@ -36,7 +36,7 @@ namespace hm3 {
 		virtual void Function2(); //
 		virtual void Function3(); //
 		virtual void Function4(); //
-		virtual void Function5(); //
+		virtual bool loadMissionDependencies(); //
 		virtual void Function6(); //
 		virtual void Function7(); //
 		virtual void Function8(); //
@@ -97,7 +97,9 @@ namespace hm3 {
 		ZHM3WeaponUpgradeControl* m_WeaponUpgradeControl; //0x6970
 		ZHM3CameraEventCameraClass* m_CameraEventCameraClass; //0x6974
 		ZHM3CameraClass* m_CameraClass; //0x6978
-		char pad_697C[32]; //0x697C
+		char pad_697C[24]; //0x697C
+		int m_FightControllerComponentID; //0x6994
+		int m_field6998;	//0x6998
 		ZClothTracker* m_ClothTracker; //0x699C
 		char pad_69A0[8]; //0x69A0
 		ZHM3DialogControl* m_DialogControl; //0x69A8

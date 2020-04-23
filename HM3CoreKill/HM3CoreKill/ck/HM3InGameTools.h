@@ -58,7 +58,8 @@ namespace ck
 		void drawActorInfo(ioi::hm3::ZHM3Actor* currentActor);
 		void drawSuitInfoForActor(ioi::hm3::ZHM3Actor* currentActor);
 		void drawHandInfo(ioi::hm3::ZIKHAND* hand);
-		void drawInventory(ioi::hm3::CInventory* inventory);
+		void drawInventory(ioi::hm3::CInventory* inventory, bool isPlayer = false);
+		void drawInventoryOfActor(ioi::hm3::CInventory* inventory, ioi::hm3::ZHM3Actor* currentActor);
 
 	private:
 		SceneRenderMode m_renderMode = SceneRenderMode::Normal;

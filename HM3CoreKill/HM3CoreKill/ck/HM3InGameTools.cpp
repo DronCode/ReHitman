@@ -32,6 +32,7 @@
 #include <sdk/ZHM3WeaponItem.h>
 #include <sdk/ZPathFollower.h>
 #include <sdk/CTelePortList.h>
+#include <sdk/ZConstructors.h>
 #include <sdk/ZMouseWintel.h>
 #include <sdk/ZGameGlobals.h>
 #include <sdk/ZHM3GameData.h>
@@ -347,6 +348,11 @@ namespace ck
 					ImGui::Checkbox(name, pVar);
 					ImGui::SameLine(0.f, 5.f);
 					ImGui::Text("at 0x%.8X", pVar);
+				};
+
+				auto vec3VarViewer = [](const char* name, const ioi::Vector3& vec)
+				{
+					ImGui::Text("%s { %.8f ; %.8f ; %.8f }", name, vec.x, vec.y, vec.z);
 				};
 
 				boolVarEditor("m_bChangingClothes", &hitman3->m_bChangingClothes);
@@ -1097,6 +1103,8 @@ namespace ck
 
 	void HM3InGameTools::drawInventory(ioi::hm3::CInventory* inventory, bool isPlayer)
 	{
+		HM3_UNUSED(isPlayer);
+
 		auto sys = ioi::hm3::getGlacierInterface<ioi::hm3::ZSysInterfaceWintel>(ioi::hm3::SysInterface);
 		auto gameData = ioi::hm3::getGlacierInterface<ioi::hm3::ZHM3GameData>(ioi::hm3::GameData);
 		HM3_ASSERT(gameData != nullptr, "GameData must be valid here!");
@@ -1122,7 +1130,15 @@ namespace ck
 					auto itemTemplate = pItem->getItemTemplate();
 
 					ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "[0x%.8X]", pItem); ImGui::SameLine(0.f, 4.f);
-					ImGui::Text("#%.3d %s (%.4X) | Item template (at 0x%.8X) %s | ClassID is 0x%.8X", i, pItem->m_entityLocator->entityName, itemId, itemTemplate, (itemTemplate ? itemTemplate->m_entityLocator->entityName : "(N/A)"), pItem->getClassID());
+					ImGui::Text("#%.3d %s (%.4X) | Item template (at 0x%.8X) %s | ClassID is 0x%.8X | getPosBoxCenter 0x%.8X", 
+						i, 
+						pItem->m_entityLocator->entityName, 
+						itemId, 
+						itemTemplate, 
+						(itemTemplate ? itemTemplate->m_entityLocator->entityName : "(N/A)"), 
+						pItem->getClassID(), 
+						(itemTemplate ? itemTemplate->getPosBoxCenter() : 0x0)
+					);
 				}
 			}
 		}

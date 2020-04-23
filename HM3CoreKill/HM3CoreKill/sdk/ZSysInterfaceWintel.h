@@ -4,6 +4,7 @@
 
 #include <sdk/ZEngineDatabase.h>
 #include <sdk/ZRenderWintelD3D.h>
+#include <sdk/render/ZRenderWintelD3DDll.h>
 
 namespace ioi {
 namespace hm3 {

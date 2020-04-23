@@ -3,8 +3,10 @@
 #include <cstdint>
 #include <sdk/ZEntityLocator.h>
 
-namespace ioi { namespace hm3 {
+namespace ioi { class REFTAB;  }
 
+namespace ioi { namespace hm3 {
+	class ZHM3Item;
 
 	class ZHM3ItemTemplate
 	{
@@ -149,12 +151,12 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0132(); //#132 +210 .rdata:00799c1c
 		virtual void Function_0133(); //#133 +214 .rdata:00799c20
 		virtual void Function_0134(); //#134 +218 .rdata:00799c24
-		virtual void Function_0135(); //#135 +21c .rdata:00799c28
+		virtual void Function_0135(ZEntityLocator* el); //#135 +21c .rdata:00799c28
 		virtual void Function_0136(); //#136 +220 .rdata:00799c2c
 		virtual void Function_0137(); //#137 +224 .rdata:00799c30
 		virtual void Function_0138(); //#138 +228 .rdata:00799c34
 		virtual void Function_0139(); //#139 +22c .rdata:00799c38
-		virtual void Function_0140(); //#140 +230 .rdata:00799c3c
+		virtual int getValueOf_0x28(); //#140 +230 .rdata:00799c3c
 		virtual void Function_0141(); //#141 +234 .rdata:00799c40
 		virtual void Function_0142(); //#142 +238 .rdata:00799c44
 		virtual void Function_0143(); //#143 +23c .rdata:00799c48
@@ -162,25 +164,25 @@ namespace ioi { namespace hm3 {
 		virtual void Function_0145(); //#145 +244 .rdata:00799c50
 		virtual void Function_0146(); //#146 +248 .rdata:00799c54
 		virtual void Function_0147(); //#147 +24c .rdata:00799c58
-		virtual void Function_0148(); //#148 +250 .rdata:00799c5c
-		virtual void Function_0149(); //#149 +254 .rdata:00799c60
-		virtual void Function_0150(); //#150 +258 .rdata:00799c64
-		virtual void Function_0151(); //#151 +25c .rdata:00799c68
+		virtual void Function_0148(); //#148 +250 .rdata:00799c5c ///UNK
+		virtual int getConst_0x10042A(); //#149 +254 .rdata:00799c60
+		virtual void Function_0150(int _ZLNKOBJ_Instance_, unsigned short a1); //#150 +258 .rdata:00799c64
+		virtual int Function_0151(int CCom); //#151 +25c .rdata:00799c68 {something with lState}
 		virtual void Function_0152(); //#152 +260 .rdata:00799c6c
-		virtual void Function_0153(); //#153 +264 .rdata:00799c70
-		virtual void Function_0154(); //#154 +268 .rdata:00799c74
-		virtual void Function_0155(); //#155 +26c .rdata:00799c78
-		virtual void Function_0156(); //#156 +270 .rdata:00799c7c
-		virtual void Function_0157(); //#157 +274 .rdata:00799c80
-		virtual void Function_0158(); //#158 +278 .rdata:00799c84
-		virtual void Function_0159(); //#159 +27c .rdata:00799c88
-		virtual void Function_0160(); //#160 +280 .rdata:00799c8c
-		virtual void Function_0161(); //#161 +284 .rdata:00799c90
-		virtual void Function_0162(); //#162 +288 .rdata:00799c94
-		virtual void Function_0163(); //#163 +28c .rdata:00799c98
-		virtual void Function_0164(); //#164 +290 .rdata:00799c9c
-		virtual void Function_0165(); //#165 +294 .rdata:00799ca0
-		virtual void Function_0166(); //#166 +298 .rdata:00799ca4
+		virtual void Function_0153(); //#153 +264 .rdata:00799c70 {something with ItemState*}
+		virtual REFTAB* getUnknownREFTAB(); //#154 +268 .rdata:00799c74
+		virtual int getValueOf_0x64(); //#155 +26c .rdata:00799c78
+		virtual bool Function_0156(int a2, const char* a3); //#156 +270 .rdata:00799c7c
+		virtual int Function_0157(int a2, int a3, const char* a4); //#157 +274 .rdata:00799c80
+		virtual int Function_0158(int a2, int a3); //#158 +278 .rdata:00799c84
+		virtual void getValueOf_0x4C(); //#159 +27c .rdata:00799c88
+		virtual int setValueAt_0x4C(int value); //#160 +280 .rdata:00799c8c
+		virtual void getValueOf_0x50(); //#161 +284 .rdata:00799c90
+		virtual void getPosBoxHand(); //#162 +288 .rdata:00799c94
+		virtual int getPosBoxCenter(); //#163 +28c .rdata:00799c98 { return this when PosBox_Center component not found, otherwise pointer to component or smth like that }
+		virtual int getPosBoxCamera(); //#164 +290 .rdata:00799c9c
+		virtual int getValueOf_0x6C(); //#165 +294 .rdata:00799ca0
+		virtual int getValueOf_0x74(); //#166 +298 .rdata:00799ca4
 	}; //Size: 0x0040
 
 } }

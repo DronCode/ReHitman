@@ -16,11 +16,11 @@ namespace ioi { namespace hm3 {
 		if (!systemInterface)
 			return nullptr;
 
-		auto renderer = systemInterface->m_renderer;
+		auto renderer = ioi::hm3::getGlacierInterface<ioi::hm3::ZRenderWintelD3D>(ioi::hm3::RendererDLL);
 		if (!renderer)
 			return nullptr;
 
-		auto cameraId = renderer->getCameraIdByIndex(cameraIndex);
+		auto cameraId =  renderer->getCameraIdByIndex(cameraIndex);
 		return getCameraClassById(cameraId);
 	}
 

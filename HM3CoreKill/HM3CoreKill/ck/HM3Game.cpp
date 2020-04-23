@@ -36,12 +36,6 @@ void __stdcall OnTeleportsListLoaded_Callback(DWORD R1)
 	HM3_DEBUG("[ result at 0x%X ]\n", R1);
 }
 
-void __stdcall ShowWindowRequest()
-{
-	HM3_DEBUG("Require show window with HWND is 0x%.8X\n", HM3Game::GetSystemInterface()->m_renderer->m_HWND);
-	ShowWindow(HM3Game::GetSystemInterface()->m_renderer->m_HWND, SW_SHOW);
-}
-
 struct ComponentWatcher
 {
 	void onComponentRequest(const char* componentName)
@@ -410,9 +404,7 @@ void HM3Game::setupGetComponentHook()
 
 void HM3Game::onD3DInitialized(IDirect3DDevice9* device)
 {
-	const auto renderer = GetSystemInterface()->m_renderer;
-
-	ck::HM3InGameTools::getInstance().initialize(renderer->m_HWND, device);
+	ck::HM3InGameTools::getInstance().initialize(GetSystemInterface()->m_renderer->m_HWND, device);
 }
 
 void HM3Game::onD3DBeginScene(IDirect3DDevice9* device)

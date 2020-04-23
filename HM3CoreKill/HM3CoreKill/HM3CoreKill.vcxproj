@@ -248,6 +248,7 @@
     <ClInclude Include="sdk\ZBoxPrimitive.h" />
     <ClInclude Include="sdk\ZCHAROBJ.h" />
     <ClInclude Include="sdk\ZCheatMenu.h" />
+    <ClInclude Include="sdk\ZConstructors.h" />
     <ClInclude Include="sdk\ZDirect3DDevice.h" />
     <ClInclude Include="sdk\ZEngineDatabase.h" />
     <ClInclude Include="sdk\ZEntityLocator.h" />
@@ -359,6 +360,7 @@
     <ClCompile Include="DllEntry.cpp" />
     <ClCompile Include="sdk\CTelePortList.cpp" />
     <ClCompile Include="sdk\ZAnimationInfo.cpp" />
+    <ClCompile Include="sdk\ZConstructors.cpp" />
     <ClCompile Include="sdk\ZGROUP.cpp" />
     <ClCompile Include="sdk\ZHM3Actor.cpp" />
     <ClCompile Include="sdk\ZHM3Hitman3.cpp" />

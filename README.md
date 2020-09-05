@@ -64,6 +64,14 @@ Current Project Goals.
  - [ ] Reverse the scene format
  - [ ] Create a toolset for Hitman Blood Money
 
+Credits
+------
+
+ * [DronCode](https://github.com/DronCode)
+ * [crabovwik](https://github.com/crabovwik)
+ * [Daniel Hunter](https://github.com/HHCHunter)
+ * [Notexe](https://github.com/Notexe)
+
 Contact Information.
 ---------------
 
